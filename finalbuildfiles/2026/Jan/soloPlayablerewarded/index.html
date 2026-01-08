@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <title>Jump Game</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script type="module" crossorigin src="https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/2026/Jan/soloPlayablerewarded/assets/index-PMhT2U2H.js"></script>
+  <link rel="stylesheet" crossorigin href="https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/2026/Jan/soloPlayablerewarded/assets/index-B_oUlOdC.css">
+</head>
+
+<body>
+    <!-- Video container at the top of the game -->
+    <div id="video-container">
+        <video id="game-video" preload="auto" muted
+            poster="https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/2026/Jan/soloPlayablerewarded/assets/videoposter.jpg"
+            playsinline>
+            <source
+                src="https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/2026/Jan/soloPlayablerewarded/assets/video.mp4"
+                type="video/mp4">
+        </video>
+    </div>
+    <!-- Mute/Unmute button -->
+    <button id="audio-toggle" class="muted">
+        <svg class="icon-muted" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M11 5L6 9H2V15H6L11 19V5Z" stroke="white" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+            <path d="M23 9L17 15M17 9L23 15" stroke="white" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+        </svg>
+        <svg class="icon-unmuted" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M11 5L6 9H2V15H6L11 19V5Z" stroke="white" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+            <path
+                d="M15.54 8.46C16.4774 9.39764 17.0039 10.6692 17.0039 11.995C17.0039 13.3208 16.4774 14.5924 15.54 15.53"
+                stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M18.07 5.93C19.9447 7.80528 20.9979 10.3478 20.9979 13C20.9979 15.6522 19.9447 18.1947 18.07 20.07"
+                stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+    </button>
+    <!-- Loading screen -->
+    <div id="loading-screen">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <p>Loading...</p>
+        </div>
+    </div>
+    <!-- Score counter below video -->
+    <div id="score-container">
+        <img id="score-icon"
+            src="https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/2026/Jan/soloPlayablerewarded/assets/invoice-icon.png"
+            alt="$">
+        <span id="score-value">0</span>
+    </div>
+
+    <div id="thegame"></div>
+    <!-- Instruction overlay for waiting state -->
+    <div id="instruction-overlay">
+        <div class="instruction-content">
+            <div class="arrows">
+                <svg class="arrow left" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15 6L9 12L15 18" stroke="white" stroke-width="3" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+                <svg class="arrow right" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 6L15 12L9 18" stroke="white" stroke-width="3" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </div>
+            <p class="instruction-text">SWIPE TO COLLECT PAYMENTS</p>
+        </div>
+    </div>
+    <div id="final-screen">
+        <img id="final-bg"
+            src="https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/2026/Jan/soloPlayablerewarded/assets/finalpage.png"
+            alt="Game Over">
+        <img id="final-logo"
+            src="https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/2026/Jan/soloPlayablerewarded/assets/finallogo.png"
+            alt="Logo">
+    </div>
+    <script>
+        setTimeout(() => {
+            console.log(document.querySelector('canvas').style.width);
+            document.getElementById('video-container').style.width = document.querySelector('canvas').style.width + "px";
+        }, 1000);
+    </script>
+
+    <script>
+        //GAM
+        window.trackingPath = "https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/2026/Jan/soloPlayablerewarded/";
+        window.trackingType =
+            "https://staging-dmp-producer.iion.io/tracker/impressions?platform=GAM&campaign_id=%ebuy!&publisher_id=%epid!&creative_id=%ecid!&maid=%%ADVERTISING_IDENTIFIER_PLAIN%%&page_url=%%SITE%%&height=%%HEIGHT%%&width=%%WIDTH%%&video_min_duration=%%VIDEO_DURATION%%&gdpr=${GDPR}&gdpr_consent=${GDPR_CONSENT_XXXX}&demand_id=%eadv!&line_item=%eaid!&event_name=";
+        window.setTracker = "%%CLICK_URL_UNESC%%";
+        window.landingPageUrl = window.setTracker + "https://www.myob.com/au/products/solo";
+    </script>
+</body>
+
+</html>
