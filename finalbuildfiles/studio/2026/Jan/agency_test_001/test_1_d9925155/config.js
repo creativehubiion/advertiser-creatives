@@ -38,7 +38,17 @@ window.GAME_CONFIG = {
     "splashHero": "https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/studio/2026/Jan/agency_test_001/test_1_d9925155/assets/images/splash-hero.png",
     "collectible": "https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/studio/2026/Jan/agency_test_001/test_1_d9925155/assets/images/collectible.png",
     "collectSound": "",
-    "backgroundMusic": ""
+    "backgroundMusic": "",
+    "age1": "https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/studio/2026/Jan/agency_test_001/test_1_d9925155/assets/images/fpd/age1.png",
+    "age2": "https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/studio/2026/Jan/agency_test_001/test_1_d9925155/assets/images/fpd/age2.png",
+    "age3": "https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/studio/2026/Jan/agency_test_001/test_1_d9925155/assets/images/fpd/age3.png",
+    "age4": "https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/studio/2026/Jan/agency_test_001/test_1_d9925155/assets/images/fpd/age4.png",
+    "age5": "https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/studio/2026/Jan/agency_test_001/test_1_d9925155/assets/images/fpd/age5.png",
+    "age6": "https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/studio/2026/Jan/agency_test_001/test_1_d9925155/assets/images/fpd/age6.png",
+    "genderMale": "https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/studio/2026/Jan/agency_test_001/test_1_d9925155/assets/images/fpd/genderMale.png",
+    "genderFemale": "https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/studio/2026/Jan/agency_test_001/test_1_d9925155/assets/images/fpd/genderFemale.png",
+    "genderOthers": "https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/studio/2026/Jan/agency_test_001/test_1_d9925155/assets/images/fpd/genderOthers.png",
+    "dataCaptureBg": "https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/studio/2026/Jan/agency_test_001/test_1_d9925155/assets/images/fpd/background.png"
   },
   "canvas": {
     "width": 1280,
