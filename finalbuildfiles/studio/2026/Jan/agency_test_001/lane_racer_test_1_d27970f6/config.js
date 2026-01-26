@@ -47,12 +47,12 @@ window.GAME_CONFIG = {
   "assets": {
     "logo": "https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/studio/2026/Jan/agency_test_001/lane_racer_test_1_d27970f6/assets/images/lane-racer-logo.png",
     "road": "https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/studio/2026/Jan/agency_test_001/lane_racer_test_1_d27970f6/assets/images/road.png",
-    "endHero": "https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/studio/2026/Jan/agency_test_001/lane_racer_test_1_d27970f6/assets/images/carTitle.png",
+    "endHero": "https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/studio/2026/Jan/agency_test_001/lane_racer_test_1_d27970f6/assets/images/endHero.png",
     "obstacle": "https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/studio/2026/Jan/agency_test_001/lane_racer_test_1_d27970f6/assets/images/car2.png",
     "scoreBox": "",
     "character": "https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/studio/2026/Jan/agency_test_001/lane_racer_test_1_d27970f6/assets/images/car1.png",
     "finishLine": "https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/studio/2026/Jan/agency_test_001/lane_racer_test_1_d27970f6/assets/images/finishline.png",
-    "splashHero": "https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/studio/2026/Jan/agency_test_001/lane_racer_test_1_d27970f6/assets/images/carTitle.png",
+    "splashHero": "https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/studio/2026/Jan/agency_test_001/lane_racer_test_1_d27970f6/assets/images/splashHero.png",
     "collectible": "https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/studio/2026/Jan/agency_test_001/lane_racer_test_1_d27970f6/assets/images/coin.png",
     "collectSound": "",
     "backgroundMusic": ""
