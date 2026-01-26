@@ -255,50 +255,55 @@ class PreloaderScene extends Phaser.Scene {
       if (viewAsset) this.load.image('viewdetails', viewAsset);
     }
 
-    // First Party Data - Age buttons
-    if (!this.textures.exists('age1')) {
-      const age1Asset = customAssets.age1 || 'assets/images/fpd/age1.png';
-      if (age1Asset) this.load.image('age1', age1Asset);
-    }
-    if (!this.textures.exists('age2')) {
-      const age2Asset = customAssets.age2 || 'assets/images/fpd/age2.png';
-      if (age2Asset) this.load.image('age2', age2Asset);
-    }
-    if (!this.textures.exists('age3')) {
-      const age3Asset = customAssets.age3 || 'assets/images/fpd/age3.png';
-      if (age3Asset) this.load.image('age3', age3Asset);
-    }
-    if (!this.textures.exists('age4')) {
-      const age4Asset = customAssets.age4 || 'assets/images/fpd/age4.png';
-      if (age4Asset) this.load.image('age4', age4Asset);
-    }
-    if (!this.textures.exists('age5')) {
-      const age5Asset = customAssets.age5 || 'assets/images/fpd/age5.png';
-      if (age5Asset) this.load.image('age5', age5Asset);
-    }
-    if (!this.textures.exists('age6')) {
-      const age6Asset = customAssets.age6 || 'assets/images/fpd/age6.png';
-      if (age6Asset) this.load.image('age6', age6Asset);
-    }
+    // First Party Data assets - only load if FPD is enabled
+    // This prevents XMLHttpRequest errors in blob: context (Creative Inspector)
+    // when relative paths like 'assets/images/fpd/age1.png' can't be resolved
+    if (config.firstPartyData?.enabled) {
+      // Age buttons
+      if (!this.textures.exists('age1')) {
+        const age1Asset = customAssets.age1 || 'assets/images/fpd/age1.png';
+        if (age1Asset) this.load.image('age1', age1Asset);
+      }
+      if (!this.textures.exists('age2')) {
+        const age2Asset = customAssets.age2 || 'assets/images/fpd/age2.png';
+        if (age2Asset) this.load.image('age2', age2Asset);
+      }
+      if (!this.textures.exists('age3')) {
+        const age3Asset = customAssets.age3 || 'assets/images/fpd/age3.png';
+        if (age3Asset) this.load.image('age3', age3Asset);
+      }
+      if (!this.textures.exists('age4')) {
+        const age4Asset = customAssets.age4 || 'assets/images/fpd/age4.png';
+        if (age4Asset) this.load.image('age4', age4Asset);
+      }
+      if (!this.textures.exists('age5')) {
+        const age5Asset = customAssets.age5 || 'assets/images/fpd/age5.png';
+        if (age5Asset) this.load.image('age5', age5Asset);
+      }
+      if (!this.textures.exists('age6')) {
+        const age6Asset = customAssets.age6 || 'assets/images/fpd/age6.png';
+        if (age6Asset) this.load.image('age6', age6Asset);
+      }
 
-    // First Party Data - Gender buttons
-    if (!this.textures.exists('genderMale')) {
-      const genderMaleAsset = customAssets.genderMale || 'assets/images/fpd/genderMale.png';
-      if (genderMaleAsset) this.load.image('genderMale', genderMaleAsset);
-    }
-    if (!this.textures.exists('genderFemale')) {
-      const genderFemaleAsset = customAssets.genderFemale || 'assets/images/fpd/genderFemale.png';
-      if (genderFemaleAsset) this.load.image('genderFemale', genderFemaleAsset);
-    }
-    if (!this.textures.exists('genderOthers')) {
-      const genderOthersAsset = customAssets.genderOthers || 'assets/images/fpd/genderOthers.png';
-      if (genderOthersAsset) this.load.image('genderOthers', genderOthersAsset);
-    }
+      // Gender buttons
+      if (!this.textures.exists('genderMale')) {
+        const genderMaleAsset = customAssets.genderMale || 'assets/images/fpd/genderMale.png';
+        if (genderMaleAsset) this.load.image('genderMale', genderMaleAsset);
+      }
+      if (!this.textures.exists('genderFemale')) {
+        const genderFemaleAsset = customAssets.genderFemale || 'assets/images/fpd/genderFemale.png';
+        if (genderFemaleAsset) this.load.image('genderFemale', genderFemaleAsset);
+      }
+      if (!this.textures.exists('genderOthers')) {
+        const genderOthersAsset = customAssets.genderOthers || 'assets/images/fpd/genderOthers.png';
+        if (genderOthersAsset) this.load.image('genderOthers', genderOthersAsset);
+      }
 
-    // First Party Data - Background
-    if (!this.textures.exists('dataCaptureBg')) {
-      const bgAsset = customAssets.dataCaptureBg || 'assets/images/fpd/background.png';
-      if (bgAsset) this.load.image('dataCaptureBg', bgAsset);
+      // Data capture background
+      if (!this.textures.exists('dataCaptureBg')) {
+        const bgAsset = customAssets.dataCaptureBg || 'assets/images/fpd/background.png';
+        if (bgAsset) this.load.image('dataCaptureBg', bgAsset);
+      }
     }
   }
 
