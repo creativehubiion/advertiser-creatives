@@ -8,6 +8,36 @@
  */
 
 // ========================================
+// HERO SCALING UTILITY (Single Source of Truth)
+// ========================================
+/**
+ * Calculate hero scale for splashHero or endHero
+ * This function is the SINGLE SOURCE OF TRUTH for hero scaling.
+ * Used by: SplashScene, EndScene, and live preview UPDATE_ASSET_SCALES handler
+ *
+ * For CFI template:
+ * - Custom assets: WYSIWYG - direct userScale only
+ * - Default assets: auto-scale to fit 70% height, then multiply by userScale
+ *
+ * @param {string} assetKey - 'splashHero' or 'endHero'
+ * @param {object} config - GAME_CONFIG object
+ * @param {object} customAssets - window.__customAssets object (CFI uses double underscore)
+ * @param {number} imgWidth - Image width (for auto-scale calculation)
+ * @param {number} imgHeight - Image height (for auto-scale calculation)
+ * @returns {number} - The scale to apply to the hero image
+ */
+function calculateHeroScale(assetKey, config, customAssets, imgWidth, imgHeight) {
+  // Pure WYSIWYG scaling - same as Lane Racer
+  // No auto-scaling for any assets - ensures live preview, share preview, and built HTML all match
+  // Users can adjust scale via the slider as needed
+  const userScale = config.assetScales?.[assetKey] || 1;
+  return userScale;
+}
+
+// Make available globally for index.html live preview handler
+window.calculateHeroScale = calculateHeroScale;
+
+// ========================================
 // TRANSITION MANAGER
 // ========================================
 class TransitionManager {
@@ -336,6 +366,7 @@ class PreloaderScene extends Phaser.Scene {
     // Note: tapToPlay and ctaButton are now drawn programmatically
 
     // Load optional splash hero image if configured
+    console.log('[Preloader] Hero check - splashHero:', !!customAssets.splashHero, 'endHero:', !!customAssets.endHero);
     if (config.assets.splashHero || customAssets.splashHero) {
       this.load.image('splashHero', customAssets.splashHero || config.assets.splashHero);
     }
@@ -353,51 +384,56 @@ class PreloaderScene extends Phaser.Scene {
       this.load.audio('collectSound', config.assets.collectSound);
     }
 
-    // First Party Data - Age buttons
-    if (!this.textures.exists('age1')) {
-      const age1Asset = customAssets.age1 || 'assets/images/fpd/age1.png';
-      if (age1Asset) this.load.image('age1', age1Asset);
-    }
-    if (!this.textures.exists('age2')) {
-      const age2Asset = customAssets.age2 || 'assets/images/fpd/age2.png';
-      if (age2Asset) this.load.image('age2', age2Asset);
-    }
-    if (!this.textures.exists('age3')) {
-      const age3Asset = customAssets.age3 || 'assets/images/fpd/age3.png';
-      if (age3Asset) this.load.image('age3', age3Asset);
-    }
-    if (!this.textures.exists('age4')) {
-      const age4Asset = customAssets.age4 || 'assets/images/fpd/age4.png';
-      if (age4Asset) this.load.image('age4', age4Asset);
-    }
-    if (!this.textures.exists('age5')) {
-      const age5Asset = customAssets.age5 || 'assets/images/fpd/age5.png';
-      if (age5Asset) this.load.image('age5', age5Asset);
-    }
-    if (!this.textures.exists('age6')) {
-      const age6Asset = customAssets.age6 || 'assets/images/fpd/age6.png';
-      if (age6Asset) this.load.image('age6', age6Asset);
-    }
+    // First Party Data assets - only load if FPD is enabled
+    // IMPORTANT: Only load FPD assets if enabled, otherwise relative fallback paths
+    // cause "Invalid URL" errors in standalone HTML contexts (Creative Inspector)
+    if (config.firstPartyData?.enabled) {
+      // First Party Data - Age buttons
+      if (!this.textures.exists('age1')) {
+        const age1Asset = customAssets.age1 || config.assets?.age1;
+        if (age1Asset) this.load.image('age1', age1Asset);
+      }
+      if (!this.textures.exists('age2')) {
+        const age2Asset = customAssets.age2 || config.assets?.age2;
+        if (age2Asset) this.load.image('age2', age2Asset);
+      }
+      if (!this.textures.exists('age3')) {
+        const age3Asset = customAssets.age3 || config.assets?.age3;
+        if (age3Asset) this.load.image('age3', age3Asset);
+      }
+      if (!this.textures.exists('age4')) {
+        const age4Asset = customAssets.age4 || config.assets?.age4;
+        if (age4Asset) this.load.image('age4', age4Asset);
+      }
+      if (!this.textures.exists('age5')) {
+        const age5Asset = customAssets.age5 || config.assets?.age5;
+        if (age5Asset) this.load.image('age5', age5Asset);
+      }
+      if (!this.textures.exists('age6')) {
+        const age6Asset = customAssets.age6 || config.assets?.age6;
+        if (age6Asset) this.load.image('age6', age6Asset);
+      }
 
-    // First Party Data - Gender buttons
-    if (!this.textures.exists('genderMale')) {
-      const genderMaleAsset = customAssets.genderMale || 'assets/images/fpd/genderMale.png';
-      if (genderMaleAsset) this.load.image('genderMale', genderMaleAsset);
-    }
-    if (!this.textures.exists('genderFemale')) {
-      const genderFemaleAsset = customAssets.genderFemale || 'assets/images/fpd/genderFemale.png';
-      if (genderFemaleAsset) this.load.image('genderFemale', genderFemaleAsset);
-    }
-    if (!this.textures.exists('genderOthers')) {
-      const genderOthersAsset = customAssets.genderOthers || 'assets/images/fpd/genderOthers.png';
-      if (genderOthersAsset) this.load.image('genderOthers', genderOthersAsset);
-    }
+      // First Party Data - Gender buttons
+      if (!this.textures.exists('genderMale')) {
+        const genderMaleAsset = customAssets.genderMale || config.assets?.genderMale;
+        if (genderMaleAsset) this.load.image('genderMale', genderMaleAsset);
+      }
+      if (!this.textures.exists('genderFemale')) {
+        const genderFemaleAsset = customAssets.genderFemale || config.assets?.genderFemale;
+        if (genderFemaleAsset) this.load.image('genderFemale', genderFemaleAsset);
+      }
+      if (!this.textures.exists('genderOthers')) {
+        const genderOthersAsset = customAssets.genderOthers || config.assets?.genderOthers;
+        if (genderOthersAsset) this.load.image('genderOthers', genderOthersAsset);
+      }
 
-    // First Party Data - Background
-    if (!this.textures.exists('dataCaptureBg')) {
-      const bgAsset = customAssets.dataCaptureBg || 'assets/images/fpd/background.png';
-      if (bgAsset) this.load.image('dataCaptureBg', bgAsset);
-    }
+      // First Party Data - Background
+      if (!this.textures.exists('dataCaptureBg')) {
+        const bgAsset = customAssets.dataCaptureBg || config.assets?.dataCaptureBg;
+        if (bgAsset) this.load.image('dataCaptureBg', bgAsset);
+      }
+    } // End of firstPartyData.enabled check
 
     // Update loading bar
     this.load.on('progress', (value) => {
@@ -633,7 +669,7 @@ class SplashScene extends Phaser.Scene {
     // Track initial logo scale
     this.lastLogoScale = initialLogoScale;
 
-    // Optional splash hero image
+    // Optional splash hero image - Uses calculateHeroScale for WYSIWYG custom assets
     this.splashHero = null;
     if (config.layout.showSplashHero && this.textures.exists('splashHero')) {
       const heroY = height * (config.layout.splashHeroYPosition || 0.55);
@@ -643,29 +679,17 @@ class SplashScene extends Phaser.Scene {
         .setAlpha(0) // Start invisible for fade-in effect
         .setDepth(50); // Above background overlay
 
-      // Smart auto-scaling: fit image to 70% of canvas height while maintaining aspect ratio
+      // Use single source of truth for hero scaling
       const imgWidth = this.splashHero.width;
       const imgHeight = this.splashHero.height;
-      const maxHeight = height * 0.7; // Use 70% of canvas height as max
-      const maxWidth = width * 0.9;   // Use 90% of canvas width as max
-
-      // Calculate scale to fit within bounds
-      const scaleByHeight = maxHeight / imgHeight;
-      const scaleByWidth = maxWidth / imgWidth;
-      const autoScale = Math.min(scaleByHeight, scaleByWidth);
-
-      // Apply auto-scale combined with user's assetScale
-      const initialSplashHeroScale = config.assetScales?.splashHero || 1.5;
-      const finalScale = autoScale * initialSplashHeroScale;
+      const finalScale = calculateHeroScale('splashHero', config, window.__customAssets || {}, imgWidth, imgHeight);
       this.splashHero.setScale(finalScale);
 
-      console.log('[Splash] Splash hero image added with autoScale:', autoScale, 'finalScale:', finalScale);
+      console.log('[Splash] Splash hero image added with finalScale:', finalScale);
 
-      // Store auto-scale for future calculations
-      this.splashHeroAutoScale = autoScale;
-
-      // Track initial splash hero scale
-      this.lastSplashHeroScale = initialSplashHeroScale;
+      // Store image dimensions for future scale recalculations
+      this.splashHeroImgWidth = imgWidth;
+      this.splashHeroImgHeight = imgHeight;
 
       // Fade in the hero image
       this.tweens.add({
@@ -1104,7 +1128,7 @@ class SplashScene extends Phaser.Scene {
       console.log('[SplashScene] Splash hero Y position updated to:', layoutData.splashHeroYPosition);
     }
 
-    // Handle showSplashHero visibility
+    // Handle showSplashHero visibility - Uses calculateHeroScale for WYSIWYG custom assets
     if (layoutData.showSplashHero !== undefined) {
       if (layoutData.showSplashHero && !this.splashHero && this.textures.exists('splashHero')) {
         const heroY = config.canvas.height * (config.layout.splashHeroYPosition || 0.55);
@@ -1114,14 +1138,10 @@ class SplashScene extends Phaser.Scene {
 
         const imgWidth = this.splashHero.width;
         const imgHeight = this.splashHero.height;
-        const maxHeight = config.canvas.height * 0.7;
-        const maxWidth = config.canvas.width * 0.9;
-        const scaleByHeight = maxHeight / imgHeight;
-        const scaleByWidth = maxWidth / imgWidth;
-        const autoScale = Math.min(scaleByHeight, scaleByWidth);
-        this.splashHeroAutoScale = autoScale;
+        this.splashHeroImgWidth = imgWidth;
+        this.splashHeroImgHeight = imgHeight;
 
-        const finalScale = autoScale * (config.assetScales?.splashHero || 1);
+        const finalScale = calculateHeroScale('splashHero', config, window.__customAssets || {}, imgWidth, imgHeight);
         this.splashHero.setScale(finalScale);
       } else if (!layoutData.showSplashHero && this.splashHero) {
         this.splashHero.setVisible(false);
@@ -1134,9 +1154,11 @@ class SplashScene extends Phaser.Scene {
   updateAssetScales(scaleData) {
     const config = window.GAME_CONFIG;
 
-    // Update splash hero scale
+    // Update splash hero scale - Uses calculateHeroScale for WYSIWYG custom assets
     if (scaleData.splashHero !== undefined && this.splashHero) {
-      const finalScale = (this.splashHeroAutoScale || 1) * scaleData.splashHero;
+      const imgWidth = this.splashHeroImgWidth || this.splashHero.width;
+      const imgHeight = this.splashHeroImgHeight || this.splashHero.height;
+      const finalScale = calculateHeroScale('splashHero', config, window.__customAssets || {}, imgWidth, imgHeight);
       this.splashHero.setScale(finalScale);
       console.log('[SplashScene] Splash hero scale updated to:', scaleData.splashHero);
     }
@@ -1901,17 +1923,24 @@ class GameScene extends Phaser.Scene {
   }
 
   startSpawning() {
-    const config = this.gameConfig.gameplay;
-
-    this.spawnTimer = this.time.addEvent({
-      delay: config.spawnInterval,
-      callback: this.spawnItem,
-      callbackScope: this,
-      loop: true
-    });
-
     // Spawn first item immediately
     this.time.delayedCall(200, () => this.spawnItem());
+
+    // Schedule next spawn - reads config each time for live updates
+    this.scheduleNextSpawn();
+  }
+
+  scheduleNextSpawn() {
+    // Read spawnInterval from config each time for live updates in advanced mode
+    const config = window.GAME_CONFIG;
+    const spawnInterval = config.gameplay.spawnInterval;
+
+    this.spawnTimer = this.time.delayedCall(spawnInterval, () => {
+      if (this.gameActive) {
+        this.spawnItem();
+      }
+      this.scheduleNextSpawn();
+    });
   }
 
   spawnItem() {
@@ -2854,8 +2883,8 @@ class EndScene extends Phaser.Scene {
       : width * 0.7;  // Advanced: 70% width for maximum size
 
     const maxLogoHeightEnd = isBasicMode
-      ? height * 0.2  // Basic: 20% height (same as advanced)
-      : height * 0.2;  // Advanced: 20% height for maximum size
+      ? height * 0.25  // Basic: 25% height (same as splash)
+      : height * 0.25;  // Advanced: 25% height (same as splash)
 
     let endSmartScale;
     if (logoAspectRatio > 1) {
@@ -2882,7 +2911,7 @@ class EndScene extends Phaser.Scene {
     // Track initial logo scale
     this.lastLogoScale = initialLogoScale;
 
-    // End Hero Image (optional)
+    // End Hero Image (optional) - Uses calculateHeroScale for WYSIWYG custom assets
     this.endHeroImage = null;
     if (config.layout.showEndHero && this.textures.exists('endHero')) {
       this.endHeroImage = this.add.image(
@@ -2891,30 +2920,18 @@ class EndScene extends Phaser.Scene {
         'endHero'
       );
 
-      // Smart auto-scaling: fit image to 70% of canvas height while maintaining aspect ratio
+      // Use single source of truth for hero scaling
       const imgWidth = this.endHeroImage.width;
       const imgHeight = this.endHeroImage.height;
-      const maxHeight = height * 0.7; // Use 70% of canvas height as max
-      const maxWidth = width * 0.9;   // Use 90% of canvas width as max
-
-      // Calculate scale to fit within bounds
-      const scaleByHeight = maxHeight / imgHeight;
-      const scaleByWidth = maxWidth / imgWidth;
-      const autoScale = Math.min(scaleByHeight, scaleByWidth);
-
-      // Apply auto-scale combined with user's assetScale
-      const initialEndHeroScale = config.assetScales?.endHero || 1.5;
-      const finalScale = autoScale * initialEndHeroScale;
+      const finalScale = calculateHeroScale('endHero', config, window.__customAssets || {}, imgWidth, imgHeight);
       this.endHeroImage.setScale(finalScale);
       this.endHeroImage.setOrigin(0.5);
       this.endHeroImage.setDepth(90); // Below logo (100) but above background
-      console.log('[End] End hero image added at Y:', height * config.layout.endHeroYPosition, 'autoScale:', autoScale, 'finalScale:', finalScale);
+      console.log('[End] End hero image added at Y:', height * config.layout.endHeroYPosition, 'finalScale:', finalScale);
 
-      // Store auto-scale for future calculations
-      this.endHeroAutoScale = autoScale;
-
-      // Track initial end hero scale
-      this.lastEndHeroScale = initialEndHeroScale;
+      // Store image dimensions for future scale recalculations
+      this.endHeroImgWidth = imgWidth;
+      this.endHeroImgHeight = imgHeight;
     }
 
     // Store CTA button Y position for recreation (like Lane Racer)
@@ -3168,7 +3185,7 @@ class EndScene extends Phaser.Scene {
       console.log('[EndScene] CTA button Y position updated');
     }
 
-    // Handle showEndHero visibility
+    // Handle showEndHero visibility - Uses calculateHeroScale for WYSIWYG custom assets
     if (layoutData.showEndHero !== undefined) {
       if (layoutData.showEndHero && !this.endHeroImage && this.textures.exists('endHero')) {
         this.endHeroImage = this.add.image(
@@ -3179,14 +3196,10 @@ class EndScene extends Phaser.Scene {
 
         const imgWidth = this.endHeroImage.width;
         const imgHeight = this.endHeroImage.height;
-        const maxHeight = config.canvas.height * 0.7;
-        const maxWidth = config.canvas.width * 0.9;
-        const scaleByHeight = maxHeight / imgHeight;
-        const scaleByWidth = maxWidth / imgWidth;
-        const autoScale = Math.min(scaleByHeight, scaleByWidth);
-        this.endHeroAutoScale = autoScale;
+        this.endHeroImgWidth = imgWidth;
+        this.endHeroImgHeight = imgHeight;
 
-        const finalScale = autoScale * (config.assetScales?.endHero || 1);
+        const finalScale = calculateHeroScale('endHero', config, window.__customAssets || {}, imgWidth, imgHeight);
         this.endHeroImage.setScale(finalScale);
         this.endHeroImage.setOrigin(0.5);
         this.endHeroImage.setDepth(90);
@@ -3201,9 +3214,11 @@ class EndScene extends Phaser.Scene {
   updateAssetScales(scaleData) {
     const config = window.GAME_CONFIG;
 
-    // Update end hero scale
+    // Update end hero scale - Uses calculateHeroScale for WYSIWYG custom assets
     if (scaleData.endHero !== undefined && this.endHeroImage) {
-      const finalScale = (this.endHeroAutoScale || 1) * scaleData.endHero;
+      const imgWidth = this.endHeroImgWidth || this.endHeroImage.width;
+      const imgHeight = this.endHeroImgHeight || this.endHeroImage.height;
+      const finalScale = calculateHeroScale('endHero', config, window.__customAssets || {}, imgWidth, imgHeight);
       this.endHeroImage.setScale(finalScale);
       console.log('[EndScene] End hero scale updated to:', scaleData.endHero);
     }
@@ -3471,41 +3486,53 @@ window.initGame = function() {
 
     // Handle custom asset updates
     if (event.data.type === 'UPDATE_ASSETS') {
-      console.log('[Game] Custom assets updated, storing and restarting from Preloader');
+      console.log('[Game] UPDATE_ASSETS received');
       const assetData = event.data.data;
 
-      // Store custom assets globally
+      // Store custom assets globally IMMEDIATELY (before any delays)
       window.__customAssets = window.__customAssets || {};
       Object.assign(window.__customAssets, assetData);
 
-      // Log button colors in config before restart
-      console.log('[Game] Button colors in config before restart:', {
-        actionButtonBg: window.GAME_CONFIG.actionButton.backgroundColor,
-        actionButtonText: window.GAME_CONFIG.actionButton.textColor,
-        ctaButtonBg: window.GAME_CONFIG.ctaButton.backgroundColor,
-        ctaButtonText: window.GAME_CONFIG.ctaButton.textColor
-      });
-
-      // Remove existing textures that are being updated so Preloader can reload them
-      Object.keys(assetData).forEach(key => {
-        if (game.textures.exists(key)) {
-          console.log('[Game] Removing existing texture:', key);
-          game.textures.remove(key);
-        }
-      });
-
-      // Stop all scenes and restart from Preloader to properly reload textures
-      game.scene.scenes.forEach(scene => {
-        if (scene.scene.isActive()) {
-          scene.scene.stop();
-        }
-      });
-
-      // Small delay to ensure texture data is ready before restart
+      // Wait a microtask to let index.html's handler run and set __pendingReload flag
+      // This prevents race conditions where both handlers try to reload/restart
       setTimeout(() => {
-        console.log('[Game] Starting Preloader to reload assets');
-        game.scene.start('Preloader');
-      }, 100);
+        // Check if index.html is handling this via page reload
+        if (window.__pendingReload) {
+          console.log('[Game] Reload pending from index.html, skipping scene restart');
+          return;
+        }
+
+        console.log('[Game] No reload pending, restarting from Preloader');
+
+        // Log button colors in config before restart
+        console.log('[Game] Button colors in config before restart:', {
+          actionButtonBg: window.GAME_CONFIG.actionButton.backgroundColor,
+          actionButtonText: window.GAME_CONFIG.actionButton.textColor,
+          ctaButtonBg: window.GAME_CONFIG.ctaButton.backgroundColor,
+          ctaButtonText: window.GAME_CONFIG.ctaButton.textColor
+        });
+
+        // Remove existing textures that are being updated so Preloader can reload them
+        Object.keys(assetData).forEach(key => {
+          if (game.textures.exists(key)) {
+            console.log('[Game] Removing existing texture:', key);
+            game.textures.remove(key);
+          }
+        });
+
+        // Stop all scenes and restart from Preloader to properly reload textures
+        game.scene.scenes.forEach(scene => {
+          if (scene.scene.isActive()) {
+            scene.scene.stop();
+          }
+        });
+
+        // Small delay to ensure texture data is ready before restart
+        setTimeout(() => {
+          console.log('[Game] Starting Preloader to reload assets');
+          game.scene.start('Preloader');
+        }, 100);
+      }, 0); // Use setTimeout(0) to defer after index.html's sync handler
     }
 
     // Handle tracking updates
