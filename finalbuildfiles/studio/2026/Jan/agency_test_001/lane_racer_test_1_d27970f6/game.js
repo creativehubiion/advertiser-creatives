@@ -883,14 +883,20 @@ class GameScene extends Phaser.Scene {
     // Collectibles (coins)
     this.coins = this.add.group();
     this.coinSpawnTimer = 0;
-    const coinSpawnMin = gameplay.coinSpawnMin || 600;
-    const coinSpawnMax = gameplay.coinSpawnMax || 1400;
+    // Adjust initial spawn intervals based on road speed to maintain visual density
+    const defaultRoadSpeed = 18;
+    const currentRoadSpeed = gameplay.roadSpeed || 18;
+    const spawnAdjustment = defaultRoadSpeed / currentRoadSpeed;
+    const coinSpawnMin = (gameplay.coinSpawnMin || 600) * spawnAdjustment;
+    const coinSpawnMax = (gameplay.coinSpawnMax || 1400) * spawnAdjustment;
     this.nextCoinSpawn = Phaser.Math.Between(coinSpawnMin, coinSpawnMax);
 
     // Enemy cars
     this.enemies = this.add.group();
     this.enemySpawnTimer = 0;
-    this.nextEnemySpawn = Phaser.Math.Between(gameplay.enemySpawnMin || 1000, gameplay.enemySpawnMax || 1500);
+    const enemySpawnMin = (gameplay.enemySpawnMin || 1000) * spawnAdjustment;
+    const enemySpawnMax = (gameplay.enemySpawnMax || 1500) * spawnAdjustment;
+    this.nextEnemySpawn = Phaser.Math.Between(enemySpawnMin, enemySpawnMax);
 
     // Logo (top)
     if (this.textures.exists('logo')) {
@@ -1400,14 +1406,22 @@ class GameScene extends Phaser.Scene {
       }
     });
 
+    // Calculate spawn interval adjustment based on road speed
+    // At default speed (18), intervals stay as configured
+    // At slower speeds, intervals increase proportionally to maintain visual density
+    // At faster speeds, intervals decrease proportionally
+    const defaultRoadSpeed = 18;
+    const currentRoadSpeed = gameplay.roadSpeed || 18;
+    const spawnAdjustment = defaultRoadSpeed / currentRoadSpeed;
+
     // Spawn coins
     this.coinSpawnTimer += delta;
     if (this.coinSpawnTimer >= this.nextCoinSpawn) {
       this.spawnCoin();
       this.coinSpawnTimer = 0;
-      // Read dynamically from config for real-time updates
-      const coinSpawnMin = config.gameplay.coinSpawnMin || 600;
-      const coinSpawnMax = config.gameplay.coinSpawnMax || 1400;
+      // Read dynamically from config for real-time updates and adjust for speed
+      const coinSpawnMin = (config.gameplay.coinSpawnMin || 600) * spawnAdjustment;
+      const coinSpawnMax = (config.gameplay.coinSpawnMax || 1400) * spawnAdjustment;
       this.nextCoinSpawn = Phaser.Math.Between(coinSpawnMin, coinSpawnMax);
     }
 
@@ -1416,7 +1430,10 @@ class GameScene extends Phaser.Scene {
     if (this.enemySpawnTimer >= this.nextEnemySpawn) {
       this.spawnEnemy();
       this.enemySpawnTimer = 0;
-      this.nextEnemySpawn = Phaser.Math.Between(gameplay.enemySpawnMin || 1000, gameplay.enemySpawnMax || 1500);
+      // Adjust enemy spawn intervals for speed
+      const enemySpawnMin = (gameplay.enemySpawnMin || 1000) * spawnAdjustment;
+      const enemySpawnMax = (gameplay.enemySpawnMax || 1500) * spawnAdjustment;
+      this.nextEnemySpawn = Phaser.Math.Between(enemySpawnMin, enemySpawnMax);
     }
 
     // Update coins
