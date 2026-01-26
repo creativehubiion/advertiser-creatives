@@ -1887,9 +1887,8 @@ class GameScene extends Phaser.Scene {
   }
 
   updateScore() {
-    const config = window.GAME_CONFIG;
-    const scoreFormat = config.text?.scoreFormat || '{score}';
-    this.scoreText.setText(scoreFormat.replace('{score}', this.score));
+    // Lane Racer uses circular scorebox - always show just the score number
+    this.scoreText.setText(this.score.toString());
 
     // Persist total score across lives
     this.registry.set('totalScore', this.score);
