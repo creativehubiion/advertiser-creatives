@@ -256,18 +256,35 @@ class PreloaderScene extends Phaser.Scene {
       if (completeUrl) this.load.audio('complete', completeUrl);
     }
 
-    // First Party Data - Age buttons
-    this.load.image('age1', 'assets/images/fpd/age1.png');
-    this.load.image('age2', 'assets/images/fpd/age2.png');
-    this.load.image('age3', 'assets/images/fpd/age3.png');
-    this.load.image('age4', 'assets/images/fpd/age4.png');
-    this.load.image('age5', 'assets/images/fpd/age5.png');
-    this.load.image('age6', 'assets/images/fpd/age6.png');
+    // First Party Data assets - check customAssets first (CDN URLs from build),
+    // then fall back to relative paths (for local development)
+    const customAssets = window.customAssets || {};
 
-    // First Party Data - Gender buttons
-    this.load.image('genderMale', 'assets/images/fpd/genderMale.png');
-    this.load.image('genderFemale', 'assets/images/fpd/genderFemale.png');
-    this.load.image('genderOthers', 'assets/images/fpd/genderOthers.png');
+    // FPD Age buttons
+    const age1Url = customAssets.age1 || 'assets/images/fpd/age1.png';
+    const age2Url = customAssets.age2 || 'assets/images/fpd/age2.png';
+    const age3Url = customAssets.age3 || 'assets/images/fpd/age3.png';
+    const age4Url = customAssets.age4 || 'assets/images/fpd/age4.png';
+    const age5Url = customAssets.age5 || 'assets/images/fpd/age5.png';
+    const age6Url = customAssets.age6 || 'assets/images/fpd/age6.png';
+    this.load.image('age1', age1Url);
+    this.load.image('age2', age2Url);
+    this.load.image('age3', age3Url);
+    this.load.image('age4', age4Url);
+    this.load.image('age5', age5Url);
+    this.load.image('age6', age6Url);
+
+    // FPD Gender buttons
+    const genderMaleUrl = customAssets.genderMale || 'assets/images/fpd/genderMale.png';
+    const genderFemaleUrl = customAssets.genderFemale || 'assets/images/fpd/genderFemale.png';
+    const genderOthersUrl = customAssets.genderOthers || 'assets/images/fpd/genderOthers.png';
+    this.load.image('genderMale', genderMaleUrl);
+    this.load.image('genderFemale', genderFemaleUrl);
+    this.load.image('genderOthers', genderOthersUrl);
+
+    // FPD Background
+    const dataCaptureBgUrl = customAssets.dataCaptureBg || 'assets/images/fpd/background.png';
+    this.load.image('dataCaptureBg', dataCaptureBgUrl);
   }
 
   create() {
@@ -3624,7 +3641,26 @@ window.addEventListener('message', (event) => {
   }
 });
 
-// Initialize game when DOM is ready
+// Initialize game when DOM is ready AND fonts are loaded
 document.addEventListener('DOMContentLoaded', () => {
-  window.game = new Phaser.Game(gameConfig);
+  // Wait for fonts to load before starting game to prevent fallback font flash
+  const startGame = () => {
+    console.log('[Match3] Starting game...');
+    window.game = new Phaser.Game(gameConfig);
+  };
+
+  // Check if fonts API is available
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(() => {
+      console.log('[Match3] Fonts ready, starting game');
+      startGame();
+    }).catch(() => {
+      console.warn('[Match3] Font loading failed, starting anyway');
+      startGame();
+    });
+  } else {
+    // Fallback for browsers without fonts API
+    console.log('[Match3] No fonts API, starting game after short delay');
+    setTimeout(startGame, 100);
+  }
 });
