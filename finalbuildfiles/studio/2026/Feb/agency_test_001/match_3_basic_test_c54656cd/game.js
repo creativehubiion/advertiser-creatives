@@ -533,11 +533,37 @@ class SplashScene extends Phaser.Scene {
       fontStyle: 'bold'
     }).setOrigin(0.5);
 
+    // Store reference for font update
+    this.buttonText = buttonText;
+
     // Add to container
     this.actionButtonContainer.add([graphics, buttonText]);
 
     // Apply scale to the entire container
     this.actionButtonContainer.setScale(buttonScale);
+
+    // Explicitly load the font and update text after it's ready
+    // This ensures the button text shows the correct font even on first load
+    const fontName = config.fonts.primary || 'Poppins';
+    if (document.fonts && document.fonts.load) {
+      document.fonts.load(`600 16px "${fontName}"`).then(() => {
+        // Small delay to ensure font is fully applied
+        return new Promise(resolve => setTimeout(resolve, 100));
+      }).then(() => {
+        // Check if scene is still active
+        if (!this.scene.isActive()) return;
+
+        // Update text with the loaded font
+        const fontFamily = `"${fontName}", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;
+        if (this.buttonText) {
+          this.buttonText.setFontFamily(fontFamily);
+          this.buttonText.updateText();
+          console.log('[SplashScene] Font loaded and applied:', fontName);
+        }
+      }).catch(err => {
+        console.warn('[SplashScene] Font loading error:', err);
+      });
+    }
 
     // Pulse animation on the button
     this.tweens.add({
