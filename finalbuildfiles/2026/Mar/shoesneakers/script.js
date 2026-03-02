@@ -871,7 +871,7 @@
         ctaEl.style.left = (110 * scale) + 'px';
         ctaEl.style.top = (809 * scale) + 'px';
         ctaEl.style.width = (421 * scale) + 'px';
-        ctaEl.onclick = function () { window.open('https://shoesandsox.com.au/?utm_source=programmatic&utm_medium=iion&utm_campaign=sneaker-month', '_blank'); };
+        ctaEl.onclick = function () { window.open(window.landingPageUrl, '_blank'); };
 
         // Play Again button
         var playBtn = document.getElementById('playAgainBtn');
@@ -932,7 +932,7 @@
 
         if (state === 'end') {
             // Any tap goes to website
-            window.open('https://shoesandsox.com.au/?utm_source=programmatic&utm_medium=iion&utm_campaign=sneaker-month', '_blank');
+            window.open(window.landingPageUrl, '_blank');
             return;
         }
 
@@ -1047,7 +1047,7 @@
                             'reebok': 'https://shoesandsox.com.au/products/club-c-white-glen-green-vector-blue?utm_source=programmatic&utm_medium=iion&utm_campaign=sneaker-month'
                         };
                         trackEvent(brandName + 'ClickedFromDrawer');
-                        window.open(shoeUrls[brandName] || 'https://shoesandsox.com.au/?utm_source=programmatic&utm_medium=iion&utm_campaign=sneaker-month', '_blank');
+                        window.open(window.landingPageUrl, '_blank');
                         return;
                     }
                 }
