@@ -47,7 +47,7 @@
         img.src = src;
     }
 
-    var base = 'https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/2026/Mar/shoesneakers/assets/';
+    var base = window.trackingPath;
     loadImg('bg', base + 'BG.png');
     loadImg('logo', base + 'logo.png');
     loadImg('startdim', base + 'start dim.png');
