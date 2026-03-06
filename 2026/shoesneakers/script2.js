@@ -125,7 +125,7 @@
     }
 
     function trackEvent(eventName) {
-        var url = window.trackingType + encodeURIComponent(eventName);
+        var url = window.trackingType + eventName;
         console.log('[Tracking] ' + eventName);
         fnfetchAPI(url);
     }
