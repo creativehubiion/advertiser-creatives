@@ -883,6 +883,7 @@
         playBtn.style.top = (((809 + 101 + 960) / 2 - 17) * scale) + 'px';
         playBtn.onclick = function () {
             hideEndOverlay();
+            trackEvent('PlayAgain');
             endScreenBuilt = false;
             document.getElementById('carouselStrip').innerHTML = '';
             matchedCount = 0;
