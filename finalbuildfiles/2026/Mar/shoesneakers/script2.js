@@ -47,7 +47,7 @@
         img.src = src;
     }
 
-    var base = window.trackingPath;//'https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/2026/Mar/shoesneakers/assets/';
+    var base = window.trackingPath;
     loadImg('bg', base + 'BG.png');
     loadImg('logo', base + 'logo.png');
     loadImg('startdim', base + 'start dim.png');
@@ -118,10 +118,7 @@
     }
 
     /* ─── Tracking ─── */
-    var TRACKING_BASE_URL = window.trackingType;/* 'https://staging-dmp-producer.iion.io/tracker/impressions?platform=GAM&campaign_id=%ebuy!&publisher_id=%epid!&creative_id=%ecid!&maid=%%ADVERTISING_IDENTIFIER_PLAIN%%&page_url=%%SITE%%&height=%%HEIGHT%%&width=%%WIDTH%%&video_min_duration=%%VIDEO_DURATION%%&gdpr=${GDPR}&gdpr_consent=${GDPR_CONSENT_XXXX}&demand_id=%eadv!&line_item=%eaid!&event_name=';
-    if (window.setTracker == "%%clickUrl%%") {
-        TRACKING_BASE_URL = 'https://staging-dmp-producer.iion.io/tracker/impressions?platform=RTB&campaign_id=%%campaignId%%&publisher_id=%%pubId%%&creative_id=%%creativeId%%&request_id=%%requestId%%&user_id=%%userId%%&ip_address=%%ip%%&app_id_bundle_id=%%bundle%%&maid=%%ifa%%&app_name=%%appName%%&os=%%os%%&user_agent=%%userAgentEnc%%&latitude=%%lat%%&longitude=%%lon%%&page_url=%%pageUrl%%&country=%%country%%&device_make=%%deviceMake%%&domain=%%domain%%&height=%%height%%&width=%%width%%&video_min_duration=%%videoMinDuration%%&video_max_duration=%%videoMaxDuration%%&content_genre=%%contgenre%%&content_cat=%%contcat%%&gdpr=%%gdpr%%&gdpr_consent=%%gdprConsent%%&demand_id=%%demandId%%&line_item=%%adgroupId%%&event_name=';
-    } */
+    var TRACKING_BASE_URL = window.trackingType;
     function fnfetchAPI(trackingURL) {
         fetch(trackingURL, { method: 'GET' })
             .then(function (response) { console.log('Tracking sent:', response.status); })
