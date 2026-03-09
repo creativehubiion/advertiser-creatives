@@ -1,24 +1,6 @@
 (function () {
     'use strict';
 
-    /* ─── Inject Loader CSS ─── */
-    var loaderStyle = document.createElement('style');
-    loaderStyle.textContent =
-        '#loader{position:absolute;top:0;left:0;width:100%;height:100%;z-index:10;display:flex;flex-direction:column;justify-content:center;align-items:center;background:#0a0025;transition:opacity .4s ease}' +
-        '#loader.hidden{opacity:0;pointer-events:none}' +
-        '#loader img{width:120px;margin-bottom:24px}' +
-        '#progressTrack{width:140px;height:3px;background:rgba(255,255,255,.15);border-radius:2px;overflow:hidden}' +
-        '#progressBar{height:100%;width:0%;background:#7ed957;border-radius:2px;transition:width .15s ease}';
-    document.head.appendChild(loaderStyle);
-
-    /* ─── Inject Loader HTML ─── */
-    var loaderDiv = document.createElement('div');
-    loaderDiv.id = 'loader';
-    loaderDiv.innerHTML =
-        '<img src="' + (window.trackingPath || './assets/') + 'logo.png" alt="Shoes &amp; Sox">' +
-        '<div id="progressTrack"><div id="progressBar"></div></div>';
-    document.body.insertBefore(loaderDiv, document.body.firstChild);
-
     /* ─── Canvas Setup (HiDPI) ─── */
     var canvas = document.getElementById('c');
     var ctx = canvas.getContext('2d');
