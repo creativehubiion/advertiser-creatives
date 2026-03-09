@@ -155,7 +155,7 @@
     }
 
     function trackEvent(eventName) {
-        var url = TRACKING_BASE_URL + encodeURIComponent(eventName);
+        var url = TRACKING_BASE_URL + eventName.replace(/ /g, '');
         console.log('[Tracking] ' + eventName);
         fnfetchAPI(url);
     }
