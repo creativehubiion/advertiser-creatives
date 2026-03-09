@@ -30,71 +30,53 @@
 
     /* ─── Brand Data ─── */
     var BRANDS = ['adidas', 'asics', 'converse', 'new balance', 'nike', 'reebok', 'skechers', 'vans'];
-    var BRAND_FILES = ['adidas.png', 'asics.png', 'converse.png', 'new-balance.png', 'nike.png', 'reebok.png', 'skechers.png', 'vans.png'];
-    function brandSlug(b) { return b.replace(/ /g, '-'); }
+    var BRAND_FILES = ['adidas-8.png', 'asics-8.png', 'converse-8.png', 'new balance-8.png', 'nike-8.png', 'reebok-8.png', 'skechers-8.png', 'vans-8.png'];
 
     /* ─── Image Loading ─── */
     var images = {};
     var loaded = 0;
+    // Brands that have unlock boards and shoe images (all except skechers)
     var UNLOCK_BRANDS = ['adidas', 'asics', 'converse', 'new balance', 'nike', 'reebok', 'skechers', 'vans'];
     var END_CARDS = ['adidas', 'asics', 'converse', 'new balance', 'nike', 'reebok', 'skechers', 'vans'];
-    var total = 5 + 6 + BRANDS.length + UNLOCK_BRANDS.length * 3 + 4; // base(5) + drawer/misc(6) + brand logos(8) + unlock boards+shoes+shadows(24) + audio(4) = 47
+    var total = 7 + 5 + 2 + END_CARDS.length + BRANDS.length + UNLOCK_BRANDS.length * 3; // base + drawer + end assets + brand logos + unlock boards + shoes + shadow shoes
 
-    var progressBar = document.getElementById('progressBar');
-    function updateProgress() {
-        if (progressBar) progressBar.style.width = (loaded / total * 100) + '%';
-    }
     function loadImg(key, src) {
         var img = new Image();
-        img.onload = function () { images[key] = img; loaded++; updateProgress(); if (loaded === total) init(); };
-        img.onerror = function () { console.warn('Missing: ' + src); images[key] = null; loaded++; updateProgress(); if (loaded === total) init(); };
+        img.onload = function () { images[key] = img; loaded++; if (loaded === total) init(); };
+        img.onerror = function () { console.warn('Missing: ' + src); images[key] = null; loaded++; if (loaded === total) init(); };
         img.src = src;
     }
 
-    var base = window.trackingPath;//'https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/2026/Mar/shoesneakers/assets/';
-    loadImg('bg', base + 'bg.png');
+    var base = window.trackingPath;
+    loadImg('bg', base + 'BG.png');
     loadImg('logo', base + 'logo.png');
-    loadImg('startdim', base + 'start-dim.png');
-    loadImg('startboard', base + 'start-board.png?v=' + Date.now());
-    loadImg('congratsboard', base + 'congrats-board.png?v=' + Date.now());
+    loadImg('startdim', base + 'start dim.png');
+    loadImg('startboard', base + 'start board.png?v=' + Date.now());
+    loadImg('congratsboard', base + 'congrats board.png?v=' + Date.now());
+    loadImg('arrow', base + 'arrow.png');
+    loadImg('bestbrands', base + 'the best big brands.png?v=' + Date.now());
+    loadImg('biggestrange', base + 'the biggest range.png?v=' + Date.now());
     loadImg('drawer', base + 'drawer.png?v=' + Math.random());
-    loadImg('endbg', base + 'end-card-bg.png');
-    loadImg('drawerwin', base + 'drawer-window.png');
+    loadImg('endbg', base + 'end card bg.png');
+    loadImg('endcta', base + 'end screen cta.png?v=' + Math.random());
+    for (var i = 0; i < END_CARDS.length; i++) loadImg('endcard_' + END_CARDS[i], base + 'end screen card/' + END_CARDS[i] + ' card.png');
+    loadImg('drawerwin', base + 'drawer window.png');
     loadImg('notch', base + 'notch.png');
-    loadImg('notchup', base + 'notch-arrow-up.png');
-    loadImg('notchdown', base + 'notch-arrow-down.png');
-    for (var i = 0; i < BRANDS.length; i++) loadImg(BRANDS[i], base + 'brand-logos/' + BRAND_FILES[i]);
+    loadImg('notchup', base + 'notch arrow up.png');
+    loadImg('notchdown', base + 'notch arrow down.png');
+    for (var i = 0; i < BRANDS.length; i++) loadImg(BRANDS[i], base + 'Brand Logos/' + BRAND_FILES[i]);
     for (var i = 0; i < UNLOCK_BRANDS.length; i++) {
-        loadImg('unlock_' + UNLOCK_BRANDS[i], base + 'unlock-boards/' + brandSlug(UNLOCK_BRANDS[i]) + '.png');
-        loadImg('shoe_' + UNLOCK_BRANDS[i], base + 'shoes-glow/' + brandSlug(UNLOCK_BRANDS[i]) + '.png?v=' + Math.random());
-        loadImg('shoeshadow_' + UNLOCK_BRANDS[i], base + 'shoes-shadow/' + brandSlug(UNLOCK_BRANDS[i]) + '.png');
+        loadImg('unlock_' + UNLOCK_BRANDS[i], base + 'unlock board ' + UNLOCK_BRANDS[i] + '.png');
+        var glowName = (UNLOCK_BRANDS[i] === 'adidas') ? 'Layer 1' : UNLOCK_BRANDS[i];
+        loadImg('shoe_' + UNLOCK_BRANDS[i], base + 'shoes images/glow with shadow/' + glowName + '.png?v=' + Math.random());
+        loadImg('shoeshadow_' + UNLOCK_BRANDS[i], base + 'shoes with shadows/' + UNLOCK_BRANDS[i] + '.png');
     }
 
     /* ─── Audio ─── */
     var audioCtx = null;
     var sndBuffers = {};
-    var sndRawData = {};
     var sndVolumes = { merge: 1.8, card: 0.45, drawer: 0.15, error: 0.3 };
     var audioInited = false;
-    var AUDIO_FILES = { merge: 'audio/merge-bloop.mp3', card: 'audio/card-notify.mp3', drawer: 'audio/drawer-sfx.mp3', error: 'audio/error.mp3' };
-    var AUDIO_KEYS = ['merge', 'card', 'drawer', 'error'];
-
-    // Pre-fetch audio data during loading (counts toward progress)
-    for (var i = 0; i < AUDIO_KEYS.length; i++) {
-        (function (key) {
-            var url = base + AUDIO_FILES[key];
-            fetch(url).then(function (r) {
-                if (!r.ok) throw new Error('HTTP ' + r.status);
-                return r.arrayBuffer();
-            }).then(function (arr) {
-                sndRawData[key] = arr;
-                loaded++; updateProgress(); if (loaded === total) init();
-            }).catch(function (e) {
-                console.error('Audio fetch error:', key, e);
-                loaded++; updateProgress(); if (loaded === total) init();
-            });
-        })(AUDIO_KEYS[i]);
-    }
 
     function initAudio() {
         if (audioInited) return;
@@ -102,17 +84,24 @@
         try {
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         } catch (e) { console.error('AudioContext failed', e); return; }
-        // Decode pre-fetched audio data
-        for (var i = 0; i < AUDIO_KEYS.length; i++) {
+        var files = { merge: 'merge-bloop.mp3', card: 'card-notify.mp3', drawer: 'drawer-sfx.mp3', error: 'error.mp3' };
+        var keys = ['merge', 'card', 'drawer', 'error'];
+        for (var i = 0; i < keys.length; i++) {
             (function (key) {
-                if (!sndRawData[key]) return;
-                audioCtx.decodeAudioData(sndRawData[key]).then(function (buf) {
+                var url = base + files[key];
+                console.log('Loading sound:', key, url);
+                fetch(url).then(function (r) {
+                    if (!r.ok) throw new Error('HTTP ' + r.status);
+                    return r.arrayBuffer();
+                }).then(function (arr) {
+                    return audioCtx.decodeAudioData(arr);
+                }).then(function (buf) {
                     sndBuffers[key] = buf;
-                    delete sndRawData[key];
+                    console.log('Sound ready:', key);
                 }).catch(function (e) {
-                    console.error('Audio decode error:', key, e);
+                    console.error('Sound load error:', key, e);
                 });
-            })(AUDIO_KEYS[i]);
+            })(keys[i]);
         }
     }
 
@@ -155,11 +144,6 @@
     var shoeCell = [];    // 16 entries: brand index if shoe revealed, -1 otherwise
     var introAlpha = 1;
     var endScrollY = 0;
-    var hintActive = true; // show drag hint until first successful match
-    var currentHintPair = [0, 2]; // current pair being hinted
-    var hintPairIdx = 0;          // index in all-pairs list
-    var hintCycleStart = 0;       // render timestamp when current hint pair started
-    var hintDelayStart = 0;       // timestamp when matched pair completed (3s delay before next hint)
 
     /* ─── Drawer State ─── */
     var drawerOpen = false;
@@ -223,23 +207,9 @@
         for (var rr = 0; rr < 4; rr++) for (var cc = 0; cc < 4; cc++) { board.push(grid[rr][cc]); shoeCell.push(-1); }
     }
 
-    /* ─── Hint pair helpers ─── */
+    /* ─── Hint pair is always cell 0 (r1c1) and cell 2 (r1c3) ─── */
     function findHintPair() {
         return [0, 2];
-    }
-
-    function getAllPairs() {
-        var pairs = [];
-        var seen = {};
-        for (var i = 0; i < 16; i++) {
-            if (board[i] < 0) continue;
-            if (seen[board[i]] !== undefined) {
-                pairs.push([seen[board[i]], i]);
-            } else {
-                seen[board[i]] = i;
-            }
-        }
-        return pairs;
     }
 
     /* ─── Coordinate Transform ─── */
@@ -349,27 +319,10 @@
             }
         }
 
-        // Determine if intro drag is active (hide source cell during drag/merge phases)
+        // Determine if intro drag is active (hide cell 0 during drag/merge phases)
         var introDragPhase = false;
-
-        // Activate next hint 3s after a matched hint pair
-        if (!hintActive && hintDelayStart > 0 && state === 'playing') {
-            if (time - hintDelayStart > 3000) {
-                var pairs = getAllPairs();
-                if (pairs.length > 0) {
-                    currentHintPair = pairs[0];
-                    hintActive = true;
-                    hintCycleStart = time;
-                }
-                hintDelayStart = 0;
-            }
-        }
-
-        var showingHint = (state === 'intro') || (state === 'playing' && hintActive && !isDragging);
-
-        if (showingHint) {
-            var animBase = (state === 'playing') ? (time - hintCycleStart) : time;
-            var introRaw = (animBase / 2500) % 1;
+        if (state === 'intro') {
+            var introRaw = (time / 2500) % 1;
             introDragPhase = (introRaw >= 0.1 && introRaw < 0.85);
         }
 
@@ -377,7 +330,7 @@
         for (var i = 0; i < 16; i++) {
             if (board[i] < 0) continue; // matched cells = invisible (grid rects are reference only)
             if (isDragging && dragIdx === i) continue; // draw separately as dragged
-            if (introDragPhase && i === currentHintPair[0]) continue; // hide source cell during hint drag
+            if (introDragPhase && i === 0) continue; // hide source cell during intro drag
 
             var cell = CELLS[i];
             ctx.save();
@@ -390,8 +343,8 @@
                 // Wrong target: scale up noticeably
                 drawBrandInCell(cell.x, cell.y, cell.w, cell.h, board[i], 1.18);
             }
-            // Hint glow on intro/hint
-            else if (showingHint && hintTarget === i) {
+            // Hint glow on intro
+            else if (state === 'intro' && hintTarget === i) {
                 var pulse = 0.5 + 0.5 * Math.sin(time / 300);
                 ctx.shadowColor = 'rgba(0,255,180,' + pulse + ')';
                 ctx.shadowBlur = 15 * pulse;
@@ -420,7 +373,6 @@
         }
 
         // Animations
-        var deferredOverlay = null; // for unlock/congrats to draw on top of everything
         for (var i = anims.length - 1; i >= 0; i--) {
             var a = anims[i];
             var elapsed = time - a.start;
@@ -438,7 +390,57 @@
 
             if (a.type === 'unlockcard') {
                 if (!a.soundPlayed && p > 0) { playSound('card'); a.soundPlayed = true; }
-                deferredOverlay = { type: 'unlockcard', brand: a.brand, p: p };
+                var unlockImg = images['unlock_' + BRANDS[a.brand]];
+                if (unlockImg) {
+                    // Pop in (0-0.25), hold (0.25-0.65), reverse pop out (0.65-1.0)
+                    var s;
+                    if (p < 0.25) {
+                        // Spring pop in
+                        var t = p / 0.25;
+                        if (t < 0.4) {
+                            var u = t / 0.4;
+                            s = 1.09 * (1 - Math.pow(1 - u, 3));
+                        } else {
+                            var u = (t - 0.4) / 0.6;
+                            s = 1.0 + 0.09 * Math.cos(u * Math.PI * 3) * Math.exp(-5 * u);
+                        }
+                    } else if (p < 0.5) {
+                        s = 1;
+                    } else {
+                        // Reverse spring pop out (mirror of pop in)
+                        var t = 1 - (p - 0.5) / 0.5;
+                        if (t < 0.4) {
+                            var u = t / 0.4;
+                            s = 1.09 * (1 - Math.pow(1 - u, 3));
+                        } else {
+                            var u = (t - 0.4) / 0.6;
+                            s = 1.0 + 0.09 * Math.cos(u * Math.PI * 3) * Math.exp(-5 * u);
+                        }
+                    }
+                    s = Math.max(0, s);
+
+                    // 80% black dimmer behind card (fades with card)
+                    ctx.save();
+                    ctx.globalAlpha = 0.8 * s;
+                    ctx.fillStyle = '#000';
+                    ctx.fillRect(0, 0, GW, GH);
+                    ctx.restore();
+
+                    // Topmost layer assets on top of dimmer
+                    if (images.bestbrands) ctx.drawImage(images.bestbrands, 425, 871);
+                    if (images.biggestrange) ctx.drawImage(images.biggestrange, 34, 827);
+                    if (images.logo) ctx.drawImage(images.logo, 176, 23);
+
+                    // Unlock card
+                    var iw = unlockImg.width, ih = unlockImg.height;
+                    var dw = iw * s, dh = ih * s;
+                    ctx.save();
+                    ctx.globalAlpha = s;
+                    ctx.imageSmoothingEnabled = true;
+                    ctx.imageSmoothingQuality = 'high';
+                    ctx.drawImage(unlockImg, GW / 2 - dw / 2, GH / 2 - dh / 2, dw, dh);
+                    ctx.restore();
+                }
             }
 
             if (a.type === 'addedtext') {
@@ -471,7 +473,49 @@
             }
 
             if (a.type === 'congratsboard') {
-                deferredOverlay = { type: 'congratsboard', p: p };
+                var congratsImg = images.congratsboard;
+                if (congratsImg) {
+                    // Pop in (0-0.25), hold (0.25-0.65), reverse pop out (0.65-1.0)
+                    var s;
+                    if (p < 0.25) {
+                        // Spring pop in
+                        var t = p / 0.25;
+                        if (t < 0.4) {
+                            var u = t / 0.4;
+                            s = 1.09 * (1 - Math.pow(1 - u, 3));
+                        } else {
+                            var u = (t - 0.4) / 0.6;
+                            s = 1.0 + 0.09 * Math.cos(u * Math.PI * 3) * Math.exp(-5 * u);
+                        }
+                    } else if (p < 0.5) {
+                        s = 1;
+                    } else {
+                        // Reverse spring pop out (mirror of pop in)
+                        var t = 1 - (p - 0.5) / 0.5;
+                        if (t < 0.4) {
+                            var u = t / 0.4;
+                            s = 1.09 * (1 - Math.pow(1 - u, 3));
+                        } else {
+                            var u = (t - 0.4) / 0.6;
+                            s = 1.0 + 0.09 * Math.cos(u * Math.PI * 3) * Math.exp(-5 * u);
+                        }
+                    }
+                    s = Math.max(0, s);
+
+                    // 80% black dimmer behind card (fades with card)
+                    ctx.save();
+                    ctx.globalAlpha = 0.8 * s;
+                    ctx.fillStyle = '#000';
+                    ctx.fillRect(0, 0, GW, GH);
+                    ctx.restore();
+
+                    // Draw congrats board centered with spring scale
+                    ctx.save();
+                    ctx.translate(GW / 2, GH / 2);
+                    ctx.scale(s, s);
+                    ctx.drawImage(congratsImg, -congratsImg.width / 2, -congratsImg.height / 2);
+                    ctx.restore();
+                }
             }
 
             if (p >= 1) {
@@ -486,29 +530,21 @@
             }
         }
 
-        // Intro overlay / persistent hint
+        // Intro overlay
         if (state === 'intro') {
-            drawIntroOverlay(time, false);
-        } else if (showingHint) {
-            drawIntroOverlay(time, true);
+            drawIntroOverlay(time);
         }
 
-        // "DRAG THE LOGO" text below grid — only after first tap, pulse blink
-        if (state === 'playing' && showingHint) {
-            var pulse = 0.4 + 0.6 * (0.5 + 0.5 * Math.sin(time / 400));
-            ctx.save();
-            ctx.font = 'bold 30px Arial, sans-serif';
-            ctx.fillStyle = 'rgba(255,255,255,' + pulse + ')';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'top';
-            ctx.fillText('DRAG THE LOGOS TO MATCH!', GW / 2, 820);
-            ctx.restore();
-        }
+
 
         // Drawer
         if (hasFirstShoe && state === 'playing') drawDrawer(time);
 
-        // Text badges removed
+        // Text badges (above start dim overlay) — hide when drawer is open
+        if (drawerAnim === 0) {
+            if (images.bestbrands) ctx.drawImage(images.bestbrands, 425, 871);
+            if (images.biggestrange) ctx.drawImage(images.biggestrange, 34, 827);
+        }
 
         // // DEBUG: skip to end screen button
         // ctx.save();
@@ -522,62 +558,8 @@
         // ctx.restore();
 
 
-        // Deferred overlay popups (unlock card / congrats board) — on top of everything
-        if (deferredOverlay) {
-            var dp = deferredOverlay.p;
-            // Compute spring scale
-            var s;
-            if (dp < 0.25) {
-                var t = dp / 0.25;
-                if (t < 0.4) { var u = t / 0.4; s = 1.09 * (1 - Math.pow(1 - u, 3)); }
-                else { var u = (t - 0.4) / 0.6; s = 1.0 + 0.09 * Math.cos(u * Math.PI * 3) * Math.exp(-5 * u); }
-            } else if (dp < 0.5) {
-                s = 1;
-            } else {
-                var t = 1 - (dp - 0.5) / 0.5;
-                if (t < 0.4) { var u = t / 0.4; s = 1.09 * (1 - Math.pow(1 - u, 3)); }
-                else { var u = (t - 0.4) / 0.6; s = 1.0 + 0.09 * Math.cos(u * Math.PI * 3) * Math.exp(-5 * u); }
-            }
-            s = Math.max(0, s);
-
-            // Dimmer
-            ctx.save();
-            ctx.globalAlpha = 0.8 * s;
-            ctx.fillStyle = '#000';
-            ctx.fillRect(0, 0, GW, GH);
-            ctx.restore();
-
-            if (deferredOverlay.type === 'unlockcard') {
-                // Logo on top of dimmer
-                if (images.logo) ctx.drawImage(images.logo, 176, 23);
-                // Unlock card image
-                var unlockImg = images['unlock_' + BRANDS[deferredOverlay.brand]];
-                if (unlockImg) {
-                    var iw = unlockImg.width, ih = unlockImg.height;
-                    var dw = iw * s, dh = ih * s;
-                    ctx.save();
-                    ctx.globalAlpha = s;
-                    ctx.imageSmoothingEnabled = true;
-                    ctx.imageSmoothingQuality = 'high';
-                    ctx.drawImage(unlockImg, GW / 2 - dw / 2, GH / 2 - dh / 2, dw, dh);
-                    ctx.restore();
-                }
-            } else if (deferredOverlay.type === 'congratsboard') {
-                // Logo on top of dimmer
-                if (images.logo) ctx.drawImage(images.logo, 176, 23);
-                var congratsImg = images.congratsboard;
-                if (congratsImg) {
-                    ctx.save();
-                    ctx.translate(GW / 2, GH / 2);
-                    ctx.scale(s, s);
-                    ctx.drawImage(congratsImg, -congratsImg.width / 2, -congratsImg.height / 2);
-                    ctx.restore();
-                }
-            }
-        }
-
-        // Shoes&Sox logo at top (always topmost layer, unless deferred overlay is showing)
-        if (!deferredOverlay && images.logo) {
+        // Shoes&Sox logo at top (always topmost layer)
+        if (images.logo) {
             ctx.drawImage(images.logo, 176, 23);
         }
     }
@@ -739,22 +721,21 @@
         }
     }
 
-    function drawIntroOverlay(time, skipBoard) {
-        // ── Dark overlay using start dim PNG (only during intro, not persistent hint) ──
-        if (!skipBoard && images.startdim) {
+    function drawIntroOverlay(time) {
+        // ── Dark overlay using start dim PNG ──
+        if (images.startdim) {
             ctx.drawImage(images.startdim, 0, 0, GW, GH);
         }
 
-        // ── Drag hint: animate logo between current hint pair ──
-        var pair = currentHintPair;
+        // ── Drag hint: animate logo from cell 0 to cell 2 ──
+        var pair = findHintPair();
         if (pair) {
             var c0 = CELLS[pair[0]], c1 = CELLS[pair[1]];
             var brandIdx = board[pair[0]];
             var logoImg = images[BRANDS[brandIdx]];
 
             // 2.5s cycle: 0-0.1 pause, 0.1-0.7 drag, 0.7-0.85 merge flash, 0.85-1.0 pause+fade reset
-            var animBase = skipBoard ? (time - hintCycleStart) : time;
-            var raw = (animBase / 2500) % 1;
+            var raw = (time / 2500) % 1;
 
             if (logoImg) {
                 var pad = (brandIdx === 0) ? 22 : 10;
@@ -828,7 +809,7 @@
         }
 
         // ── Instruction panel (start board PNG, centered on canvas) ──
-        if (!skipBoard && images.startboard) {
+        if (images.startboard) {
             var sw = images.startboard.width, sh = images.startboard.height;
             ctx.drawImage(images.startboard, (GW - sw) / 2, (GH - sh) / 2);
         }
@@ -865,7 +846,7 @@
         var cardGap = 20 * scale;
         strip.style.gap = cardGap + 'px';
         var cardSrc = [];
-        for (var i = 0; i < END_CARDS.length; i++) cardSrc.push(base + 'end-cards/' + brandSlug(END_CARDS[i]) + '.png');
+        for (var i = 0; i < END_CARDS.length; i++) cardSrc.push(base + 'end screen card/' + END_CARDS[i] + ' card.png');
         // Double the cards
         var allSrc = cardSrc.concat(cardSrc);
         for (var i = 0; i < allSrc.length; i++) {
@@ -885,7 +866,7 @@
         strip.style.animation = 'slideCards 20s linear infinite';
 
         // CTA
-        ctaEl.src = base + 'end-screen-cta.png?v=' + Math.random();
+        ctaEl.src = base + 'end screen cta.png?v=' + Math.random();
         ctaEl.style.left = (110 * scale) + 'px';
         ctaEl.style.top = (809 * scale) + 'px';
         ctaEl.style.width = (421 * scale) + 'px';
@@ -909,11 +890,6 @@
             drawerAnim = 0;
             drawerAnimDir = 0;
             drawerScrollX = 0;
-            hintActive = true;
-            currentHintPair = [0, 2];
-            hintPairIdx = 0;
-            hintCycleStart = 0;
-            hintDelayStart = 0;
             generateBoard();
             state = 'intro';
         };
@@ -1091,13 +1067,6 @@
                 var now = performance.now();
 
                 playSound('merge');
-                // Deactivate hint only when the hinted pair is matched
-                if (hintActive &&
-                    ((dragIdx === currentHintPair[0] && dropIdx === currentHintPair[1]) ||
-                        (dragIdx === currentHintPair[1] && dropIdx === currentHintPair[0]))) {
-                    hintActive = false;
-                    hintDelayStart = performance.now();
-                }
                 trackEvent(BRANDS[brand] + 'Dragged');
                 anims.push({ type: 'match', cell: dragIdx, brand: brand, start: now, duration: 500 });
                 anims.push({ type: 'match', cell: dropIdx, brand: brand, start: now, duration: 500 });
@@ -1126,9 +1095,6 @@
 
     /* ─── Init ─── */
     function init() {
-        var loader = document.getElementById('loader');
-        loader.classList.add('hidden');
-        setTimeout(function () { loader.parentNode.removeChild(loader); }, 400);
         // Ensure custom fonts are loaded before rendering
         document.fonts.ready.then(function () { requestAnimationFrame(render); });
 
