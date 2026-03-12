@@ -1027,7 +1027,6 @@
             isDragging = true;
             dragX = pos.x;
             dragY = pos.y;
-            trackEvent(BRANDS[board[ci]] + 'Dragged');
         }
     }
 
@@ -1117,7 +1116,7 @@
                     hintActive = false;
                     hintDelayStart = performance.now();
                 }
-                trackEvent(BRANDS[brand] + 'Dropped');
+                trackEvent(BRANDS[brand] + 'Dragged');
                 anims.push({ type: 'match', cell: dragIdx, brand: brand, start: now, duration: 500 });
                 anims.push({ type: 'match', cell: dropIdx, brand: brand, start: now, duration: 500 });
                 anims.push({ type: 'unlockcard', brand: brand, dropCell: dropIdx, start: now + 300, duration: 2200, soundPlayed: false });
