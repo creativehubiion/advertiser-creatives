@@ -192,57 +192,6 @@
     var drawerDragScrollStart = 0;
     var drawerIsDragging = false;
 
-    /* ─── Auto-Complete (idle timer) ─── */
-    var autoCompleteTimer = null;
-
-    function autoCompleteNext() {
-        if (state !== 'playing' || matchedCount >= 8) return;
-        // Wait for blocking animations to finish before executing
-        for (var i = 0; i < anims.length; i++) {
-            if (anims[i].type === 'unlockcard' || anims[i].type === 'congratsboard' || anims[i].type === 'addedtext') {
-                autoCompleteTimer = setTimeout(autoCompleteNext, 500);
-                return;
-            }
-        }
-        var pairs = getAllPairs();
-        if (pairs.length === 0) return;
-        var pair = pairs[0];
-        var brand = board[pair[0]];
-        var now = performance.now();
-
-        playSound('merge');
-        if (hintActive) { hintActive = false; hintDelayStart = now; }
-
-        trackEvent(BRANDS[brand] + 'Dropped');
-        anims.push({ type: 'match', cell: pair[0], brand: brand, start: now, duration: 500 });
-        anims.push({ type: 'match', cell: pair[1], brand: brand, start: now, duration: 500 });
-        anims.push({ type: 'unlockcard', brand: brand, dropCell: pair[1], start: now + 300, duration: 2200, soundPlayed: false });
-
-        board[pair[0]] = -1;
-        board[pair[1]] = -1;
-        matchedCount++;
-
-        if (matchedCount === 8) {
-            trackEvent('PlayableComplete');
-            setTimeout(function () {
-                anims.push({ type: 'congratsboard', start: performance.now(), duration: 2200 });
-            }, 2700);
-            setTimeout(function () { state = 'end'; }, 5200);
-        } else {
-            scheduleAutoComplete(6000);
-        }
-    }
-
-    function scheduleAutoComplete(delay) {
-        clearTimeout(autoCompleteTimer);
-        autoCompleteTimer = setTimeout(autoCompleteNext, delay || 3000);
-    }
-
-    function clearAutoComplete() {
-        clearTimeout(autoCompleteTimer);
-        autoCompleteTimer = null;
-    }
-
     /* ─── Board Generation (backtracking, no adjacent same brand) ─── */
     /* Row 1 Col 1 (index 0) and Row 1 Col 3 (index 2) always share the same brand */
     function generateBoard() {
@@ -436,15 +385,9 @@
 
         var showingHint = (state === 'intro') || (state === 'playing' && hintActive && !isDragging);
 
-        // During playing, only show hint for one cycle (no loop) — except the first hint which loops
-        if (showingHint && state === 'playing' && matchedCount >= 1) {
-            var animBase = time - hintCycleStart;
-            if (animBase >= 2500) showingHint = false;
-        }
-
         if (showingHint) {
             var animBase = (state === 'playing') ? (time - hintCycleStart) : time;
-            var introRaw = (state === 'playing' && matchedCount >= 1) ? Math.min(animBase / 2500, 0.999) : (animBase / 2500) % 1;
+            var introRaw = (animBase / 2500) % 1;
             introDragPhase = (introRaw >= 0.1 && introRaw < 0.85);
         }
 
@@ -829,8 +772,7 @@
 
             // 2.5s cycle: 0-0.1 pause, 0.1-0.7 drag, 0.7-0.85 merge flash, 0.85-1.0 pause+fade reset
             var animBase = skipBoard ? (time - hintCycleStart) : time;
-            // During playing, play once (no loop); during intro, loop
-            var raw = (skipBoard && matchedCount >= 1) ? Math.min(animBase / 2500, 0.999) : (animBase / 2500) % 1;
+            var raw = (animBase / 2500) % 1;
 
             if (logoImg) {
                 var pad = (brandIdx === 0) ? 22 : 10;
@@ -975,7 +917,6 @@
         playBtn.style.top = (((809 + 101 + 960) / 2 - 17) * scale) + 'px';
         playBtn.onclick = function () {
             hideEndOverlay();
-            clearAutoComplete();
             trackEvent('PlayAgain');
             endScreenBuilt = false;
             document.getElementById('carouselStrip').innerHTML = '';
@@ -1086,7 +1027,6 @@
             isDragging = true;
             dragX = pos.x;
             dragY = pos.y;
-            scheduleAutoComplete(6000); // reset idle timer on interaction
             trackEvent(BRANDS[board[ci]] + 'Dragged');
         }
     }
@@ -1119,9 +1059,6 @@
                 state = 'playing';
                 // User first interaction has happened, fire Start play tracking
                 trackEvent('StartPlayable');
-
-                // Auto-complete the first match after one hint animation cycle
-                scheduleAutoComplete(2500);
             }
             return;
         }
@@ -1190,18 +1127,15 @@
                 matchedCount++;
 
                 if (matchedCount === 8) {
-                    clearAutoComplete();
                     trackEvent('PlayableComplete');
+                    // Show congrats board after unlock card animates out (2500ms), then go to end screen
                     setTimeout(function () {
                         anims.push({ type: 'congratsboard', start: performance.now(), duration: 2200 });
                     }, 2700);
                     setTimeout(function () { state = 'end'; }, 5200);
-                } else {
-                    scheduleAutoComplete(3000);
                 }
             } else {
                 playSound('error');
-                scheduleAutoComplete(3000);
             }
         }
 
