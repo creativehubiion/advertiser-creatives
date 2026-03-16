@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="./favicon.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+  <title>DJI Playable</title>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      color: rgba(255, 255, 255, 0.87);
+      background-color: #000000;
+      font-family: 'Inter', sans-serif;
+      background-image: url("assets/images/bg.png");
+      background-size: 100% 100%;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    @font-face {
+      font-family: 'Rijksoverheidsansheading';
+      src: url('assets/fonts/rijksoverheidsansheading-bold.ttf');
+      font-weight: bold;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: 'Rijksoverheidsansregular';
+      src: url('assets/fonts/rijksoverheidsanstext-regular.ttf');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: 'Rijksoverheidsansheadingregular';
+      src: url('assets/fonts/RijksoverheidSansHeading-Regular_2_0.otf');
+      font-weight: bold;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: 'Rijksoverheidserifitalic';
+      src: url('assets/fonts/rijksoverheidserif-italic.ttf');
+      font-weight: normal;
+      font-style: italic;
+    }
+
+    @font-face {
+      font-family: 'Rijksoverheidserifregular';
+      src: url('assets/fonts/rijksoverheidserif-regular.ttf');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    #app {
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .dummy {
+      position: fixed !important;
+      height: 100%;
+      width: auto;
+      left: 0;
+      right: 0;
+      margin: auto;
+      opacity: 0;
+    }
+
+    .dummy p {
+      opacity: 1;
+
+    }
+
+    .dummy p:nth-child(1) {
+      opacity: 1;
+      font-family: 'Rijksoverheidsansheading', sans-serif;
+    }
+
+    .dummy p:nth-child(2) {
+      opacity: 1;
+      font-family: 'Rijksoverheidsansregular', sans-serif;
+    }
+
+    .dummy p:nth-child(3) {
+      opacity: 1;
+      font-family: 'Rijksoverheidsansheadingregular', sans-serif;
+    }
+
+    .dummy p:nth-child(4) {
+      opacity: 1;
+      font-family: 'Rijksoverheidserifitalic', sans-serif;
+    }
+
+    .dummy p:nth-child(5) {
+      opacity: 1;
+      font-family: 'Rijksoverheidserifregular', sans-serif;
+    }
+
+    .cooking-progress-container {
+      display: none;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40vw;
+      max-width: 500px;
+      min-width: 280px;
+      bottom: 15vh;
+      text-align: center;
+      z-index: 1000;
+    }
+
+    .cooking-progress-text {
+      color: #ffffff;
+      font-family: 'Inter', sans-serif;
+      font-size: calc(12px + 0.4vw);
+      margin-bottom: 8px;
+      text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+    }
+
+    .cooking-progress-bar {
+      width: 100%;
+      height: calc(12px + 0.6vh);
+      background-color: rgba(255, 255, 255, 0.2);
+      border-radius: calc(6px + 0.3vh);
+      overflow: hidden;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
+    }
+
+    .cooking-progress-fill {
+      width: 0%;
+      height: 100%;
+      background-color: #fbdf42;
+      border-radius: calc(6px + 0.3vh);
+      transition: width 0.1s linear;
+    }
+
+    #app {
+      position: fixed !important;
+      height: 100%;
+      width: auto;
+      left: 0;
+      right: 0;
+      margin: auto;
+      background-color: #297FBC;
+    }
+
+    canvas {
+      background-color: #297FBC;
+      background-image: url("assets/images/bg.png");
+      background-size: 100% 100%;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    #ctabtn {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      margin: auto;
+      z-index: -1;
+      width: 0;
+      height: 0;
+      opacity: 1;
+      touch-action: none;
+      pointer-events: none;
+      background-color: transparent;
+      border: none;
+    }
+  </style>
+  <script type="module" crossorigin src="./assets/index-BtT_fsHT.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/phaser-C2RWnc_5.js">
+</head>
+
+<body>
+  <canvas id="confetti-canvas" style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        touch-action: none;
+        pointer-events: none;
+        background: transparent !important;
+        z-index: 10000;
+      "></canvas>
+  <div class="dummy">
+    <p>Hello</p>
+    <p>Hello</p>
+    <p>Hello</p>
+    <p>Hello</p>
+  </div>
+
+  <button id="ctabtn"></button>
+
+  <div id="app">
+    <div id="game-container"></div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script>
+    window.option = "";
+    window.bottomtext = "";
+    //GAM
+    window.trackingPath = "assets/images/";
+    window.trackingType =
+      "https://staging-dmp-producer.iion.io/tracker/impressions?platform=GAM&campaign_id=%ebuy!&publisher_id=%epid!&creative_id=%ecid!&maid=%%ADVERTISING_IDENTIFIER_PLAIN%%&page_url=%%SITE%%&height=%%HEIGHT%%&width=%%WIDTH%%&video_min_duration=%%VIDEO_DURATION%%&gdpr=${GDPR}&gdpr_consent=${GDPR_CONSENT_XXXX}&demand_id=%eadv!&line_item=%eaid!&event_name=";
+    window.setTracker = "%%CLICK_URL_UNESC%%";
+    window.landingPageUrl =
+      window.setTracker +
+      "https://www.werkenbijdji.nl/";
+  </script>
+</body>
+
+</html>
