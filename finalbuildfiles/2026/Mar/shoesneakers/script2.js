@@ -212,7 +212,7 @@
 
         playSound('merge');
         if (hintActive) { hintActive = false; hintDelayStart = now; }
-
+        trackEvent(BRANDS[brand] + 'Dragged');
         trackEvent(BRANDS[brand] + 'Dropped');
         anims.push({ type: 'match', cell: pair[0], brand: brand, start: now, duration: 500 });
         anims.push({ type: 'match', cell: pair[1], brand: brand, start: now, duration: 500 });
