@@ -243,10 +243,22 @@
   <div id="app">
     <div id="game-container"></div>
   </div>
-  <a id="cta-button" onclick="window.open(clickTag, '_blank')" target="_blank"></a>
-
+  <!-- <a id="cta-button" onclick="fnfetchapi1(clickTag)" target="_blank"></a> -->
+  <a id="cta-button" onclick="fnfetchapi1(clickTag)"></a>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <script>
+    function fnfetchapi1(clickTag) {
+      fetch(window.trackingType + "CTAClick", { method: "GET" })
+        .then((response) => console.log("Tracking sent:", response.status))
+        .catch((error) => console.error("Tracking error:", error));
+
+      if (typeof mraid !== 'undefined' && mraid.open) {
+        mraid.open(clickTag);
+      } else {
+        window.open(clickTag, '_blank');
+      }
+    }
+
     window.option = "";
     window.bottomtext = "";
     //GAM
