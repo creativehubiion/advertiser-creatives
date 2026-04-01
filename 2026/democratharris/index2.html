@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Hybrid Mock – Democrat</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
+
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #1a3a6b;
+      --primary-dark: #0f2345;
+      --accent: #3b82f6;
+      --accent-light: #60a5fa;
+      --accent-glow: rgba(59, 130, 246, 0.3);
+      --bg: #0c1829;
+      --bg-card: #132035;
+      --bg-option: #162847;
+      --bg-option-hover: #1c3460;
+      --text: #e8edf5;
+      --text-muted: #7b93b8;
+      --border: rgba(59, 130, 246, 0.15);
+      --success: #22c55e;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow: hidden;
+      -webkit-tap-highlight-color: transparent;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      aspect-ratio: 2 / 3;
+      max-height: 100vh;
+      max-height: 100dvh;
+      max-width: 100vw;
+      width: auto;
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* ── VIDEO AREA (37%) ── */
+    .video-area {
+      height: 37%;
+      position: relative;
+      background: #000;
+      overflow: hidden;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    .container.active .video-area {
+      cursor: default;
+    }
+
+    .video-label {
+      position: absolute;
+      top: clamp(6px, 1.5vw, 14px);
+      left: clamp(6px, 1.5vw, 14px);
+      background: var(--accent);
+      color: #fff;
+      font-size: clamp(8px, 2vw, 14px);
+      font-weight: 600;
+      padding: clamp(2px, 0.5vw, 5px) clamp(6px, 1.5vw, 12px);
+      border-radius: clamp(3px, 0.8vw, 6px);
+      z-index: 2;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      opacity: 0;
+    }
+
+    .video-area video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .tap-hint {
+      position: absolute;
+      bottom: clamp(8px, 2vw, 16px);
+      left: 0;
+      right: 0;
+      text-align: center;
+      z-index: 2;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .tap-hint span {
+      background: rgba(0, 0, 0, 0.55);
+      color: rgba(255, 255, 255, 0.85);
+      font-size: clamp(9px, 2.2vw, 14px);
+      font-weight: 600;
+      padding: clamp(3px, 0.8vw, 6px) clamp(10px, 2.5vw, 18px);
+      border-radius: 20px;
+      letter-spacing: 0.5px;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.5;
+      }
+    }
+
+
+    /* ── POLL AREA (63%) ── */
+    .poll-area {
+      height: 63%;
+      display: flex;
+      flex-direction: column;
+      padding: clamp(6px, 1.5vw, 20px) clamp(12px, 4vw, 40px);
+      background: linear-gradient(180deg, var(--bg-card) 0%, var(--bg) 100%);
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* ── START PAGE ── */
+    .start-page {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      text-align: center;
+      gap: clamp(8px, 2vw, 18px);
+      transition: opacity 0.4s ease;
+    }
+
+    .container.active .start-page {
+      opacity: 0;
+      pointer-events: none;
+      position: absolute;
+    }
+
+    .start-context {
+      font-size: clamp(8px, 1.8vw, 12px);
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+
+    .start-headline {
+      font-size: clamp(15px, 4.2vw, 30px);
+      font-weight: 700;
+      line-height: 1.2;
+      padding: 0 clamp(8px, 2vw, 20px);
+      background: linear-gradient(135deg, var(--accent-light), var(--text));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .start-subtitle {
+      font-size: clamp(10px, 2.4vw, 16px);
+      color: var(--text-muted);
+    }
+
+    .scale-preview {
+      display: flex;
+      gap: clamp(6px, 1.5vw, 12px);
+      margin: clamp(4px, 1vw, 10px) 0;
+    }
+
+    .scale-preview .pip {
+      width: clamp(28px, 7vw, 44px);
+      height: clamp(28px, 7vw, 44px);
+      border-radius: 50%;
+      border: 1.5px solid var(--border);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: 700;
+      font-size: clamp(10px, 2.5vw, 16px);
+      color: #fff;
+    }
+
+    .scale-preview .pip:nth-child(1) {
+      background: rgba(59, 130, 246, 0.15);
+      color: var(--accent-light);
+    }
+
+    .scale-preview .pip:nth-child(2) {
+      background: rgba(59, 130, 246, 0.25);
+    }
+
+    .scale-preview .pip:nth-child(3) {
+      background: rgba(59, 130, 246, 0.40);
+    }
+
+    .scale-preview .pip:nth-child(4) {
+      background: rgba(59, 130, 246, 0.55);
+    }
+
+    .scale-preview .pip:nth-child(5) {
+      background: rgba(59, 130, 246, 0.75);
+    }
+
+    .scale-preview-labels {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 240px;
+      font-size: clamp(7px, 1.6vw, 11px);
+      color: var(--text-muted);
+      opacity: 0.7;
+      margin-top: clamp(-4px, -0.5vw, -2px);
+    }
+
+    .start-cta {
+      font-size: clamp(12px, 3vw, 18px);
+      font-weight: 700;
+      color: #fff;
+      background: var(--accent);
+      padding: clamp(6px, 1.5vw, 12px) clamp(18px, 5vw, 36px);
+      border-radius: clamp(6px, 1.5vw, 12px);
+      animation: ctaPulse 2s ease-in-out infinite;
+      letter-spacing: 0.5px;
+      box-shadow: 0 0 clamp(10px, 3vw, 24px) var(--accent-glow);
+    }
+
+    @keyframes ctaPulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+        box-shadow: 0 0 clamp(10px, 3vw, 24px) var(--accent-glow);
+      }
+
+      50% {
+        transform: scale(1.03);
+        box-shadow: 0 0 clamp(16px, 4vw, 32px) var(--accent-glow);
+      }
+    }
+
+    .vote-count {
+      font-size: clamp(9px, 2vw, 13px);
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: clamp(4px, 1vw, 8px);
+    }
+
+    .vote-count .live-dot {
+      width: clamp(6px, 1.5vw, 8px);
+      height: clamp(6px, 1.5vw, 8px);
+      background: var(--success);
+      border-radius: 50%;
+      animation: livePulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes livePulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5);
+      }
+
+      50% {
+        opacity: 0.7;
+        box-shadow: 0 0 0 clamp(4px, 1vw, 8px) rgba(34, 197, 94, 0);
+      }
+    }
+
+    .start-brand {
+      font-size: clamp(7px, 1.6vw, 11px);
+      color: var(--text-muted);
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      opacity: 0.4;
+      margin-top: auto;
+    }
+
+    .poll-content {
+      opacity: 0;
+      transition: opacity 0.5s ease 0.3s;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .container.active .poll-content {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .poll-header {
+      text-align: center;
+      margin-bottom: clamp(4px, 1.5vw, 16px);
+      flex-shrink: 0;
+    }
+
+    .poll-header h2 {
+      font-size: clamp(14px, 4vw, 32px);
+      font-weight: 700;
+      margin-bottom: clamp(3px, 0.8vw, 8px);
+      background: linear-gradient(135deg, var(--accent-light), var(--text));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .poll-header p {
+      font-size: clamp(10px, 2.5vw, 18px);
+      color: var(--text-muted);
+      line-height: 1.4;
+      max-width: 90%;
+      margin: 0 auto;
+    }
+
+    .scale-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: clamp(8px, 1.8vw, 13px);
+      color: var(--text-muted);
+      margin-bottom: clamp(6px, 1.5vw, 14px);
+      padding: 0 clamp(2px, 0.5vw, 4px);
+      flex-shrink: 0;
+    }
+
+    .poll-options {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(4px, 1vw, 10px);
+    }
+
+    .poll-option {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: clamp(6px, 1.5vw, 14px);
+      padding: clamp(6px, 1.5vw, 14px) clamp(10px, 2.5vw, 20px);
+      background: var(--bg-option);
+      border: 1.5px solid var(--border);
+      border-radius: clamp(6px, 1.5vw, 12px);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      overflow: hidden;
+    }
+
+    .poll-option:hover {
+      background: var(--bg-option-hover);
+      border-color: rgba(59, 130, 246, 0.35);
+    }
+
+    .poll-option.selected {
+      background: rgba(59, 130, 246, 0.15);
+      border-color: var(--accent);
+      box-shadow: 0 0 clamp(8px, 2vw, 20px) var(--accent-glow);
+    }
+
+    .poll-option .number {
+      width: clamp(24px, 6vw, 40px);
+      height: clamp(24px, 6vw, 40px);
+      border-radius: 50%;
+      background: rgba(59, 130, 246, 0.15);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: 700;
+      font-size: clamp(11px, 2.8vw, 20px);
+      color: var(--accent-light);
+      flex-shrink: 0;
+      transition: all 0.2s;
+      z-index: 1;
+    }
+
+    .poll-option.selected .number {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .poll-option .label {
+      font-size: clamp(11px, 2.8vw, 20px);
+      font-weight: 500;
+      z-index: 1;
+      flex: 1;
+    }
+
+    .poll-option .check {
+      width: clamp(16px, 4vw, 28px);
+      height: clamp(16px, 4vw, 28px);
+      opacity: 0;
+      transition: opacity 0.2s;
+      flex-shrink: 0;
+      z-index: 1;
+    }
+
+    .poll-option.selected .check {
+      opacity: 1;
+    }
+
+    .poll-option .result-bar {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 0;
+      background: rgba(59, 130, 246, 0.12);
+      transition: width 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+      border-radius: clamp(6px, 1.5vw, 12px);
+    }
+
+    .poll-option .result-pct {
+      font-size: clamp(10px, 2.2vw, 16px);
+      font-weight: 700;
+      color: var(--accent-light);
+      opacity: 0;
+      transition: opacity 0.4s;
+      z-index: 1;
+      flex-shrink: 0;
+    }
+
+    .poll-option.voted .result-pct {
+      opacity: 1;
+    }
+
+    .poll-option.voted {
+      cursor: default;
+      pointer-events: none;
+    }
+
+    /* Submit */
+    .submit-btn {
+      margin-top: clamp(6px, 1.5vw, 14px);
+      padding: clamp(10px, 2.5vw, 18px);
+      border: none;
+      border-radius: clamp(6px, 1.5vw, 12px);
+      background: rgba(59, 130, 246, 0.2);
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: clamp(12px, 3vw, 20px);
+      font-weight: 700;
+      cursor: not-allowed;
+      transition: all 0.3s;
+      flex-shrink: 0;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .submit-btn.active {
+      background: var(--accent);
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 clamp(2px, 0.5vw, 6px) clamp(12px, 3vw, 30px) var(--accent-glow);
+    }
+
+    .submit-btn.active:hover {
+      background: var(--accent-light);
+      transform: translateY(-1px);
+    }
+
+    .submit-btn.submitted {
+      background: var(--success);
+      color: #fff;
+      cursor: default;
+      pointer-events: none;
+    }
+
+    /* Branding */
+    .powered-by {
+      text-align: center;
+      padding-top: clamp(6px, 1.5vw, 12px);
+      font-size: clamp(8px, 1.8vw, 13px);
+      color: var(--text-muted);
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      opacity: 0.5;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <!-- VIDEO 34% -->
+    <div class="video-area">
+      <div class="video-label">Live Clip</div>
+      <video id="video" muted loop playsinline preload="auto">
+        <source src="democrat.mp4" type="video/mp4">
+      </video>
+      <div class="tap-hint" id="tapHint"><span>Tap to watch</span></div>
+    </div>
+
+    <!-- POLL 66% -->
+    <div class="poll-area">
+
+      <!-- START PAGE -->
+      <div class="start-page">
+        <div class="start-context">Vice President Harris on Voting Rights</div>
+        <div class="start-headline">Should voter ID laws be reformed?</div>
+        <div class="start-subtitle">Share Your Opinion</div>
+        <div class="scale-preview">
+          <div class="pip">1</div>
+          <div class="pip">2</div>
+          <div class="pip">3</div>
+          <div class="pip">4</div>
+          <div class="pip">5</div>
+        </div>
+        <div class="scale-preview-labels">
+          <span>Strongly Disagree</span>
+          <span>Strongly Agree</span>
+        </div>
+        <div class="start-cta">&#9654; Watch &amp; Vote</div>
+        <div class="vote-count">
+          <div class="live-dot"></div><span id="voteCount">12,847</span> votes cast
+        </div>
+        <div class="start-brand"></div>
+      </div>
+
+      <!-- POLL (shown after tap) -->
+      <div class="poll-content">
+        <div class="poll-header">
+          <h2>Rate Your Support</h2>
+          <p>Rate your support of this statement on a scale of 1–5:</p>
+        </div>
+
+        <!-- <div class="scale-labels">
+        <span>Strongly Disagree</span>
+        <span>Strongly Agree</span>
+      </div> -->
+
+        <div class="poll-options" id="pollOptions">
+          <div class="poll-option" data-value="1" onclick="selectOption(this)">
+            <div class="number">1</div>
+            <div class="label">Strongly Disagree</div>
+            <div class="result-pct"></div>
+            <div class="check"><svg viewBox="0 0 24 24">
+                <polyline points="4,12 10,18 20,6" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg></div>
+            <div class="result-bar"></div>
+          </div>
+          <div class="poll-option" data-value="2" onclick="selectOption(this)">
+            <div class="number">2</div>
+            <div class="label">Do Not Agree</div>
+            <div class="result-pct"></div>
+            <div class="check"><svg viewBox="0 0 24 24">
+                <polyline points="4,12 10,18 20,6" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg></div>
+            <div class="result-bar"></div>
+          </div>
+          <div class="poll-option" data-value="3" onclick="selectOption(this)">
+            <div class="number">3</div>
+            <div class="label">Neutral</div>
+            <div class="result-pct"></div>
+            <div class="check"><svg viewBox="0 0 24 24">
+                <polyline points="4,12 10,18 20,6" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg></div>
+            <div class="result-bar"></div>
+          </div>
+          <div class="poll-option" data-value="4" onclick="selectOption(this)">
+            <div class="number">4</div>
+            <div class="label">Agree</div>
+            <div class="result-pct"></div>
+            <div class="check"><svg viewBox="0 0 24 24">
+                <polyline points="4,12 10,18 20,6" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg></div>
+            <div class="result-bar"></div>
+          </div>
+          <div class="poll-option" data-value="5" onclick="selectOption(this)">
+            <div class="number">5</div>
+            <div class="label">Strongly Agree</div>
+            <div class="result-pct"></div>
+            <div class="check"><svg viewBox="0 0 24 24">
+                <polyline points="4,12 10,18 20,6" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg></div>
+            <div class="result-bar"></div>
+          </div>
+        </div>
+
+        <button class="submit-btn" id="submitBtn" onclick="submitVote()">Submit Vote</button>
+        <div class="powered-by"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const container = document.querySelector('.container');
+    const video = document.getElementById('video');
+    const tapHint = document.getElementById('tapHint');
+    const voteCountEl = document.getElementById('voteCount');
+    let votes = 12847;
+
+    function tickCounter() {
+      votes += Math.floor(Math.random() * 3) + 1;
+      voteCountEl.textContent = votes.toLocaleString();
+      setTimeout(tickCounter, Math.random() * 2000 + 800);
+    }
+    tickCounter();
+
+    container.addEventListener('click', function () {
+      if (container.classList.contains('active')) return;
+      video.play();
+      container.classList.add('active');
+      tapHint.style.display = 'none';
+    });
+
+    let selectedOption = null;
+    const submitBtn = document.getElementById('submitBtn');
+
+    function selectOption(el) {
+      if (submitBtn.classList.contains('submitted')) return;
+      document.querySelectorAll('.poll-option').forEach(o => o.classList.remove('selected'));
+      el.classList.add('selected');
+      selectedOption = el.dataset.value;
+      submitBtn.classList.add('active');
+    }
+
+    function submitVote() {
+      if (!selectedOption || submitBtn.classList.contains('submitted')) return;
+
+      submitBtn.textContent = 'Thank You!';
+      submitBtn.classList.remove('active');
+      submitBtn.classList.add('submitted');
+
+      const fakeResults = { 1: 5, 2: 12, 3: 18, 4: 30, 5: 35 };
+
+      document.querySelectorAll('.poll-option').forEach(opt => {
+        const val = opt.dataset.value;
+        const pct = fakeResults[val];
+        opt.querySelector('.result-bar').style.width = pct + '%';
+        opt.querySelector('.result-pct').textContent = pct + '%';
+        opt.classList.add('voted');
+      });
+    }
+  </script>
+</body>
+
+</html>
