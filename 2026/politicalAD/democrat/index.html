@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="HandheldFriendly" content="true">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="ad.size" content="width=640,height=960">
+    <title>Ad Creative 640x960</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #000;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #ad-container {
+            position: relative;
+            width: 100vw;
+            height: 150vw;
+            /* 960/640 = 1.5 aspect ratio */
+            max-width: 640px;
+            max-height: 960px;
+            overflow: hidden;
+        }
+
+        #ad-container iframe {
+            width: 640px;
+            height: 960px;
+            border: none;
+            display: block;
+            transform-origin: top left;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="ad-container">
+        <iframe src="https://creativehubiion.github.io/advertiser-creatives/2026/politicalAD/formats/indexdemocrat.html"
+            width="640" height="960" frameborder="0" scrolling="no" allow="autoplay; fullscreen" allowfullscreen>
+        </iframe>
+    </div>
+
+    <script>
+        function scaleIframe() {
+            var container = document.getElementById('ad-container');
+            var iframe = container.querySelector('iframe');
+            var containerWidth = container.offsetWidth;
+            var scale = containerWidth / 640;
+            iframe.style.transform = 'scale(' + scale + ')';
+            container.style.height = (960 * scale) + 'px';
+        }
+
+        scaleIframe();
+        window.addEventListener('resize', scaleIframe);
+    </script>
+</body>
+
+</html>
