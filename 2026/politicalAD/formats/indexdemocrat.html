@@ -460,6 +460,39 @@
     const muteIcon = document.getElementById('muteIcon');
     const unmuteIcon = document.getElementById('unmuteIcon');
 
+    // Force muted autoplay across all browsers
+    video.muted = true;
+    video.setAttribute('muted', '');
+    video.setAttribute('playsinline', '');
+
+    function tryAutoplay() {
+      var playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(function () {
+          // Retry on user interaction as last resort
+          document.addEventListener('touchstart', playOnce, { once: true });
+          document.addEventListener('click', playOnce, { once: true });
+        });
+      }
+    }
+
+    function playOnce() {
+      video.muted = true;
+      video.play();
+    }
+
+    // Try autoplay immediately, on load, and on visible
+    tryAutoplay();
+    window.addEventListener('load', tryAutoplay);
+    document.addEventListener('DOMContentLoaded', tryAutoplay);
+
+    // Handle tab visibility (browsers pause hidden tabs)
+    document.addEventListener('visibilitychange', function () {
+      if (!document.hidden) {
+        video.play();
+      }
+    });
+
     function toggleMute() {
       video.muted = !video.muted;
       muteIcon.style.display = video.muted ? 'block' : 'none';
