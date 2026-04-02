@@ -20,8 +20,7 @@
 
         html,
         body {
-            width: 100%;
-            height: 100%;
+
             overflow: hidden;
             background: #000;
             -webkit-tap-highlight-color: transparent;
@@ -34,46 +33,35 @@
             align-items: center;
         }
 
-        #ad-container {
-            position: relative;
-            width: 100vw;
-            height: 150vw;
-            /* 960/640 = 1.5 aspect ratio */
-            max-width: 640px;
-            max-height: 960px;
-            overflow: hidden;
-        }
+        iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
 
-        #ad-container iframe {
+            margin: auto;
             width: 640px;
             height: 960px;
-            border: none;
-            display: block;
-            transform-origin: top left;
+            transform-origin: center center;
+        }
+
+        @media screen and (max-width: 767px) {
+            iframe {
+                bottom: 0;
+                /* Scale to fit viewport while preserving 2:3 ratio */
+                width: 100vw;
+                height: calc(100vw * 960 / 640);
+                max-height: 100vh;
+                max-width: calc(100vh * 640 / 960);
+            }
         }
     </style>
 </head>
 
 <body>
-    <div id="ad-container">
-        <iframe src="https://creativehubiion.github.io/advertiser-creatives/2026/politicalAD/formats/indexdemocrat.html"
-            width="640" height="960" frameborder="0" scrolling="no" allow="autoplay; fullscreen" allowfullscreen>
-        </iframe>
-    </div>
-
-    <script>
-        function scaleIframe() {
-            var container = document.getElementById('ad-container');
-            var iframe = container.querySelector('iframe');
-            var containerWidth = container.offsetWidth;
-            var scale = containerWidth / 640;
-            iframe.style.transform = 'scale(' + scale + ')';
-            container.style.height = (960 * scale) + 'px';
-        }
-
-        scaleIframe();
-        window.addEventListener('resize', scaleIframe);
-    </script>
+    <iframe src="https://creativehubiion.github.io/advertiser-creatives/2026/politicalAD/formats/indexdemocrat.html"
+        width="640" height="960" frameborder="0" scrolling="no" allow="autoplay; fullscreen" allowfullscreen>
+    </iframe>
 </body>
 
 </html>
