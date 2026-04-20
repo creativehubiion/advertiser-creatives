@@ -1,0 +1,272 @@
+{
+	"textures": [
+		{
+			"image": "playerswing.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 841,
+				"h": 1268
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "playerswing02.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 348,
+						"h": 458
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 0,
+						"w": 231,
+						"h": 445
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 231,
+						"h": 445
+					}
+				},
+				{
+					"filename": "playerswing11.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 348,
+						"h": 458
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 0,
+						"w": 231,
+						"h": 445
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 231,
+						"h": 445
+					}
+				},
+				{
+					"filename": "playerswing05.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 348,
+						"h": 458
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 37,
+						"w": 348,
+						"h": 397
+					},
+					"frame": {
+						"x": 1,
+						"y": 448,
+						"w": 348,
+						"h": 397
+					}
+				},
+				{
+					"filename": "playerswing07.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 348,
+						"h": 458
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 19,
+						"w": 298,
+						"h": 415
+					},
+					"frame": {
+						"x": 234,
+						"y": 1,
+						"w": 298,
+						"h": 415
+					}
+				},
+				{
+					"filename": "playerswing01.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 348,
+						"h": 458
+					},
+					"spriteSourceSize": {
+						"x": 29,
+						"y": 8,
+						"w": 208,
+						"h": 440
+					},
+					"frame": {
+						"x": 351,
+						"y": 418,
+						"w": 208,
+						"h": 440
+					}
+				},
+				{
+					"filename": "playerswing12.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 348,
+						"h": 458
+					},
+					"spriteSourceSize": {
+						"x": 29,
+						"y": 8,
+						"w": 208,
+						"h": 440
+					},
+					"frame": {
+						"x": 351,
+						"y": 418,
+						"w": 208,
+						"h": 440
+					}
+				},
+				{
+					"filename": "playerswing09.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 348,
+						"h": 458
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 38,
+						"w": 295,
+						"h": 397
+					},
+					"frame": {
+						"x": 534,
+						"y": 1,
+						"w": 295,
+						"h": 397
+					}
+				},
+				{
+					"filename": "playerswing06.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 348,
+						"h": 458
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 14,
+						"w": 288,
+						"h": 420
+					},
+					"frame": {
+						"x": 1,
+						"y": 847,
+						"w": 288,
+						"h": 420
+					}
+				},
+				{
+					"filename": "playerswing04.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 348,
+						"h": 458
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 38,
+						"w": 238,
+						"h": 397
+					},
+					"frame": {
+						"x": 291,
+						"y": 860,
+						"w": 238,
+						"h": 397
+					}
+				},
+				{
+					"filename": "playerswing08.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 348,
+						"h": 458
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 8,
+						"w": 279,
+						"h": 426
+					},
+					"frame": {
+						"x": 561,
+						"y": 400,
+						"w": 279,
+						"h": 426
+					}
+				},
+				{
+					"filename": "playerswing03.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 348,
+						"h": 458
+					},
+					"spriteSourceSize": {
+						"x": 2,
+						"y": 19,
+						"w": 230,
+						"h": 421
+					},
+					"frame": {
+						"x": 561,
+						"y": 828,
+						"w": 230,
+						"h": 421
+					}
+				},
+				{
+					"filename": "playerswing10.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 348,
+						"h": 458
+					},
+					"spriteSourceSize": {
+						"x": 2,
+						"y": 19,
+						"w": 230,
+						"h": 421
+					},
+					"frame": {
+						"x": 561,
+						"y": 828,
+						"w": 230,
+						"h": 421
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:1f1edeea8b80cb1db62300d97456905b:5d24a404d92359590edd1cab216bfd56:4dc173903c6443638fead2dc0e433792$"
+	}
+}
