@@ -1,0 +1,440 @@
+{
+	"textures": [
+		{
+			"image": "enemythrow.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 249,
+				"h": 510
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "enemythrow17.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 75,
+						"h": 173
+					},
+					"spriteSourceSize": {
+						"x": 10,
+						"y": 25,
+						"w": 47,
+						"h": 134
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 47,
+						"h": 134
+					}
+				},
+				{
+					"filename": "enemythrow16.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 75,
+						"h": 173
+					},
+					"spriteSourceSize": {
+						"x": 10,
+						"y": 25,
+						"w": 42,
+						"h": 133
+					},
+					"frame": {
+						"x": 1,
+						"y": 137,
+						"w": 42,
+						"h": 133
+					}
+				},
+				{
+					"filename": "enemythrow03.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 75,
+						"h": 173
+					},
+					"spriteSourceSize": {
+						"x": 8,
+						"y": 18,
+						"w": 65,
+						"h": 110
+					},
+					"frame": {
+						"x": 1,
+						"y": 272,
+						"w": 65,
+						"h": 110
+					}
+				},
+				{
+					"filename": "enemythrow04.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 75,
+						"h": 173
+					},
+					"spriteSourceSize": {
+						"x": 6,
+						"y": 21,
+						"w": 58,
+						"h": 116
+					},
+					"frame": {
+						"x": 45,
+						"y": 137,
+						"w": 58,
+						"h": 116
+					}
+				},
+				{
+					"filename": "enemythrow14.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 75,
+						"h": 173
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 25,
+						"w": 50,
+						"h": 131
+					},
+					"frame": {
+						"x": 68,
+						"y": 255,
+						"w": 50,
+						"h": 131
+					}
+				},
+				{
+					"filename": "enemythrow02.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 75,
+						"h": 173
+					},
+					"spriteSourceSize": {
+						"x": 14,
+						"y": 18,
+						"w": 53,
+						"h": 114
+					},
+					"frame": {
+						"x": 1,
+						"y": 384,
+						"w": 53,
+						"h": 114
+					}
+				},
+				{
+					"filename": "enemythrow12.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 75,
+						"h": 173
+					},
+					"spriteSourceSize": {
+						"x": 7,
+						"y": 25,
+						"w": 45,
+						"h": 132
+					},
+					"frame": {
+						"x": 105,
+						"y": 1,
+						"w": 45,
+						"h": 132
+					}
+				},
+				{
+					"filename": "enemythrow18.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 75,
+						"h": 173
+					},
+					"spriteSourceSize": {
+						"x": 11,
+						"y": 25,
+						"w": 50,
+						"h": 131
+					},
+					"frame": {
+						"x": 50,
+						"y": 1,
+						"w": 50,
+						"h": 131
+					}
+				},
+				{
+					"filename": "enemythrow05.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 75,
+						"h": 173
+					},
+					"spriteSourceSize": {
+						"x": 7,
+						"y": 11,
+						"w": 46,
+						"h": 108
+					},
+					"frame": {
+						"x": 105,
+						"y": 135,
+						"w": 46,
+						"h": 108
+					}
+				},
+				{
+					"filename": "enemythrow15.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 75,
+						"h": 173
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 25,
+						"w": 50,
+						"h": 130
+					},
+					"frame": {
+						"x": 152,
+						"y": 1,
+						"w": 50,
+						"h": 130
+					}
+				},
+				{
+					"filename": "enemythrow19.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 75,
+						"h": 173
+					},
+					"spriteSourceSize": {
+						"x": 11,
+						"y": 40,
+						"w": 48,
+						"h": 131
+					},
+					"frame": {
+						"x": 120,
+						"y": 245,
+						"w": 48,
+						"h": 131
+					}
+				},
+				{
+					"filename": "enemythrow01.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 75,
+						"h": 173
+					},
+					"spriteSourceSize": {
+						"x": 22,
+						"y": 22,
+						"w": 43,
+						"h": 109
+					},
+					"frame": {
+						"x": 153,
+						"y": 133,
+						"w": 43,
+						"h": 109
+					}
+				},
+				{
+					"filename": "enemythrow13.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 75,
+						"h": 173
+					},
+					"spriteSourceSize": {
+						"x": 6,
+						"y": 25,
+						"w": 46,
+						"h": 131
+					},
+					"frame": {
+						"x": 120,
+						"y": 378,
+						"w": 46,
+						"h": 131
+					}
+				},
+				{
+					"filename": "enemythrow11.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 75,
+						"h": 173
+					},
+					"spriteSourceSize": {
+						"x": 7,
+						"y": 51,
+						"w": 41,
+						"h": 107
+					},
+					"frame": {
+						"x": 56,
+						"y": 388,
+						"w": 41,
+						"h": 107
+					}
+				},
+				{
+					"filename": "enemythrow20.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 75,
+						"h": 173
+					},
+					"spriteSourceSize": {
+						"x": 11,
+						"y": 40,
+						"w": 45,
+						"h": 131
+					},
+					"frame": {
+						"x": 168,
+						"y": 378,
+						"w": 45,
+						"h": 131
+					}
+				},
+				{
+					"filename": "enemythrow06.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 75,
+						"h": 173
+					},
+					"spriteSourceSize": {
+						"x": 6,
+						"y": 4,
+						"w": 42,
+						"h": 99
+					},
+					"frame": {
+						"x": 170,
+						"y": 244,
+						"w": 42,
+						"h": 99
+					}
+				},
+				{
+					"filename": "enemythrow10.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 75,
+						"h": 173
+					},
+					"spriteSourceSize": {
+						"x": 2,
+						"y": 42,
+						"w": 37,
+						"h": 108
+					},
+					"frame": {
+						"x": 198,
+						"y": 133,
+						"w": 37,
+						"h": 108
+					}
+				},
+				{
+					"filename": "enemythrow08.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 75,
+						"h": 173
+					},
+					"spriteSourceSize": {
+						"x": 9,
+						"y": 19,
+						"w": 34,
+						"h": 129
+					},
+					"frame": {
+						"x": 214,
+						"y": 243,
+						"w": 34,
+						"h": 129
+					}
+				},
+				{
+					"filename": "enemythrow09.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 75,
+						"h": 173
+					},
+					"spriteSourceSize": {
+						"x": 6,
+						"y": 23,
+						"w": 33,
+						"h": 128
+					},
+					"frame": {
+						"x": 215,
+						"y": 374,
+						"w": 33,
+						"h": 128
+					}
+				},
+				{
+					"filename": "enemythrow07.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 75,
+						"h": 173
+					},
+					"spriteSourceSize": {
+						"x": 7,
+						"y": 7,
+						"w": 40,
+						"h": 112
+					},
+					"frame": {
+						"x": 204,
+						"y": 1,
+						"w": 40,
+						"h": 112
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:1a92b12707332f034464954354e72c97:51d9b9ca8ecd4e2d540962658a1c2b38:488a449a76c6ead27a6a4f59ab64f44c$"
+	}
+}

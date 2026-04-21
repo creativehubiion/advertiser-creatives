@@ -1,0 +1,62 @@
+{
+	"textures": [
+		{
+			"image": "playeridle.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 278,
+				"h": 831
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "playeridle02.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 283,
+						"h": 442
+					},
+					"spriteSourceSize": {
+						"x": 6,
+						"y": 31,
+						"w": 276,
+						"h": 411
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 276,
+						"h": 411
+					}
+				},
+				{
+					"filename": "playeridle01.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 283,
+						"h": 442
+					},
+					"spriteSourceSize": {
+						"x": 6,
+						"y": 26,
+						"w": 273,
+						"h": 416
+					},
+					"frame": {
+						"x": 1,
+						"y": 414,
+						"w": 273,
+						"h": 416
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:23689b64bb4d4b6c3f29bec428f05b6a:dbea67a065c7804f1d470ac1b0dea3ab:1a712338f00bda6b5807f6b64fd21bdd$"
+	}
+}

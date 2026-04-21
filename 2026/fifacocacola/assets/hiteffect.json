@@ -1,0 +1,104 @@
+{
+	"textures": [
+		{
+			"image": "hiteffect.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 125,
+				"h": 107
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "swinghit04.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 64,
+						"h": 67
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 64,
+						"h": 67
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 64,
+						"h": 67
+					}
+				},
+				{
+					"filename": "swinghit03.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 67
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 5,
+						"w": 57,
+						"h": 60
+					},
+					"frame": {
+						"x": 67,
+						"y": 1,
+						"w": 57,
+						"h": 60
+					}
+				},
+				{
+					"filename": "swinghit02.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 67
+					},
+					"spriteSourceSize": {
+						"x": 9,
+						"y": 14,
+						"w": 42,
+						"h": 43
+					},
+					"frame": {
+						"x": 67,
+						"y": 63,
+						"w": 42,
+						"h": 43
+					}
+				},
+				{
+					"filename": "swinghit01.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 67
+					},
+					"spriteSourceSize": {
+						"x": 16,
+						"y": 17,
+						"w": 34,
+						"h": 34
+					},
+					"frame": {
+						"x": 1,
+						"y": 70,
+						"w": 34,
+						"h": 34
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:7788f097ba5dea50d6ca391f6249a3e8:b282c3619a350a5440c7eab9a01a667a:93a01ac3fe523443bd1b0def22e1c919$"
+	}
+}
