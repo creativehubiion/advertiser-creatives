@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Hybrid Mock – Republican</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
+
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #6b1a1a;
+      --primary-dark: #451010;
+      --accent: #dc2626;
+      --accent-light: #f87171;
+      --accent-glow: rgba(220, 38, 38, 0.3);
+      --bg: #1a0c0c;
+      --bg-card: #271313;
+      --bg-option: #341919;
+      --bg-option-hover: #451f1f;
+      --text: #f5e8e8;
+      --text-muted: #b87b7b;
+      --border: rgba(220, 38, 38, 0.15);
+      --success: #22c55e;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow: hidden;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      padding: clamp(14px, 3.5vw, 36px) clamp(14px, 4vw, 40px);
+      background: linear-gradient(180deg, var(--bg-card) 0%, var(--bg) 100%);
+      overflow: hidden;
+      gap: clamp(12px, 2.5vw, 24px);
+    }
+
+    .poll-side {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(8px, 1.5vw, 16px);
+      flex: 1;
+      min-height: 0;
+    }
+
+    .poll-options {
+      flex: 1;
+      justify-content: center;
+    }
+
+    .poll-header {
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .poll-header h2 {
+      font-size: clamp(18px, 5vw, 38px);
+      font-weight: 700;
+      margin-bottom: clamp(4px, 1vw, 10px);
+      background: linear-gradient(135deg, var(--accent-light), var(--text));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .poll-header p {
+      font-size: clamp(11px, 2.6vw, 18px);
+      color: var(--text-muted);
+      line-height: 1.4;
+      max-width: 90%;
+      margin: 0 auto;
+    }
+
+    .poll-options {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(6px, 1.2vw, 12px);
+    }
+
+    .poll-option {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: clamp(8px, 1.5vw, 16px);
+      padding: clamp(8px, 1.6vw, 16px) clamp(12px, 2.5vw, 22px);
+      background: var(--bg-option);
+      border: 1.5px solid var(--border);
+      border-radius: clamp(8px, 1.5vw, 14px);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      overflow: hidden;
+    }
+
+    .poll-option:hover {
+      background: var(--bg-option-hover);
+      border-color: rgba(220, 38, 38, 0.35);
+    }
+
+    .poll-option.selected {
+      background: rgba(220, 38, 38, 0.15);
+      border-color: var(--accent);
+      box-shadow: 0 0 clamp(8px, 2vw, 20px) var(--accent-glow);
+    }
+
+    .poll-option .number {
+      width: clamp(28px, 5vw, 44px);
+      height: clamp(28px, 5vw, 44px);
+      border-radius: 50%;
+      background: rgba(220, 38, 38, 0.15);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: 700;
+      font-size: clamp(13px, 2.8vw, 22px);
+      color: var(--accent-light);
+      flex-shrink: 0;
+      transition: all 0.2s;
+      z-index: 1;
+    }
+
+    .poll-option.selected .number {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .poll-option .label {
+      font-size: clamp(12px, 2.6vw, 20px);
+      font-weight: 500;
+      z-index: 1;
+      flex: 1;
+    }
+
+    .poll-option .check {
+      width: clamp(18px, 3.5vw, 28px);
+      height: clamp(18px, 3.5vw, 28px);
+      opacity: 0;
+      transition: opacity 0.2s;
+      flex-shrink: 0;
+      z-index: 1;
+    }
+
+    .poll-option.selected .check {
+      opacity: 1;
+    }
+
+    .poll-option .result-bar {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 0;
+      background: rgba(220, 38, 38, 0.12);
+      transition: width 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+      border-radius: clamp(8px, 1.5vw, 14px);
+    }
+
+    .poll-option .result-pct {
+      font-size: clamp(11px, 2.2vw, 16px);
+      font-weight: 700;
+      color: var(--accent-light);
+      opacity: 0;
+      transition: opacity 0.4s;
+      z-index: 1;
+      flex-shrink: 0;
+    }
+
+    .poll-option.voted .result-pct {
+      opacity: 1;
+    }
+
+    .poll-option.voted {
+      cursor: default;
+      pointer-events: none;
+    }
+
+    .submit-btn {
+      padding: clamp(10px, 2.2vw, 18px);
+      border: none;
+      border-radius: clamp(8px, 1.5vw, 14px);
+      background: rgba(220, 38, 38, 0.2);
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: clamp(13px, 3vw, 20px);
+      font-weight: 700;
+      cursor: not-allowed;
+      transition: all 0.3s;
+      flex-shrink: 0;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .submit-btn.active {
+      background: var(--accent);
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 clamp(2px, 0.5vw, 6px) clamp(12px, 3vw, 30px) var(--accent-glow);
+    }
+
+    .submit-btn.active:hover {
+      background: var(--accent-light);
+      transform: translateY(-1px);
+    }
+
+    .submit-btn.submitted {
+      background: var(--success);
+      color: #fff;
+      cursor: default;
+      pointer-events: none;
+    }
+
+    /* ── LANDSCAPE: header on left, options on right ── */
+    @media (orientation: landscape) {
+      .container {
+        flex-direction: row;
+        align-items: center;
+        gap: clamp(20px, 4vw, 60px);
+        padding: clamp(16px, 3vw, 40px) clamp(24px, 5vw, 60px);
+      }
+
+      .poll-header {
+        flex: 1;
+        text-align: left;
+        max-width: 45%;
+      }
+
+      .poll-header h2 {
+        font-size: clamp(20px, 4.5vw, 48px);
+      }
+
+      .poll-header p {
+        margin: 0;
+        max-width: 100%;
+        font-size: clamp(12px, 1.8vw, 20px);
+      }
+
+      .poll-side {
+        flex: 1.2;
+        gap: clamp(6px, 1vw, 12px);
+      }
+
+      .poll-options {
+        gap: clamp(5px, 0.8vw, 10px);
+        flex: 1;
+      }
+
+      .poll-option {
+        padding: clamp(6px, 1.2vw, 14px) clamp(12px, 2vw, 20px);
+      }
+
+      .poll-option .label {
+        font-size: clamp(11px, 1.8vw, 18px);
+      }
+
+      .submit-btn {
+        padding: clamp(8px, 1.4vw, 14px);
+        font-size: clamp(11px, 1.6vw, 16px);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="poll-header">
+      <h2>Rate Your Support</h2>
+      <p>Rate your support of this statement on a scale of 1–5:</p>
+    </div>
+
+    <div class="poll-side">
+      <div class="poll-options" id="pollOptions">
+        <div class="poll-option" data-value="1" onclick="selectOption(this)">
+          <div class="number">1</div>
+          <div class="label">Strongly Disagree</div>
+          <div class="result-pct"></div>
+          <div class="check"><svg viewBox="0 0 24 24" aria-hidden="true">
+              <polyline points="4,12 10,18 20,6" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg></div>
+          <div class="result-bar"></div>
+        </div>
+        <div class="poll-option" data-value="2" onclick="selectOption(this)">
+          <div class="number">2</div>
+          <div class="label">Do Not Agree</div>
+          <div class="result-pct"></div>
+          <div class="check"><svg viewBox="0 0 24 24" aria-hidden="true">
+              <polyline points="4,12 10,18 20,6" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg></div>
+          <div class="result-bar"></div>
+        </div>
+        <div class="poll-option" data-value="3" onclick="selectOption(this)">
+          <div class="number">3</div>
+          <div class="label">Neutral</div>
+          <div class="result-pct"></div>
+          <div class="check"><svg viewBox="0 0 24 24" aria-hidden="true">
+              <polyline points="4,12 10,18 20,6" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg></div>
+          <div class="result-bar"></div>
+        </div>
+        <div class="poll-option" data-value="4" onclick="selectOption(this)">
+          <div class="number">4</div>
+          <div class="label">Agree</div>
+          <div class="result-pct"></div>
+          <div class="check"><svg viewBox="0 0 24 24" aria-hidden="true">
+              <polyline points="4,12 10,18 20,6" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg></div>
+          <div class="result-bar"></div>
+        </div>
+        <div class="poll-option" data-value="5" onclick="selectOption(this)">
+          <div class="number">5</div>
+          <div class="label">Strongly Agree</div>
+          <div class="result-pct"></div>
+          <div class="check"><svg viewBox="0 0 24 24" aria-hidden="true">
+              <polyline points="4,12 10,18 20,6" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg></div>
+          <div class="result-bar"></div>
+        </div>
+      </div>
+
+      <button class="submit-btn" id="submitBtn" onclick="submitVote()">Submit Vote</button>
+    </div>
+  </div>
+
+  <script>
+    let selectedOption = null;
+    const submitBtn = document.getElementById('submitBtn');
+
+    function selectOption(el) {
+      if (submitBtn.classList.contains('submitted')) return;
+      document.querySelectorAll('.poll-option').forEach(o => o.classList.remove('selected'));
+      el.classList.add('selected');
+      selectedOption = el.dataset.value;
+      submitBtn.classList.add('active');
+    }
+
+    function submitVote() {
+      if (!selectedOption || submitBtn.classList.contains('submitted')) return;
+
+      submitBtn.textContent = 'Thank You!';
+      submitBtn.classList.remove('active');
+      submitBtn.classList.add('submitted');
+
+      const fakeResults = { 1: 8, 2: 10, 3: 15, 4: 32, 5: 35 };
+
+      document.querySelectorAll('.poll-option').forEach(opt => {
+        const val = opt.dataset.value;
+        const pct = fakeResults[val];
+        opt.querySelector('.result-bar').style.width = pct + '%';
+        opt.querySelector('.result-pct').textContent = pct + '%';
+        opt.classList.add('voted');
+      });
+    }
+  </script>
+</body>
+
+</html>
