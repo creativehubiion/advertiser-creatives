@@ -46,7 +46,9 @@
       align-items: center;
     }
 
-
+    /* Default: fill the viewport (correct for narrow-portrait phones,
+       where 2/3 would letterbox). Container queries below size all
+       internal elements relative to the card, not the viewport. */
     .container {
       width: 100vw;
       height: 100vh;
@@ -61,7 +63,8 @@
       container-name: ad;
     }
 
-
+    /* Viewport at least as wide as 2/3 (tablets, desktop): lock to a
+       portrait 2:3 card instead of stretching horizontally. */
     @media (min-aspect-ratio: 2 / 3) {
       .container {
         aspect-ratio: 2 / 3;
@@ -71,7 +74,7 @@
       }
     }
 
-
+    /* ── VIDEO AREA (37%) ── */
     .video-area {
       height: 37%;
       position: relative;
@@ -166,6 +169,8 @@
       fill: #fff;
     }
 
+
+    /* ── POLL AREA (63%) ── */
     .poll-area {
       height: 63%;
       display: flex;
@@ -216,6 +221,8 @@
       flex-shrink: 0;
     }
 
+    /* Grow to fill remaining height; distribute whitespace between
+       options so layout looks intentional on tall portrait phones. */
     .poll-options {
       display: flex;
       flex-direction: column;
@@ -321,6 +328,7 @@
       pointer-events: none;
     }
 
+    /* Submit */
     .submit-btn {
       margin-top: clamp(8px, 2cqi, 16px);
       padding: clamp(12px, 3.2cqi, 22px);
@@ -357,6 +365,7 @@
       pointer-events: none;
     }
 
+    /* Branding */
     .powered-by {
       text-align: center;
       padding-top: clamp(6px, 1.8cqi, 14px);
@@ -373,6 +382,7 @@
 <body>
   <div class="container">
 
+    <!-- VIDEO 37% -->
     <div class="video-area">
       <div class="video-label">Live Clip</div>
       <video id="video" autoplay muted loop playsinline preload="auto">
@@ -392,12 +402,19 @@
       </button>
     </div>
 
+    <!-- POLL 63% -->
     <div class="poll-area">
       <div class="poll-content">
         <div class="poll-header">
           <h2>How Solo Are You?</h2>
           <p>What&rsquo;s your biggest business admin headache right now?</p>
         </div>
+
+        <!-- <div class="scale-labels">
+        <span>Strongly Disagree</span>
+        <span>Strongly Agree</span>
+      </div> -->
+
         <div class="poll-options" id="pollOptions">
           <div class="poll-option" data-value="1" onclick="selectOption(this)">
             <div class="number">1</div>
@@ -450,6 +467,7 @@
             <div class="result-bar"></div>
           </div>
         </div>
+
         <button class="submit-btn" id="submitBtn" onclick="submitVote()">Submit Vote</button>
         <div class="powered-by"></div>
       </div>
@@ -462,6 +480,8 @@
     const muteBtn = document.getElementById('muteBtn');
     const muteIcon = document.getElementById('muteIcon');
     const unmuteIcon = document.getElementById('unmuteIcon');
+
+    // Force muted autoplay across all browsers
     video.muted = true;
     video.setAttribute('muted', '');
     video.setAttribute('playsinline', '');
@@ -481,6 +501,8 @@
       video.muted = true;
       video.play();
     }
+
+    // Try autoplay immediately, on load, and on visible
     tryAutoplay();
     window.addEventListener('load', tryAutoplay);
     document.addEventListener('DOMContentLoaded', tryAutoplay);
@@ -491,6 +513,11 @@
         video.play();
       }
     });
+
+    // Tracking sink: postMessage to the parent frame (wrapping ad SDK /
+    // analytics layer), fire the GAM impression URL via fnfetchAPI, and
+    // mirror to console for local dev. Keep payload shape stable —
+    // downstream consumers parse it.
     function track(event, data) {
       const payload = { type: 'creative_event', event: event, data: data || {}, ts: Date.now() };
       try {
@@ -500,16 +527,25 @@
       } catch (e) { /* postMessage to cross-origin parent is fine */ }
       if (window.console) console.log('[creative]', event, payload.data);
 
-
+      // GAM impression tracker — appends the event name to the templated
+      // URL (which the GAM ad server has already substituted with macros
+      // like %ebuy!, %epid!, etc. by the time the creative loads).
       if (typeof fnfetchAPI === 'function' && window.trackingType) {
         fnfetchAPI(window.trackingType + encodeURIComponent(event));
       }
     }
+
+    // Single source of truth: icon reflects whether audio is actually
+    // audible (not muted AND volume > 0). Driven by `volumechange` so it
+    // stays in sync regardless of how the state was changed. Audibility
+    // transitions are emitted as tracking events.
     let lastAudible = !video.muted && video.volume > 0;
+
     function syncMuteIcon() {
       const audible = !video.muted && video.volume > 0;
       muteIcon.style.display = audible ? 'none' : 'block';
       unmuteIcon.style.display = audible ? 'block' : 'none';
+
       if (audible !== lastAudible) {
         track(audible ? 'audio_audible' : 'audio_inaudible', {
           muted: video.muted,
@@ -518,8 +554,14 @@
         lastAudible = audible;
       }
     }
+
     video.addEventListener('volumechange', syncMuteIcon);
     syncMuteIcon();
+
+    // One-shot: when the video first actually starts playing, record
+    // whether audio was audible at that moment. The `playing` event can
+    // fire multiple times (after buffering stalls) — we only want the
+    // first one.
     let firstPlayTracked = false;
     video.addEventListener('playing', function () {
       if (firstPlayTracked) return;
@@ -530,14 +572,17 @@
         volume: video.volume
       });
     });
+
     function toggleMute() {
       const willBeMuted = !video.muted;
       track('mute_button_clicked', { to: willBeMuted ? 'muted' : 'unmuted' });
       video.muted = willBeMuted;
       if (video.volume === 0) video.volume = 1;
     }
+
     let selectedOption = null;
     const submitBtn = document.getElementById('submitBtn');
+
     function selectOption(el) {
       if (submitBtn.classList.contains('submitted')) return;
       document.querySelectorAll('.poll-option').forEach(o => o.classList.remove('selected'));
@@ -547,6 +592,7 @@
       track('poll_option_selected', { option: selectedOption });
       track('poll_answer_' + selectedOption, {});
     }
+
     function submitVote() {
       if (!selectedOption || submitBtn.classList.contains('submitted')) return;
 
@@ -567,15 +613,21 @@
         opt.classList.add('voted');
       });
     }
+
     function fnfetchAPI(trackingURL) {
       fetch(trackingURL, { method: "GET" })
         .then((response) => console.log("Tracking sent:", response.status))
         .catch((error) => console.error("Tracking error:", error));
     }
+
+
+    //GAM
     window.trackingPath = "assets/";
-    window.trackingType = "https://staging-dmp-producer.iion.io/tracker/impressions?platform=Aniview&campaign_id=14499539&event_name=";
-    window.setTracker = "%%CLICK_URL_UNESC%%";
+    window.trackingType =
+      "https://staging-dmp-producer.iion.io/tracker/impressions?platform=RTB&campaign_id=%%campaignId%%&publisher_id=%%pubId%%&creative_id=%%creativeId%%&request_id=%%requestId%%&user_id=%%userId%%&ip_address=%%ip%%&app_id_bundle_id=%%bundle%%&maid=%%ifa%%&app_name=%%appName%%&os=%%os%%&user_agent=%%userAgentEnc%%&latitude=%%lat%%&longitude=%%lon%%&page_url=%%pageUrl%%&country=%%country%%&device_make=%%deviceMake%%&domain=%%domain%%&height=%%height%%&width=%%width%%&video_min_duration=%%videoMinDuration%%&video_max_duration=%%videoMaxDuration%%&content_genre=%%contgenre%%&content_cat=%%contcat%%&gdpr=%%gdpr%%&gdpr_consent=%%gdprConsent%%&demand_id=%%demandId%%&line_item=%%adgroupId%%&event_name=";
+    window.setTracker = "%%clickUrl%%";
     window.landingPageUrl = window.setTracker + "";
+
   </script>
 </body>
 

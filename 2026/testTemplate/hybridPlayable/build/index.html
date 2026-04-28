@@ -1,0 +1,469 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="./favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Solo - Hybrid Playable</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #4a0d8f;
+            --primary-dark: #2d0858;
+            --accent: #7B15EF;
+            --accent-light: #b366ff;
+            --accent-glow: rgba(123, 21, 239, 0.35);
+            --bg: #0c0818;
+            --bg-card: #1a0f2e;
+            --bg-option: #251643;
+            --bg-option-hover: #2e1a52;
+            --text: #f0ebf8;
+            --text-muted: #9d8ab8;
+            --border: rgba(123, 21, 239, 0.2);
+            --success: #22c55e;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            font-family: 'DM Sans', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow: hidden;
+            -webkit-tap-highlight-color: transparent;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+
+        .container {
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            max-width: 100vw;
+            max-height: 100vh;
+            max-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            container-type: size;
+            container-name: ad;
+        }
+
+
+        @media (min-aspect-ratio: 2 / 3) {
+            .container {
+                aspect-ratio: 2 / 3;
+                width: auto;
+                height: 100vh;
+                height: 100dvh;
+            }
+        }
+
+
+        .video-area {
+            height: 37%;
+            position: relative;
+            background: #000;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .video-label {
+            position: absolute;
+            top: clamp(6px, 1.8cqi, 14px);
+            left: clamp(6px, 1.8cqi, 14px);
+            background: var(--accent);
+            color: #fff;
+            font-size: clamp(9px, 2.4cqi, 14px);
+            font-weight: 600;
+            padding: clamp(2px, 0.6cqi, 5px) clamp(6px, 1.8cqi, 12px);
+            border-radius: clamp(3px, 1cqi, 6px);
+            z-index: 2;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            opacity: 0;
+        }
+
+        .vote-now-cta {
+            position: absolute;
+            bottom: clamp(8px, 2.4cqi, 16px);
+            left: 0;
+            right: 0;
+            text-align: center;
+            z-index: 2;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .vote-now-cta span {
+            background: rgba(0, 0, 0, 0.55);
+            color: rgba(255, 255, 255, 0.85);
+            font-size: clamp(10px, 2.8cqi, 14px);
+            font-weight: 600;
+            padding: clamp(4px, 1cqi, 6px) clamp(10px, 3cqi, 18px);
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .video-area video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .mute-btn {
+            position: absolute;
+            top: clamp(8px, 2.4cqi, 14px);
+            right: clamp(8px, 2.4cqi, 14px);
+            width: clamp(32px, 8cqi, 44px);
+            height: clamp(32px, 8cqi, 44px);
+            border-radius: 50%;
+            border: none;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            color: #fff;
+            cursor: pointer;
+            z-index: 3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background 0.2s;
+        }
+
+        .mute-btn:hover {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .mute-btn svg {
+            width: clamp(16px, 4cqi, 22px);
+            height: clamp(16px, 4cqi, 22px);
+            fill: #fff;
+        }
+
+        .poll-area {
+            height: 63%;
+            display: flex;
+            flex-direction: column;
+            padding: clamp(10px, 3cqi, 24px) clamp(14px, 5cqi, 44px);
+            background: linear-gradient(180deg, var(--bg-card) 0%, var(--bg) 100%);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .poll-content {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .poll-header {
+            text-align: center;
+            margin-bottom: clamp(6px, 2cqi, 18px);
+            flex-shrink: 0;
+        }
+
+        .poll-header h2 {
+            font-size: clamp(18px, 5.5cqi, 36px);
+            font-weight: 700;
+            margin-bottom: clamp(4px, 1cqi, 10px);
+            background: linear-gradient(135deg, var(--accent-light), var(--text));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .poll-header p {
+            font-size: clamp(12px, 3cqi, 20px);
+            color: var(--text-muted);
+            line-height: 1.4;
+            max-width: 90%;
+            margin: 0 auto;
+        }
+
+        .scale-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: clamp(9px, 2.2cqi, 14px);
+            color: var(--text-muted);
+            margin-bottom: clamp(6px, 2cqi, 14px);
+            padding: 0 clamp(2px, 0.6cqi, 4px);
+            flex-shrink: 0;
+        }
+
+        .poll-options {
+            display: flex;
+            flex-direction: column;
+            gap: clamp(6px, 1.6cqi, 12px);
+            flex: 1;
+            justify-content: center;
+            min-height: 0;
+        }
+
+        .poll-option {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: clamp(8px, 2cqi, 16px);
+            padding: clamp(8px, 2.4cqi, 16px) clamp(12px, 3.2cqi, 22px);
+            background: var(--bg-option);
+            border: 1.5px solid var(--border);
+            border-radius: clamp(8px, 2cqi, 14px);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            overflow: hidden;
+        }
+
+        .poll-option:hover {
+            background: var(--bg-option-hover);
+            border-color: rgba(123, 21, 239, 0.35);
+        }
+
+        .poll-option.selected {
+            background: rgba(123, 21, 239, 0.15);
+            border-color: var(--accent);
+            box-shadow: 0 0 clamp(8px, 2.4cqi, 22px) var(--accent-glow);
+        }
+
+        .poll-option .number {
+            width: clamp(28px, 7cqi, 44px);
+            height: clamp(28px, 7cqi, 44px);
+            border-radius: 50%;
+            background: rgba(123, 21, 239, 0.15);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 700;
+            font-size: clamp(13px, 3.4cqi, 22px);
+            color: var(--accent-light);
+            flex-shrink: 0;
+            transition: all 0.2s;
+            z-index: 1;
+        }
+
+        .poll-option.selected .number {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .poll-option .label {
+            font-size: clamp(13px, 3.4cqi, 22px);
+            font-weight: 500;
+            z-index: 1;
+            flex: 1;
+        }
+
+        .poll-option .check {
+            width: clamp(18px, 4.5cqi, 30px);
+            height: clamp(18px, 4.5cqi, 30px);
+            opacity: 0;
+            transition: opacity 0.2s;
+            flex-shrink: 0;
+            z-index: 1;
+        }
+
+        .poll-option.selected .check {
+            opacity: 1;
+        }
+
+        .poll-option .result-bar {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 0;
+            background: rgba(123, 21, 239, 0.12);
+            transition: width 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+            border-radius: clamp(8px, 2cqi, 14px);
+        }
+
+        .poll-option .result-pct {
+            font-size: clamp(11px, 2.8cqi, 18px);
+            font-weight: 700;
+            color: var(--accent-light);
+            opacity: 0;
+            transition: opacity 0.4s;
+            z-index: 1;
+            flex-shrink: 0;
+        }
+
+        .poll-option.voted .result-pct {
+            opacity: 1;
+        }
+
+        .poll-option.voted {
+            cursor: default;
+            pointer-events: none;
+        }
+
+        .submit-btn {
+            margin-top: clamp(8px, 2cqi, 16px);
+            padding: clamp(12px, 3.2cqi, 22px);
+            border: none;
+            border-radius: clamp(8px, 2cqi, 14px);
+            background: rgba(123, 21, 239, 0.2);
+            color: var(--text-muted);
+            font-family: inherit;
+            font-size: clamp(14px, 3.6cqi, 22px);
+            font-weight: 700;
+            cursor: not-allowed;
+            transition: all 0.3s;
+            flex-shrink: 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .submit-btn.active {
+            background: var(--accent);
+            color: #fff;
+            cursor: pointer;
+            box-shadow: 0 clamp(2px, 0.6cqi, 6px) clamp(12px, 3.2cqi, 30px) var(--accent-glow);
+        }
+
+        .submit-btn.active:hover {
+            background: var(--accent-light);
+            transform: translateY(-1px);
+        }
+
+        .submit-btn.submitted {
+            background: var(--success);
+            color: #fff;
+            cursor: default;
+            pointer-events: none;
+        }
+
+        .powered-by {
+            text-align: center;
+            padding-top: clamp(6px, 1.8cqi, 14px);
+            font-size: clamp(9px, 2.2cqi, 14px);
+            color: var(--text-muted);
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            opacity: 0.5;
+            flex-shrink: 0;
+        }
+    </style>
+    <script type="text/javascript"
+        src="https://tech-iion.github.io/advertiser-creatives/2026/testTemplate/hybridPlayable/build/index.js"></script>
+    <!--  <script type="module" crossorigin
+        src="https://tech-iion.github.io/advertiser-creatives/finalbuildfiles/2025/Oct/vattenFall/assets/index-CiAup3yE-aniview.js"></script>
+    <link rel="modulepreload" crossorigin
+        href="https://tech-iion.github.io/advertiser-creatives/finalbuildfiles/2025/Oct/vattenFall/assets/phaser-C2RWnc_5.js" /> -->
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="video-area">
+            <div class="video-label">Live Clip</div>
+            <video id="video" autoplay muted loop playsinline preload="auto">
+                <source
+                    src="https://creativehubiion.github.io/advertiser-creatives/2026/testTemplate/hybridPlayable/video.mp4"
+                    type="video/mp4">
+            </video>
+            <div class="vote-now-cta"><span>Vote Now ▼</span></div>
+            <button class="mute-btn" id="muteBtn" onclick="toggleMute()">
+                <svg id="muteIcon" viewBox="0 0 24 24">
+                    <path
+                        d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z" />
+                </svg>
+                <svg id="unmuteIcon" viewBox="0 0 24 24" style="display:none">
+                    <path
+                        d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+                </svg>
+            </button>
+        </div>
+
+        <div class="poll-area">
+            <div class="poll-content">
+                <div class="poll-header">
+                    <h2>How Solo Are You?</h2>
+                    <p>What’s your biggest business admin headache right now?</p>
+                </div>
+                <div class="poll-options" id="pollOptions">
+                    <div class="poll-option" data-value="1" onclick="selectOption(this)">
+                        <div class="number">1</div>
+                        <div class="label">Tracking expenses manually</div>
+                        <div class="result-pct"></div>
+                        <div class="check"><svg viewBox="0 0 24 24">
+                                <polyline points="4,12 10,18 20,6" fill="none" stroke="#fff" stroke-width="3"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg></div>
+                        <div class="result-bar"></div>
+                    </div>
+                    <div class="poll-option" data-value="2" onclick="selectOption(this)">
+                        <div class="number">2</div>
+                        <div class="label">Switching between too many apps</div>
+                        <div class="result-pct"></div>
+                        <div class="check"><svg viewBox="0 0 24 24">
+                                <polyline points="4,12 10,18 20,6" fill="none" stroke="#fff" stroke-width="3"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg></div>
+                        <div class="result-bar"></div>
+                    </div>
+                    <div class="poll-option" data-value="3" onclick="selectOption(this)">
+                        <div class="number">3</div>
+                        <div class="label">Chasing invoices and payments</div>
+                        <div class="result-pct"></div>
+                        <div class="check"><svg viewBox="0 0 24 24">
+                                <polyline points="4,12 10,18 20,6" fill="none" stroke="#fff" stroke-width="3"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg></div>
+                        <div class="result-bar"></div>
+                    </div>
+                    <div class="poll-option" data-value="4" onclick="selectOption(this)">
+                        <div class="number">4</div>
+                        <div class="label">Managing business banking</div>
+                        <div class="result-pct"></div>
+                        <div class="check"><svg viewBox="0 0 24 24">
+                                <polyline points="4,12 10,18 20,6" fill="none" stroke="#fff" stroke-width="3"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg></div>
+                        <div class="result-bar"></div>
+                    </div>
+                    <div class="poll-option" data-value="5" onclick="selectOption(this)">
+                        <div class="number">5</div>
+                        <div class="label">All of the above</div>
+                        <div class="result-pct"></div>
+                        <div class="check"><svg viewBox="0 0 24 24">
+                                <polyline points="4,12 10,18 20,6" fill="none" stroke="#fff" stroke-width="3"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg></div>
+                        <div class="result-bar"></div>
+                    </div>
+                </div>
+                <button class="submit-btn" id="submitBtn" onclick="submitVote()">Submit Vote</button>
+                <div class="powered-by"></div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
