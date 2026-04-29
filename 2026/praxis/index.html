@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <link rel="icon" type="image/png" href="./favicon.png" />
+  <title>Playable</title>
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      background: #000;
+      color: rgba(255, 255, 255, 0.87);
+    }
+
+    #app {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #game-container {
+      position: relative;
+    }
+
+    .dummy {
+      position: fixed;
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .dummy p {
+      opacity: 1;
+    }
+
+    #ctabtn {
+      position: fixed;
+      inset: 0;
+      width: 0;
+      height: 0;
+      margin: auto;
+      opacity: 1;
+      border: 0;
+      background: transparent;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    #confetti-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: transparent;
+      z-index: 10000;
+    }
+
+    canvas {
+      background: transparent;
+    }
+  </style>
+  <script type="module" crossorigin src="./assets/index.js"></script>
+</head>
+
+<body>
+  <canvas id="confetti-canvas"></canvas>
+  <div class="dummy">
+    <p>Hello</p>
+    <p>Hello</p>
+    <p>Hello</p>
+    <p>Hello</p>
+  </div>
+
+  <button id="ctabtn"></button>
+
+  <div id="app">
+    <div id="game-container"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script>
+    window.option = "";
+    window.bottomtext = "";
+    window.trackingPath = "./assets/";
+    window.trackingType =
+      "https://staging-dmp-producer.iion.io/tracker/impressions?platform=GAM&campaign_id=%ebuy!&publisher_id=%epid!&creative_id=%ecid!&maid=%%ADVERTISING_IDENTIFIER_PLAIN%%&page_url=%%SITE%%&height=%%HEIGHT%%&width=%%WIDTH%%&video_min_duration=%%VIDEO_DURATION%%&gdpr=${GDPR}&gdpr_consent=${GDPR_CONSENT_XXXX}&demand_id=%eadv!&line_item=%eaid!&event_name=";
+    window.setTracker = "%%CLICK_URL_UNESC%%";
+    window.landingPageUrl = /* window.setTracker + */ "https://www.praxis.nl/";
+  </script>
+</body>
+
+</html>
