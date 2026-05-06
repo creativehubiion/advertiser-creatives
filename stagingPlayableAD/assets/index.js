@@ -10,6 +10,11 @@ function injectIframe() {
     // Basic styling for body
     document.body.style.margin = '0';
     document.body.style.padding = '0';
+    document.body.style.display = 'flex';
+    document.body.style.justifyContent = 'center';
+    document.body.style.alignItems = 'center';
+    document.body.style.height = '100vh';
+    document.body.style.backgroundColor = '#000'; // Added a black background for a cleaner look
 
     document.body.appendChild(iframe);
 }
