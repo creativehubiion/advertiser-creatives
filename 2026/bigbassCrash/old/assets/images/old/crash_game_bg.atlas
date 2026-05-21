@@ -1,0 +1,195 @@
+
+crash_game_bg.png
+size: 2008,221
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bird002_00000
+  rotate: false
+  xy: 2, 68
+  size: 94, 151
+  orig: 94, 151
+  offset: 0, 0
+  index: -1
+bird002_00001
+  rotate: false
+  xy: 98, 68
+  size: 94, 151
+  orig: 94, 151
+  offset: 0, 0
+  index: -1
+bird002_00002
+  rotate: false
+  xy: 194, 68
+  size: 94, 151
+  orig: 94, 151
+  offset: 0, 0
+  index: -1
+bird002_00003
+  rotate: false
+  xy: 290, 68
+  size: 94, 151
+  orig: 94, 151
+  offset: 0, 0
+  index: -1
+bird002_00004
+  rotate: false
+  xy: 386, 68
+  size: 94, 151
+  orig: 94, 151
+  offset: 0, 0
+  index: -1
+bird002_00005
+  rotate: false
+  xy: 482, 68
+  size: 94, 151
+  orig: 94, 151
+  offset: 0, 0
+  index: -1
+bird002_00006
+  rotate: false
+  xy: 578, 68
+  size: 94, 151
+  orig: 94, 151
+  offset: 0, 0
+  index: -1
+bird002_00007
+  rotate: false
+  xy: 674, 68
+  size: 94, 151
+  orig: 94, 151
+  offset: 0, 0
+  index: -1
+bird002_00008
+  rotate: false
+  xy: 770, 68
+  size: 94, 151
+  orig: 94, 151
+  offset: 0, 0
+  index: -1
+bird002_00009
+  rotate: false
+  xy: 866, 68
+  size: 94, 151
+  orig: 94, 151
+  offset: 0, 0
+  index: -1
+bird002_00010
+  rotate: false
+  xy: 962, 68
+  size: 94, 151
+  orig: 94, 151
+  offset: 0, 0
+  index: -1
+bird002_00011
+  rotate: false
+  xy: 1058, 68
+  size: 94, 151
+  orig: 94, 151
+  offset: 0, 0
+  index: -1
+bird002_00012
+  rotate: false
+  xy: 1154, 68
+  size: 94, 151
+  orig: 94, 151
+  offset: 0, 0
+  index: -1
+bird002_00013
+  rotate: false
+  xy: 1250, 68
+  size: 94, 151
+  orig: 94, 151
+  offset: 0, 0
+  index: -1
+bird002_00014
+  rotate: false
+  xy: 1346, 68
+  size: 94, 151
+  orig: 94, 151
+  offset: 0, 0
+  index: -1
+bird002_00015
+  rotate: false
+  xy: 1442, 68
+  size: 94, 151
+  orig: 94, 151
+  offset: 0, 0
+  index: -1
+bird002_00016
+  rotate: false
+  xy: 1538, 68
+  size: 94, 151
+  orig: 94, 151
+  offset: 0, 0
+  index: -1
+bird002_00017
+  rotate: false
+  xy: 1634, 68
+  size: 94, 151
+  orig: 94, 151
+  offset: 0, 0
+  index: -1
+bird002_00018
+  rotate: false
+  xy: 1730, 68
+  size: 94, 151
+  orig: 94, 151
+  offset: 0, 0
+  index: -1
+bird002_00019
+  rotate: false
+  xy: 1826, 68
+  size: 94, 151
+  orig: 94, 151
+  offset: 0, 0
+  index: -1
+island6
+  rotate: false
+  xy: 1176, 16
+  size: 124, 50
+  orig: 124, 50
+  offset: 0, 0
+  index: -1
+main_wave_1
+  rotate: false
+  xy: 2, 2
+  size: 937, 10
+  orig: 937, 10
+  offset: 0, 0
+  index: -1
+ocean_gradient
+  rotate: false
+  xy: 940, 16
+  size: 234, 50
+  orig: 234, 50
+  offset: 0, 0
+  index: -1
+uderwater_plants_gradient
+  rotate: false
+  xy: 1772, 41
+  size: 234, 25
+  orig: 234, 25
+  offset: 0, 0
+  index: -1
+under_water_top
+  rotate: false
+  xy: 1772, 13
+  size: 117, 26
+  orig: 117, 26
+  offset: 0, 0
+  index: -1
+underwater_effect
+  rotate: false
+  xy: 1302, 20
+  size: 468, 46
+  orig: 468, 46
+  offset: 0, 0
+  index: -1
+upper_ocean_gradient
+  rotate: false
+  xy: 2, 14
+  size: 936, 52
+  orig: 936, 52
+  offset: 0, 0
+  index: -1
