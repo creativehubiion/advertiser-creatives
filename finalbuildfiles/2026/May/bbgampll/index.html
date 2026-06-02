@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <link rel="icon" type="image/webp" href="./assets/favicon.png" />
+  <title>Big Bass Crash</title>
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      background: #53B9EF;
+      color: rgba(255, 255, 255, 0.87);
+    }
+
+    #app {
+      width: 100% !important;
+      height: auto !important;
+      left: 0;
+      right: 0;
+      margin: auto;
+      position: fixed;
+      inset: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    @font-face {
+      font-family: "font";
+      src: url("./src/assets/font.ttf");
+    }
+
+    #game-container {
+      width: 100% !important;
+      height: auto !important;
+      position: relative;
+    }
+
+    .dummy {
+      position: fixed;
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .dummy p {
+      opacity: 1;
+    }
+
+    #ctabtn {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      opacity: 0;
+      border: 0;
+      background: transparent;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    #confetti-canvas {
+      position: absolute;
+      inset: 0;
+      width: auto !important;
+      height: 100% !important;
+      pointer-events: none;
+      background: transparent;
+      z-index: 10000;
+    }
+
+    canvas {
+      width: 100% !important;
+      height: auto !important;
+      background: transparent;
+    }
+
+    /* Landscape (viewport wider than tall): pin to viewport height and let the
+       2:3 aspect ratio derive width, then centre. Uses higher specificity than
+       the JS-injected styles in main.js so it wins on mobile too. */
+    @media (min-aspect-ratio: 1/1) {
+      #app #game-container {
+        width: auto !important;
+        height: 100% !important;
+        aspect-ratio: 2 / 3;
+        margin: 0 auto !important;
+      }
+    }
+  </style>
+  <script type="module" crossorigin src="./assets/index.js"></script>
+</head>
+
+<body>
+  <div class="dummy">
+    <p>Hello</p>
+    <p>Hello</p>
+    <p>Hello</p>
+    <p>Hello</p>
+  </div>
+
+  <button id="ctabtn"></button>
+
+  <div id="app">
+    <div id="game-container">
+      <canvas id="confetti-canvas"></canvas>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script>
+    window.option = "";
+    window.bottomtext = "";
+    window.trackingPath = "./assets/";
+    window.placeNumber = 3;
+    window.language = "";
+    window.trackingType =
+      "https://staging-dmp-producer.iion.io/tracker/impressions?platform=GAM&campaign_id=%ebuy!&publisher_id=%epid!&creative_id=%ecid!&maid=%%ADVERTISING_IDENTIFIER_PLAIN%%&page_url=%%SITE%%&height=%%HEIGHT%%&width=%%WIDTH%%&video_min_duration=%%VIDEO_DURATION%%&gdpr=${GDPR}&gdpr_consent=${GDPR_CONSENT_XXXX}&demand_id=%eadv!&line_item=%eaid!&event_name=";
+    window.setTracker = "%%CLICK_URL_UNESC%%";
+    window.landingPageUrl = window.setTracker + "https://northstarontario.onelink.me/uTTi/tsmyxru0";
+  </script>
+</body>
+
+</html>
