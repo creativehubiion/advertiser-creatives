@@ -1084,7 +1084,7 @@
 	"meta": {
 		"app": "https://www.codeandweb.com/texturepacker",
 		"version": "1.1",
-		"image": "sm_desktop_IconCommon.png",
+		"image": "sm_desktop_IconCommon.webp",
 		"format": "RGBA8888",
 		"size": {
 			"w": 1670,
