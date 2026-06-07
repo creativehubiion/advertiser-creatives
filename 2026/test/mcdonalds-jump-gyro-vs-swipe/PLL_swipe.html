@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>McDonald's Jump</title>
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      background: #D6EDF3;
+      color: rgba(255, 255, 255, 0.87);
+    }
+
+    #app {
+      width: 100% !important;
+      height: auto !important;
+      left: 0;
+      right: 0;
+      margin: auto;
+      position: fixed;
+      inset: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    @font-face {
+      font-family: "font";
+      src: url("https://creativehubiion.github.io/advertiser-creatives/2026/test/mcdonalds-jump-gyro-vs-swipe/assets/font.ttf");
+    }
+
+    #game-container {
+      width: 100% !important;
+      height: auto !important;
+      position: relative;
+    }
+
+    .dummy {
+      position: fixed;
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .dummy p {
+      opacity: 1;
+    }
+
+    #confetti-canvas {
+      position: absolute;
+      inset: 0;
+      width: auto !important;
+      height: 100% !important;
+      pointer-events: none;
+      background: transparent;
+      z-index: 10000;
+    }
+
+    canvas {
+      width: 100% !important;
+      height: auto !important;
+      background: transparent;
+    }
+
+    @media (min-aspect-ratio: 1/1) {
+      #app #game-container {
+        width: auto !important;
+        height: 100% !important;
+        aspect-ratio: 2 / 3;
+        margin: 0 auto !important;
+      }
+    }
+  </style>
+
+  <!-- Tracking + per-arm config. MUST run before the bundle so window.* is set. -->
+  <script>
+    //PLL — DRAG (swipe) arm
+    window.option = "";
+    window.bottomtext = "";
+    window.placeNumber = 3;
+    window.language = "";
+    window.gyroUse = false;   // drag arm never needs gyro permission
+    // A/B arm: this build is the DRAG (swipe) control arm.
+    window.controlMode = "swipe";
+    // CDN root that hosts the built bundle + game assets (upload dist/assets here).
+    window.trackingPath = "https://creativehubiion.github.io/advertiser-creatives/2026/test/mcdonalds-jump-gyro-vs-swipe/assets";
+    // Staging DMP impression/engagement tracker — PLL (RTB) macros, filled by the
+    // PLL DSP at serve time. campaign_id (%%campaignId%%) separates the A/B arms.
+    window.trackingType =
+      "https://staging-dmp-producer.iion.io/tracker/impressions?platform=RTB&campaign_id=%%campaignId%%&publisher_id=%%pubId%%&creative_id=%%creativeId%%&request_id=%%requestId%%&user_id=%%userId%%&ip_address=%%ip%%&app_id_bundle_id=%%bundle%%&maid=%%ifa%%&app_name=%%appName%%&os=%%os%%&user_agent=%%userAgentEnc%%&latitude=%%lat%%&longitude=%%lon%%&page_url=%%pageUrl%%&country=%%country%%&device_make=%%deviceMake%%&domain=%%domain%%&height=%%height%%&width=%%width%%&video_min_duration=%%videoMinDuration%%&video_max_duration=%%videoMaxDuration%%&content_genre=%%contgenre%%&content_cat=%%contcat%%&gdpr=%%gdpr%%&gdpr_consent=%%gdprConsent%%&demand_id=%%demandId%%&line_item=%%adgroupId%%&event_name=";
+    window.setTracker = "%%clickUrl%%";
+    window.landingPageUrl = window.setTracker + "https://www.mcdonalds.com";
+  </script>
+
+  <!-- Built game bundle (Phaser inlined) — hosted on the CDN above. -->
+  <script type="module" crossorigin
+    src="https://creativehubiion.github.io/advertiser-creatives/2026/test/mcdonalds-jump-gyro-vs-swipe/assets/index.js"></script>
+</head>
+
+<body>
+  <div class="dummy">
+    <p>Hello</p>
+    <p>Hello</p>
+    <p>Hello</p>
+    <p>Hello</p>
+  </div>
+
+  <div id="app">
+    <div id="game-container">
+      <canvas id="confetti-canvas"></canvas>
+    </div>
+  </div>
+</body>
+
+</html>
