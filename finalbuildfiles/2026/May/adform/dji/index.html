@@ -247,17 +247,7 @@
   <a id="ctabtn" onclick="fnfetchapi1(clickTag)"></a>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <script>
-    function fnfetchapi1(clickTag) {
-      fetch(window.trackingType + "CTAClick", { method: "GET" })
-        .then((response) => console.log("Tracking sent:", response.status))
-        .catch((error) => console.error("Tracking error:", error));
 
-      if (typeof mraid !== 'undefined' && mraid.open) {
-        mraid.open(clickTag);
-      } else {
-        window.open(clickTag, '_blank');
-      }
-    }
 
     window.option = "";
     window.bottomtext = "";
@@ -297,6 +287,19 @@
     // Fallback to landingPageUrl if clickTag is still empty
     if (!clickTag) {
       clickTag = window.landingPageUrl;
+    }
+
+    function fnfetchapi1(clickTag) {
+      console.log("fnfetchapi1");
+      fetch(window.trackingType + "CTAClick", { method: "GET" })
+        .then((response) => console.log("Tracking sent:", response.status))
+        .catch((error) => console.error("Tracking error:", error));
+
+      if (typeof mraid !== 'undefined' && mraid.open) {
+        mraid.open(clickTag);
+      } else {
+        window.open(clickTag, '_blank');
+      }
     }
   </script>
 </body>
