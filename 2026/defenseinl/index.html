@@ -10,8 +10,8 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&family=Lora:wght@500&display=swap"
     rel="stylesheet">
-  <script type="module" crossorigin src="./assets/index-BAJj345W.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-DYhPJ9KQ.css">
+  <script type="module" crossorigin src="./assets/index-C3sqcT9Q.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-B5zZOmDz.css">
 </head>
 
 <body>
@@ -29,11 +29,11 @@
 
     <div class="brand">
       <div class="bar"></div>
-      <div class="wm">Ministerie<br>van Defensie</div>
+      <div class="wm" data-i18n="ministry">Ministerie<br>van Defensie</div>
     </div>
 
     <div class="hint" id="hint">
-      <div class="lbl">Schuur om te ontdekken</div>
+      <div class="lbl" data-i18n="scratch">Schuur om te ontdekken</div>
     </div>
     <div id="hand" aria-hidden="true"><svg viewBox="0 0 24 24">
         <path
@@ -41,28 +41,32 @@
       </svg></div>
 
     <div class="headline">
-      <h2>Ontdek wat trots <span class="amb">met je</span> doet</h2>
+      <h2 data-i18n="headline">Ontdek wat trots <span class="amb">met je</span> doet</h2>
     </div>
 
     <div class="endcard">
       <div class="lock">
         <div class="bar"></div>
-        <div class="wm">Ministerie<br>van Defensie</div>
+        <div class="wm" data-i18n="ministry">Ministerie<br>van Defensie</div>
       </div>
-      <h2>Tijd voor Defensie</h2>
-      <div class="sub">Ontdek wat trots met je doet</div>
-      <button class="cta">Ontdek de mogelijkheden</button>
+      <h2 data-i18n="endtitle">Tijd voor Defensie</h2>
+      <div class="sub" data-i18n="subtitle">Ontdek wat trots met je doet</div>
+      <button class="cta" data-i18n="cta">Ontdek de mogelijkheden</button>
       <button class="replay" id="replay"><svg viewBox="0 0 24 24">
           <path d="M3 12a9 9 0 1 0 3-6.7L3 8" />
           <path d="M3 3v5h5" />
-        </svg>Opnieuw</button>
+        </svg><span data-i18n="again">Opnieuw</span></button>
     </div>
   </div>
 
+  <div class="lang-toggle" id="lang">
+    <button type="button" data-lang="nl" aria-pressed="true">NL</button>
+    <button type="button" data-lang="en" aria-pressed="false">EN</button>
+  </div>
   <button class="retry-top" id="retry" aria-label="Opnieuw"><svg viewBox="0 0 24 24">
       <path d="M3 12a9 9 0 1 0 3-6.7L3 8" />
       <path d="M3 3v5h5" />
-    </svg>Opnieuw</button>
+    </svg><span data-i18n="again">Opnieuw</span></button>
   <div class="branches" id="branches"></div>
 
 </body>
