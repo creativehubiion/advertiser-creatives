@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <link rel="icon" type="image/png" href="./favicon.png" />
+  <title>Playable</title>
+  <style>
+    /* ---------------------------------------------------------------------
+       Host page shell. The game renders into #game-container at a fixed 2:3
+       portrait aspect ratio and letterboxes to fit any screen. Keep this
+       generic; per-campaign look lives in the Phaser scenes, not here.
+       --------------------------------------------------------------------- */
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      background: #000;
+      color: rgba(255, 255, 255, 0.87);
+    }
+
+    #app {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Optional custom font. Drop a font.ttf in public/assets/fonts/ to use it. */
+    @font-face {
+      font-family: "font";
+      src: url("./assets/fonts/boldItalic.ttf");
+    }
+
+    @font-face {
+      font-family: "boldItalic";
+      src: url("./assets/fonts/boldItalic.ttf");
+    }
+
+    #game-container {
+      position: relative;
+    }
+
+    /* Some ad networks probe for text nodes; this keeps them happy, invisibly. */
+    .dummy {
+      position: fixed;
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .dummy p {
+      opacity: 1;
+    }
+
+    .dummy p:nth-child(1) {
+      font-family: "font";
+    }
+
+    .dummy p:nth-child(2) {
+      font-family: "boldItalic";
+    }
+
+    /* Full-screen invisible CTA overlay, armed by initCta() on the end screen. */
+    #ctabtn {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      opacity: 0;
+      border: 0;
+      background: transparent;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    /* Optional celebratory confetti layer (canvas-confetti). Safe to remove. */
+    #confetti-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: transparent;
+      z-index: 10000;
+    }
+
+    canvas {
+      width: 100% !important;
+      height: auto !important;
+      background: transparent;
+    }
+
+    #app #game-container {
+      width: 100% !important;
+      height: auto !important;
+      aspect-ratio: 2 / 3;
+      margin: 0 auto !important;
+    }
+
+    @media (min-aspect-ratio: 1/1) {
+      #app #game-container {
+        width: auto !important;
+        height: 100% !important;
+        aspect-ratio: 2 / 3;
+        margin: 0 auto !important;
+      }
+    }
+  </style>
+  <script type="module" crossorigin src="./assets/index.js"></script>
+</head>
+
+<body>
+  <canvas id="confetti-canvas"></canvas>
+  <div class="dummy">
+    <p>.</p>
+    <p>.</p>
+    <p>.</p>
+    <p>.</p>
+  </div>
+
+  <button id="ctabtn"></button>
+
+  <div id="app">
+    <div id="game-container"></div>
+  </div>
+
+  <!-- Optional confetti library. Delete this line if you don't use confetti. -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <!-- ==========================================================================
+       CAMPAIGN CONFIG  (edit per build)
+       These window globals are read by the game at runtime. For local dev the
+       defaults below let the playable run straight from ./public/assets with no
+       tracking. For a real ad build, replace them with the network's tag/macros
+       (see the DV360 reference block below for the pattern iion uses).
+       ========================================================================== -->
+  <script>
+    // Where the game loads art/audio from. Files live in public/assets/ on disk;
+    // Vite serves the public/ folder at the site root, so the path is "assets/".
+    // Ad build: replace with the absolute CDN path your creative is hosted under.
+    window.trackingPath = "assets/";
+
+    // DMP tracker prefix. Every game event is sent as: trackingType + eventName.
+    // Leave "" during local dev to disable network calls.
+    window.trackingType = "";
+
+    // Where the CTA button opens.
+    window.landingPageUrl = "https://example.com";
+
+    // Optional geo/locale flags some builds read.
+    window.country = "";
+    window.language = "";
+  </script>
+
+  <!-- ==========================================================================
+       DV360 BUILD REFERENCE (commented, copy into your build's tag when needed)
+       The bundle's CTA calls window.open(window.landingPageUrl). DV360 only
+       substitutes ${...} macros in the TAG it serves, never in a CDN-hosted file,
+       so the click tracker is passed in as the ?clk= query param.
+       --------------------------------------------------------------------------
+    <script>
+      window.trackingPath = "https://YOUR-CDN-HOST/your-creative/assets/";
+      window.trackingType = "https://staging-dmp-producer.iion.io/tracker/impressions?platform=DV360&campaign_id=CHANGE_ME&event_name=";
+
+      var clk = "";
+      try { clk = new URLSearchParams(window.location.search).get("clk") || ""; } catch (e) {}
+      window.setTracker = clk;
+
+      var brandClickTracker = "https://brand-landing-page.example/offer";
+      window.landingPageUrl = clk
+        ? clk + encodeURIComponent(brandClickTracker)
+        : brandClickTracker;
+    </script>
+    ========================================================================== -->
+
+</body>
+
+</html>
