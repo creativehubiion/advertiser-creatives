@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>GAMMA · Match 3</title>
+  <!-- Fetched first: the loader's logo and the brand face every screen is set in. -->
+  <link rel="preload" as="image" href="./assets/images/logo.png" fetchpriority="high" />
+  <link rel="preload" as="font" type="font/ttf" href="./assets/fonts/Overpass-VF.ttf" crossorigin />
+  <script type="module" crossorigin src="./assets/index.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index.css">
+</head>
+
+<body>
+  <!--
+    GAMMA Match 3: a 640x960 logical stage. A CSS transform scales #stage to fit
+    whatever frame the ad slot gives us; the DOM regions are positioned in 640x960
+    coords and the Phaser canvas renders behind them at the same resolution.
+  -->
+  <div id="stage">
+    <!-- Phaser canvas mounts here (z=0). -->
+    <div id="phaser-host"></div>
+
+    <!-- DOM overlay regions. Each region has data-scene attribute; template.js
+         toggles .scene-active to show/hide based on activeScene. -->
+    <div id="dom-overlay">
+
+      <!-- Splash regions. Overlay is a full-canvas backdrop; everything else
+           lives inside #splash-stack — flex column auto-spaces logo at top
+           and instruction+CTA at the bottom. -->
+      <div id="splash-overlay" class="region" data-scene="Splash"></div>
+
+      <!-- Levitating brand tiles around the demo card (decoration, not a
+           region): slow rhythmic floats give the splash life now that the
+           board behind is frozen. Textures ride the tile-1..4 routes. -->
+      <div id="float-tiles" data-scene="Splash" aria-hidden="true">
+        <div class="float-slot" id="splash-float-1"><img id="float-tile-1" class="float-tile"
+            src="./assets/images/tile-1.png" alt=""></div>
+        <div class="float-slot" id="splash-float-2"><img id="float-tile-2" class="float-tile"
+            src="./assets/images/tile-2.png" alt=""></div>
+        <div class="float-slot" id="splash-float-3"><img id="float-tile-3" class="float-tile"
+            src="./assets/images/tile-3.png" alt=""></div>
+        <div class="float-slot" id="splash-float-4"><img id="float-tile-4" class="float-tile"
+            src="./assets/images/tile-4.png" alt=""></div>
+      </div>
+
+      <div id="splash-stack" data-scene="Splash">
+        <div class="splash-top">
+          <div id="logo-region">
+            <div id="logo-placard">
+              <img id="logo-img" alt="Brand logo" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Match strip — match3's third visual language: a "3-in-a-row" of the
+             LIVE tile-1 art snapping together under a label. The middle tile
+             slides in from the side (the swap lesson) and the trio pulses (the
+             match lesson). Fed the real gameplay textures by the tile routes. -->
+        <div class="splash-mid">
+          <!-- Campaign line (ADR-0024 §4, 2026-09-06): the brief's headline up
+               front, above the teaching cluster; hidden while empty so the
+               classic splash is unchanged. Same region as Catch. -->
+          <div id="campaign-line" data-region="campaign-line" class="prop-hidden"><span
+              id="campaign-line-content"></span></div>
+          <div id="match-strip">
+            <div class="strip-card">
+              <div class="strip-cells">
+                <div class="strip-cell"><img id="strip-tile-1" alt="" /></div>
+                <div class="strip-cell"><img id="strip-tile-1b" alt="" /></div>
+                <div class="strip-cell strip-demo-cell">
+                  <img id="strip-tile-2demo" class="demo-out" alt="" />
+                  <img id="strip-tile-1c" class="demo-in" alt="" />
+                </div>
+                <div class="demo-hand-wrap"><img class="demo-hand" src="./assets/images/tap-hand.png" alt="" /></div>
+                <div class="demo-pop">+30</div>
+              </div>
+              <div class="strip-label" id="match-strip-label">MATCH 3 TO SCORE</div>
+            </div>
+          </div>
+          <div id="instruction-text"><span id="instruction-content"></span></div>
+        </div>
+
+        <div class="splash-bottom">
+          <!-- Tap to play sits in the flow (ADR-0026 §3): the bake holds its footprint with margins, so it hugs its
+               words and grows about its centre; an absolutely placed pill drifted as it grew (owner catch 2026-09-14). -->
+          <div id="tap-cue" class="tap-cue" data-region="start-cta" aria-hidden="true">TAP TO PLAY</div>
+          <!-- CTA RETIRED (v0.4.0, instant-play): tap anywhere starts. Element +
+               routes stay for old saved projects; hidden on Splash via CSS. -->
+          <button id="cta-button" type="button">
+            <span id="cta-content"></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Swap hint — two mini tiles endlessly trading places over a curved
+           arrow pair: the gesture lesson (drag a tile onto its neighbour). -->
+      <div id="swap-hint" class="region" data-scene="Splash">
+        <span class="swap-dot swap-dot-a"></span>
+        <span class="swap-dot swap-dot-b"></span>
+        <img class="swap-hand" src="./assets/images/tap-hand.png" alt="" />
+      </div>
+
+      <!-- Game regions -->
+      <div id="game-logo-region" class="region" data-scene="Game">
+        <div id="game-logo-placard">
+          <img id="game-logo-img" alt="Brand logo" />
+        </div>
+      </div>
+
+      <!-- Objective line — persistent under the timer zone during play (text
+           editable via match-strip's Objective prop). -->
+      <div id="round-callout" data-region="objective-line" aria-hidden="true">Score as many as you can!</div>
+
+      <div id="score-hud" class="region" data-scene="Game">
+        <svg class="hud-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12 2.6l2.94 5.96 6.58.96-4.76 4.64 1.12 6.55L12 18.2l-5.88 3.09 1.12-6.55L2.48 10.1l6.58-.96z" />
+        </svg>
+        <!-- the number slot (settled 2026-09-13): the invisible sizer holds the widest number the pill will show, so the pill never changes size in play -->
+        <span class="hud-num" data-reserve="00"><span class="hud-sizer" aria-hidden="true">00</span><span
+            id="score-value">0</span></span>
+      </div>
+
+      <!-- Lives indicator (visible only when loseCondition === 'three-lives') -->
+      <div id="lives-hud" class="region" data-scene="Game" hidden>
+        <span class="hud-num" data-reserve="0"><span class="hud-sizer" aria-hidden="true">0</span><span
+            id="lives-value">3</span></span>
+      </div>
+
+      <!-- Time bar — a depleting bar UNDER the board (owner call: bar, not top
+           text). First-class movable region (manifest id: timer-hud, role =
+           "shows remaining time"). game.js drives the fill each frame. -->
+      <div id="timer-hud" class="region" data-scene="Game">
+        <div id="timer-bar-track">
+          <div id="timer-bar-fill"></div>
+        </div>
+        <div id="timer-value">15s</div>
+      </div>
+
+      <!-- End regions. The overlay is a full-canvas backdrop; everything else
+           lives inside #end-stack, a flex column that auto-spaces logo/title/
+           subtext at the top and CTAs at the bottom. Per-brand changes to logo
+           aspect or text length naturally reflow the layout. -->
+      <div id="end-overlay" class="region" data-scene="End"></div>
+
+      <div id="end-stack" data-scene="End">
+        <div class="end-header">
+          <div id="end-logo-region">
+            <div id="end-logo-placard">
+              <img id="end-logo-img" alt="Brand logo" />
+            </div>
+          </div>
+          <!-- end-title RETIRED (v0.5.0) — superseded by the score chip; its
+               legacy template still renders into this hidden element. -->
+          <div id="end-title"><span id="end-title-content"></span></div>
+        </div>
+
+        <!-- Score tile — the end screen speaks match3's cell language: your
+             score presented as one GIANT board tile (white panel + inset cell),
+             with the same pill label style as the splash match-strip. -->
+        <div class="end-mid">
+          <div id="end-score-card">
+            <div class="score-card-panel">
+              <div class="score-cell"><span id="end-score-value">0</span></div>
+            </div>
+            <div class="score-card-label" id="end-score-label">YOUR SCORE</div>
+          </div>
+          <div id="end-subtext"><span id="end-subtext-content"></span></div>
+        </div>
+
+        <div class="end-actions">
+          <button id="end-install-cta" type="button">
+            <span id="end-install-content"></span>
+          </button>
+          <button id="end-replay-cta" type="button">
+            <span id="end-replay-content"></span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Branded loading gate — covers the playable until brand assets have
+       loaded (see src/ui/runtime.js LoadGate). The logo is IN this markup, so it is
+       on screen from the first paint, before the game bundle has even arrived.
+       Lives OUTSIDE #stage so it fills the whole frame regardless of the stage's
+       fit-transform. -->
+  <div id="loading-screen" aria-hidden="true">
+    <div id="loading-inner">
+      <img id="loading-logo" class="is-shown" src="./assets/images/logo.png" alt="GAMMA" fetchpriority="high" />
+      <div id="loading-bar">
+        <div id="loading-bar-fill"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- <script>
+    // ============================================================
+    // AD BUILD CONFIG: tracking + click-through (same contract as the
+    // reference playable's index.html). The ONE place to set them.
+    // ------------------------------------------------------------
+    // trackingType: the DMP pixel URL, ending in "&event_name=". Every event is
+    // one GET to trackingType + <event name> (src/utils/tracking.js; the names
+    // are listed in the README).
+    // Set to "" for a DRY RUN: events print to the console and nothing is sent.
+    //
+    // !! campaign_id=GAMMA_TEST is a PLACEHOLDER, so events really fire while
+    // !! the build is being checked. Replace it with the id ad ops issues for
+    // !! GAMMA before launch. Never paste another campaign's id here.
+    //
+    // trackingPrefix goes in front of the custom event names (the reference
+    // used a market code, "MX_"); "" = raw names.
+    // ============================================================
+    window.trackingPath = "./assets/";
+    window.trackingType =
+      "https://staging-dmp-producer.iion.io/tracker/impressions?platform=DV360&campaign_id=GAMMA_TEST&event_name=";
+    window.trackingPrefix = "";
+
+    // GAM build instead (as in the reference): no hard-coded id, GAM fills the
+    // macros in, but ONLY when GAM itself serves this file as the creative.
+    // window.trackingType =
+    //   "https://staging-dmp-producer.iion.io/tracker/impressions?platform=GAM&campaign_id=%ebuy!&publisher_id=%epid!&creative_id=%ecid!&maid=%%ADVERTISING_IDENTIFIER_PLAIN%%&page_url=%%SITE%%&height=%%HEIGHT%%&width=%%WIDTH%%&video_min_duration=%%VIDEO_DURATION%%&gdpr=${GDPR}&gdpr_consent=${GDPR_CONSENT_XXXX}&demand_id=%eadv!&line_item=%eaid!&event_name=";
+
+    // CLICK CHAIN (DV360 guide): the tag passes its click tracker in as
+    // ?clk=${CLICK_URL_ENC}, because DV360 only substitutes macros in the TAG
+    // it serves, never in this hosted file. URLSearchParams.get() decodes it
+    // once, recovering the usable click prefix.
+    var clk = "";
+    try { clk = new URLSearchParams(window.location.search).get("clk") || ""; } catch (e) { }
+
+    // The destination: GAMMA's landing page, or the agency's click tracker
+    // (CM360 trackclk) when there is one.
+    // EMPTY = the Main button opens the studio's neutral preview page, so an
+    // unset build is visibly "not configured".
+    var brandClickTracker = "";
+
+    // Served by DV360: clk present -> DV360 tracker + encoded destination.
+    // Standalone / preview (no clk): open the destination directly.
+    window.landingPageUrl = !brandClickTracker ? ""
+      : clk ? clk + encodeURIComponent(brandClickTracker)
+      : brandClickTracker;
+  </script> -->
+
+  <script>
+    window.option = "";
+    window.bottomtext = "";
+    window.trackingPath = "assets/";
+    window.trackingType =
+      "https://staging-dmp-producer.iion.io/tracker/impressions?platform=GAM&campaign_id=%ebuy!&publisher_id=%epid!&creative_id=%ecid!&maid=%%ADVERTISING_IDENTIFIER_PLAIN%%&page_url=%%SITE%%&height=%%HEIGHT%%&width=%%WIDTH%%&video_min_duration=%%VIDEO_DURATION%%&gdpr=${GDPR}&gdpr_consent=${GDPR_CONSENT_XXXX}&demand_id=%eadv!&line_item=%eaid!&event_name=";
+    window.setTracker = "%%CLICK_URL_UNESC%%";
+    window.landingPageUrl = window.setTracker + "https://www.werkenbijgamma.nl/carriere-mogelijkheden?&utm_source=levelup&utm_medium=cpc&utm_campaign={{campaign.name}}&utm_content={{ad.name}}";
+  </script>
+
+</body>
+
+</html>
