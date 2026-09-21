@@ -5,11 +5,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
   <title>GAMMA · Match 3</title>
-  <!-- Fetched first: the loader's logo and the brand face every screen is set in. -->
-  <link rel="preload" as="image" href="./assets/images/logo.png" fetchpriority="high" />
-  <link rel="preload" as="font" type="font/ttf" href="./assets/fonts/Overpass-VF.ttf" crossorigin />
-  <script type="module" crossorigin src="./assets/index.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index.css">
+  <!-- The images written in this page are plain src URLs on the host. Everything the game loads itself (tiles,
+       audio, the logo and font it sets from JavaScript) comes from window.trackingPath, set at the bottom of
+       the body. The stylesheet and the game script are URLs the build writes. -->
+  <!-- The brand face every screen is set in: start fetching it now, not when the bundle asks for it. -->
+  <link rel="preload" as="font" type="font/ttf" crossorigin="anonymous"
+    href="https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/2026/Sept/intergamma/assets/fonts/Overpass-VF.ttf" />
+  <script type="module" crossorigin src="https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/2026/Sept/intergamma/assets/index.js"></script>
+  <link rel="stylesheet" crossorigin href="https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/2026/Sept/intergamma/assets/index.css">
 </head>
 
 <body>
@@ -36,13 +39,17 @@
            board behind is frozen. Textures ride the tile-1..4 routes. -->
       <div id="float-tiles" data-scene="Splash" aria-hidden="true">
         <div class="float-slot" id="splash-float-1"><img id="float-tile-1" class="float-tile"
-            src="./assets/images/tile-1.png" alt=""></div>
+            src="https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/2026/Sept/intergamma/assets/images/tile-1.png"
+            alt=""></div>
         <div class="float-slot" id="splash-float-2"><img id="float-tile-2" class="float-tile"
-            src="./assets/images/tile-2.png" alt=""></div>
+            src="https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/2026/Sept/intergamma/assets/images/tile-2.png"
+            alt=""></div>
         <div class="float-slot" id="splash-float-3"><img id="float-tile-3" class="float-tile"
-            src="./assets/images/tile-3.png" alt=""></div>
+            src="https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/2026/Sept/intergamma/assets/images/tile-3.png"
+            alt=""></div>
         <div class="float-slot" id="splash-float-4"><img id="float-tile-4" class="float-tile"
-            src="./assets/images/tile-4.png" alt=""></div>
+            src="https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/2026/Sept/intergamma/assets/images/tile-4.png"
+            alt=""></div>
       </div>
 
       <div id="splash-stack" data-scene="Splash">
@@ -73,7 +80,9 @@
                   <img id="strip-tile-2demo" class="demo-out" alt="" />
                   <img id="strip-tile-1c" class="demo-in" alt="" />
                 </div>
-                <div class="demo-hand-wrap"><img class="demo-hand" src="./assets/images/tap-hand.png" alt="" /></div>
+                <div class="demo-hand-wrap"><img class="demo-hand"
+                    src="https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/2026/Sept/intergamma/assets/images/tap-hand.png"
+                    alt="" /></div>
                 <div class="demo-pop">+30</div>
               </div>
               <div class="strip-label" id="match-strip-label">MATCH 3 TO SCORE</div>
@@ -99,7 +108,9 @@
       <div id="swap-hint" class="region" data-scene="Splash">
         <span class="swap-dot swap-dot-a"></span>
         <span class="swap-dot swap-dot-b"></span>
-        <img class="swap-hand" src="./assets/images/tap-hand.png" alt="" />
+        <img class="swap-hand"
+          src="https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/2026/Sept/intergamma/assets/images/tap-hand.png"
+          alt="" />
       </div>
 
       <!-- Game regions -->
@@ -183,70 +194,26 @@
   </div>
 
   <!-- Branded loading gate — covers the playable until brand assets have
-       loaded (see src/ui/runtime.js LoadGate). The logo is IN this markup, so it is
-       on screen from the first paint, before the game bundle has even arrived.
+       loaded (see src/ui/runtime.js LoadGate). The logo is IN this markup with its own
+       src, so it is requested as the page is parsed and is on screen long before the
+       game bundle has arrived.
        Lives OUTSIDE #stage so it fills the whole frame regardless of the stage's
        fit-transform. -->
   <div id="loading-screen" aria-hidden="true">
     <div id="loading-inner">
-      <img id="loading-logo" class="is-shown" src="./assets/images/logo.png" alt="GAMMA" fetchpriority="high" />
+      <img id="loading-logo" class="is-shown"
+        src="https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/2026/Sept/intergamma/assets/images/logo.png"
+        alt="GAMMA" fetchpriority="high" />
       <div id="loading-bar">
         <div id="loading-bar-fill"></div>
       </div>
     </div>
   </div>
 
-  <!-- <script>
-    // ============================================================
-    // AD BUILD CONFIG: tracking + click-through (same contract as the
-    // reference playable's index.html). The ONE place to set them.
-    // ------------------------------------------------------------
-    // trackingType: the DMP pixel URL, ending in "&event_name=". Every event is
-    // one GET to trackingType + <event name> (src/utils/tracking.js; the names
-    // are listed in the README).
-    // Set to "" for a DRY RUN: events print to the console and nothing is sent.
-    //
-    // !! campaign_id=GAMMA_TEST is a PLACEHOLDER, so events really fire while
-    // !! the build is being checked. Replace it with the id ad ops issues for
-    // !! GAMMA before launch. Never paste another campaign's id here.
-    //
-    // trackingPrefix goes in front of the custom event names (the reference
-    // used a market code, "MX_"); "" = raw names.
-    // ============================================================
-    window.trackingPath = "./assets/";
-    window.trackingType =
-      "https://staging-dmp-producer.iion.io/tracker/impressions?platform=DV360&campaign_id=GAMMA_TEST&event_name=";
-    window.trackingPrefix = "";
-
-    // GAM build instead (as in the reference): no hard-coded id, GAM fills the
-    // macros in, but ONLY when GAM itself serves this file as the creative.
-    // window.trackingType =
-    //   "https://staging-dmp-producer.iion.io/tracker/impressions?platform=GAM&campaign_id=%ebuy!&publisher_id=%epid!&creative_id=%ecid!&maid=%%ADVERTISING_IDENTIFIER_PLAIN%%&page_url=%%SITE%%&height=%%HEIGHT%%&width=%%WIDTH%%&video_min_duration=%%VIDEO_DURATION%%&gdpr=${GDPR}&gdpr_consent=${GDPR_CONSENT_XXXX}&demand_id=%eadv!&line_item=%eaid!&event_name=";
-
-    // CLICK CHAIN (DV360 guide): the tag passes its click tracker in as
-    // ?clk=${CLICK_URL_ENC}, because DV360 only substitutes macros in the TAG
-    // it serves, never in this hosted file. URLSearchParams.get() decodes it
-    // once, recovering the usable click prefix.
-    var clk = "";
-    try { clk = new URLSearchParams(window.location.search).get("clk") || ""; } catch (e) { }
-
-    // The destination: GAMMA's landing page, or the agency's click tracker
-    // (CM360 trackclk) when there is one.
-    // EMPTY = the Main button opens the studio's neutral preview page, so an
-    // unset build is visibly "not configured".
-    var brandClickTracker = "";
-
-    // Served by DV360: clk present -> DV360 tracker + encoded destination.
-    // Standalone / preview (no clk): open the destination directly.
-    window.landingPageUrl = !brandClickTracker ? ""
-      : clk ? clk + encodeURIComponent(brandClickTracker)
-      : brandClickTracker;
-  </script> -->
-
   <script>
     window.option = "";
     window.bottomtext = "";
-    window.trackingPath = "assets/";
+    window.trackingPath = "https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/2026/Sept/intergamma/assets/";
     window.trackingType =
       "https://staging-dmp-producer.iion.io/tracker/impressions?platform=GAM&campaign_id=%ebuy!&publisher_id=%epid!&creative_id=%ecid!&maid=%%ADVERTISING_IDENTIFIER_PLAIN%%&page_url=%%SITE%%&height=%%HEIGHT%%&width=%%WIDTH%%&video_min_duration=%%VIDEO_DURATION%%&gdpr=${GDPR}&gdpr_consent=${GDPR_CONSENT_XXXX}&demand_id=%eadv!&line_item=%eaid!&event_name=";
     window.setTracker = "%%CLICK_URL_UNESC%%";
