@@ -4,6 +4,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <meta name="ad.size" content="width=320,height=480" />
+  <script type="text/javascript">
+    // DCM / Studio click tag, as in the Praxis DV360 build: DV360's click
+    // macro, filled in when DV360 serves this HTML, then the CM360 click
+    // tracker, which logs the click and redirects to the KFC landing page.
+    // Left unfilled (local preview, hosted copy behind the iframe tag), it's
+    // ignored: see landingPageUrl in the script at the end of <body>.
+    var clickTag = "${CLICK_URL}https://ad.doubleclick.net/ddm/trackclk/N1405.279382DBMXAXISSINGAPORE-3/B36792880.457136206;dc_trk_aid=651567291;dc_trk_cid=264661918;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;tfua=;gdpr=${GDPR};gdpr_consent=${GDPR_CONSENT_755};ltd=;dc_tdv=1";
+  </script>
   <title>KFC | Keep the Hustle Going</title>
   <meta name="description"
     content="Run the KFC hustle: dodge the chaos, grab Twisters and make your meeting on time to unlock a promo code for $2 off selected breakfast meals." />
@@ -12,7 +21,6 @@
   <meta property="og:title" content="KFC | Keep the Hustle Going" />
   <meta property="og:description" content="Play till the end to reveal a promo code." />
   <link rel="icon" type="image/png" sizes="32x32" href="./favicon.png" />
-  <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png" />
   <style>
     html,
     body {
@@ -95,39 +103,35 @@
 
   <script>
     // ============================================================
-    // DV360 BUILD - KFC "Keep the Hustle Going" playable
-    // Third-party HTML5 creative served by an iframe tag:
-    //   dv360/KFC_DV360_TAG.html        (standard; use this)
-    //   dv360/KFC_DV360_TAG_MRAID.html  (optional, MRAID in-app supply)
-    // Hosted: https://kfc-hustle-playable.vercel.app/index.html
+    // DV360 ZIP BUILD - KFC "Keep the Hustle Going" playable
+    // Same layout as the Praxis DV360 build: index.html + favicon.png +
+    // assets/. Generated from dist/ by scripts/build-zip.mjs; make changes
+    // in the project's index.html, then rebuild.
     // ------------------------------------------------------------
-    // DV360 expands ${...} macros ONLY in the tag it serves, never in this
-    // hosted file. The tag passes them in as query params on the iframe src
-    // and this block reads them back:
-    //   clk              ${CLICK_URL_ENC}       DV360 click tracker (required)
-    //   gdpr             ${GDPR}                filled into the CM360 tracker
-    //   gdpr_consent     ${GDPR_CONSENT_755}    filled into the CM360 tracker
-    //   line_item        ${CAMPAIGN_ID}         optional, forwarded to the DMP
-    //   insertion_order  ${INSERTION_ORDER_ID}  optional, forwarded to the DMP
-    //   creative_id      ${CREATIVE_ID}         optional, forwarded to the DMP
-    //   publisher_id     ${PUBLISHER_ID}        optional, forwarded to the DMP
-    //   app_id_bundle_id ${BUNDLE_ID}           optional, forwarded to the DMP
-    //   page_url         ${SOURCE_URL_ENC}      optional, forwarded to the DMP
-    // A param that is missing, or still a literal ${...} (a preview that
-    // doesn't expand macros), is treated as empty.
+    // Works with both ways DV360 can serve it:
+    //  1. HTML5 zip upload: DV360 serves this HTML and fills its click macro
+    //     in clickTag (<head>) and CLICK_MACRO (below), as in Praxis.
+    //  2. Third-party iframe tag (dv360/KFC_DV360_TAG.html) pointing at a
+    //     hosted copy of these files: the tag passes its macros in as query
+    //     params, read below:
+    //       clk                  DV360 click tracker
+    //       gdpr, gdpr_consent   filled into the CM360 tracker
+    //       line_item, insertion_order, creative_id, publisher_id,
+    //       app_id_bundle_id, page_url   optional, forwarded to the DMP
+    // A value that is missing, or still an unfilled macro (a preview or a
+    // local file), is treated as empty.
     //
     // CLICK CHAIN: tap ORDER NOW -> DV360 click (DV360 counts) -> CM360
     // trackclk (agency counts) -> brand landing page (set agency-side).
-    // Opening uses window.open, proven on iion's DV360 supply (no MRAID).
-    // If window.open is blocked, the page navigates instead. If the MRAID
-    // tag variant announces itself, the click is handed to it for mraid.open.
+    // Opening uses window.open. If it's blocked, the page navigates instead.
+    // If the MRAID tag variant announces itself, the click goes to mraid.open.
     // ============================================================
     window.option = "";
     window.bottomtext = "";
     window.placeNumber = 0;
     window.language = "";
     window.country = "";
-    window.trackingPath = "assets/";
+    window.trackingPath = "./assets/";
 
     // ---- Campaign values (edit these) ---------------------------------
     // DMP tracker, without event_name (added below, always last).
@@ -154,20 +158,36 @@
       });
     window.trackingType = dmpUrl + "&event_name=";
 
-    // DV360 click tracker from the tag (URLSearchParams decodes it once).
+    // DV360 click URL, from whichever route served this page:
+    //  - iframe tag: ?clk= (URLSearchParams decodes it once);
+    //  - HTML5 zip: CLICK_MACRO, which DV360 fills when it serves this HTML.
     // Only a real http(s) URL is used; anything else falls back to CM360.
-    var clk = tagParam("clk");
-    if (!/^https?:\/\//i.test(clk)) clk = "";
+    var CLICK_MACRO = "${CLICK_URL}";
+    var clk = tagParam("clk"), clkFromTag = /^https?:\/\//i.test(clk);
+    if (!clkFromTag) clk = /^https?:\/\//i.test(CLICK_MACRO) ? CLICK_MACRO : "";
     window.setTracker = clk;
 
-    // CM360 tracker with its GDPR macros filled from the tag (empty if absent).
-    var cm360Tracker = brandClickTracker
-      .replace(/\$\{GDPR\}/g, encodeURIComponent(tagParam("gdpr")))
-      .replace(/\$\{GDPR_CONSENT_\d+\}/g, encodeURIComponent(tagParam("gdpr_consent")));
+    // CM360 tracker with its GDPR macros filled from the tag (empty if
+    // absent; nothing to fill when DV360 has already filled them).
+    function fillGdpr(u) {
+      return u
+        .replace(/\$\{GDPR\}/g, encodeURIComponent(tagParam("gdpr")))
+        .replace(/\$\{GDPR_CONSENT_\d+\}/g, encodeURIComponent(tagParam("gdpr_consent")));
+    }
+    var cm360Tracker = fillGdpr(brandClickTracker);
 
-    // Served by DV360: DV360 click + encoded CM360 tracker.
-    // Standalone or preview without clk: the CM360 tracker directly.
-    window.landingPageUrl = clk ? clk + encodeURIComponent(cm360Tracker) : cm360Tracker;
+    // DV360 click + CM360 tracker: encoded after ?clk (the tested iframe-tag
+    // form), appended as-is after the macro (the Praxis form). Without a
+    // DV360 click: the CM360 tracker directly.
+    window.landingPageUrl = !clk ? cm360Tracker
+      : clk + (clkFromTag ? encodeURIComponent(cm360Tracker) : cm360Tracker);
+
+    // clickTag (<head>): DV360 fills it, or replaces it, when it serves this
+    // HTML. A filled one wins, as in Praxis (clickTag || landingPageUrl).
+    var filledClickTag = typeof window.clickTag === "string" ? fillGdpr(window.clickTag) : "";
+    if (/^https?:\/\//i.test(filledClickTag) && !/\$\{[^}]*\}/.test(filledClickTag)) {
+      window.landingPageUrl = filledClickTag;
+    }
 
     // Open the landing page from the ORDER NOW tap (called by the game).
     // MRAID bridge: the MRAID tag variant answers "iion:hello" with
