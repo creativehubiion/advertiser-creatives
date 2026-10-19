@@ -1,30 +1,41 @@
 <!DOCTYPE html>
 <html lang="nl">
 
-<head>
+<head><!--Adform Global Clicktag START-->
+<script type="text/javascript">
+    function adfOpenGlobalClickTAG() {
+        var adfClickTAGName = 'clickTAG',
+            adfClickTAGUrl = 'https://ad.doubleclick.net/ddm/trackclk/N1405923.3848558MATTERKIND1/B37006472.458527099;dc_trk_aid=653312917;dc_trk_cid=265866736;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;tfua=;ltd=;dc_tdv=1';
+
+        window.open(dhtml.getVar(adfClickTAGName, adfClickTAGUrl), dhtml.getVar('landingPageTarget', '_blank'));
+    }
+    if(window.document.addEventListener) {
+        window.document.addEventListener('click', function(e) {
+            if(e.button !== 0) return;
+            e.stopPropagation();
+            e.preventDefault();
+            adfOpenGlobalClickTAG();
+        }, true);
+    } else {
+        document.attachEvent('onclick', function() {
+            adfOpenGlobalClickTAG();
+        });
+    }
+</script>
+<style>
+    html {
+        cursor: pointer;
+    }
+</style>
+<!--Adform Global Clicktag END-->
+
+<!-- Adform API Script -->
+<script type="text/javascript">
+    document.write('<script src="'+ (window.API_URL || 'https://s1.adform.net/banners/scripts/rmb/Adform.DHTML.js?bv='+ Math.random()) +'"><\/script>');
+</script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-  <!--Adform Global Clicktag START-->
-  <!-- mraid.js is supplied by the app in in-app supply; on the web it 404s harmlessly. -->
-  <script src="mraid.js"></script>
-  <script>
-    // Adform click: ?clickTAG= on this page's URL (Adform's %%c1 click macro
-    // + ;cpdir= + the CM360 tracker, passed on by loadertagA.js). Everything
-    // after "clickTAG=" is the value: it contains "=" and ";" itself, and is
-    // the last parameter. An unfilled macro (%%...) or anything that isn't an
-    // http(s) URL is ignored, and the CTA falls back to the CM360 tracker.
-    var clickTag = "";
-    (function () {
-      try {
-        var q = window.location.search, m = /[?&]clicktag=/i.exec(q);
-        if (!m) return;
-        var v = q.slice(m.index + m[0].length);
-        if (/^https?%3A/i.test(v)) v = decodeURIComponent(v);
-        if (/^https?:\/\//i.test(v) && v.indexOf("%%") === -1) clickTag = v;
-      } catch (e) { }
-    })();
-  </script>
-  <!--Adform Global Clicktag END-->
+  
   <title>Denk vooruit | Ben jij voorbereid?</title>
   <meta name="description" content="5 situaties. 5 vragen. Denk vooruit." />
   <meta name="theme-color" content="#42145F" />
