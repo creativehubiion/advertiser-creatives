@@ -1,3 +1,3 @@
-document.write('<iframe src="https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/2026/Oct/DJI/index.html?clickTAG=%%c1;cpdir=https://ad.doubleclick.net/ddm/trackclk/N1405923.3848558MATTERKIND1/B37006472.458527099;dc_trk_aid=653312917;dc_trk_cid=265866736;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;tfua=;ltd=;dc_tdv=1" ' +
+document.write('<iframe src="https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/2026/Oct/dji_adform/index.html?clickTAG=%%c1;cpdir=https://ad.doubleclick.net/ddm/trackclk/N1405923.3848558MATTERKIND1/B37006472.458527099;dc_trk_aid=653312917;dc_trk_cid=265866736;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;tfua=;ltd=;dc_tdv=1" ' +
   'width="320px" height="480px" frameborder="0" scrolling="no" ' +
   'allow="autoplay; fullscreen; encrypted-media;"></iframe>');
