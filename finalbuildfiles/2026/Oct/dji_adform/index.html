@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head><!--Adform Global Clicktag START-->
+<script type="text/javascript">
+    function adfOpenGlobalClickTAG() {
+        var adfClickTAGName = 'clickTAG',
+            adfClickTAGUrl = 'https://ad.doubleclick.net/ddm/trackclk/N1405923.3848558MATTERKIND1/B37006472.458527099;dc_trk_aid=653312917;dc_trk_cid=265866736;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;tfua=;ltd=;dc_tdv=1';
+
+        window.open(dhtml.getVar(adfClickTAGName, adfClickTAGUrl), dhtml.getVar('landingPageTarget', '_blank'));
+    }
+    if(window.document.addEventListener) {
+        window.document.addEventListener('click', function(e) {
+            if(e.button !== 0) return;
+            e.stopPropagation();
+            e.preventDefault();
+            adfOpenGlobalClickTAG();
+        }, true);
+    } else {
+        document.attachEvent('onclick', function() {
+            adfOpenGlobalClickTAG();
+        });
+    }
+</script>
+<style>
+    html {
+        cursor: pointer;
+    }
+</style>
+<!--Adform Global Clicktag END-->
+
+<!-- Adform API Script -->
+<script type="text/javascript">
+    document.write('<script src="'+ (window.API_URL || 'https://s1.adform.net/banners/scripts/rmb/Adform.DHTML.js?bv='+ Math.random()) +'"><\/script>');
+</script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  
+  <title>Denk vooruit | Ben jij voorbereid?</title>
+  <meta name="description" content="5 situaties. 5 vragen. Denk vooruit." />
+  <meta name="theme-color" content="#42145F" />
+  <meta property="og:title" content="Denk vooruit | Ben jij voorbereid?" />
+  <meta property="og:description" content="5 situaties. 5 vragen. Denk vooruit." />
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      /* Brand purple (Figma bg_purple), same as the game background, so the
+         letterbox bars blend into the playable. */
+      background-color: #8d739e;
+      color: rgba(255, 255, 255, 0.87);
+    }
+
+    #app {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #game-container {
+      position: relative;
+    }
+
+    #ctabtn {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      opacity: 0;
+      border: 0;
+      background: transparent;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    canvas {
+      background: transparent;
+    }
+
+    canvas {
+      width: 100% !important;
+      height: auto !important;
+      background: transparent;
+    }
+
+    #app #game-container {
+      width: 100% !important;
+      height: auto !important;
+      aspect-ratio: 2 / 3;
+      margin: 0 auto !important;
+    }
+
+    @media (min-aspect-ratio: 1/1) {
+      #app #game-container {
+        width: auto !important;
+        height: 100% !important;
+        aspect-ratio: 2 / 3;
+        margin: 0 auto !important;
+      }
+    }
+  </style>
+  <script type="module" crossorigin src="./assets/index.js"></script>
+</head>
+
+<body>
+  <button id="ctabtn"></button>
+
+  <div id="app">
+    <div id="game-container"></div>
+  </div>
+
+
+  <script>
+    // ============================================================
+    // ADFORM BUILD - Rijksoverheid "Denk vooruit" playable
+    // Generated from dist/ by scripts/build-adform.mjs; make changes in the
+    // project's index.html or that script, then rebuild.
+    // Tag: script.txt -> loadertagA.js -> this page in a 320x480 iframe.
+    // ============================================================
+    window.trackingPath = "https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/2026/Oct/DJI/assets/";
+    // DMP tracker; the game appends the event name (src/utils/track.js).
+    window.trackingType = "https://staging-dmp-producer.iion.io/tracker/impressions?platform=Adform&campaign_id=112881&publisher_id=iion&event_name=";
+    window.setTracker = "";
+    window.landingPageUrl = "https://ad.doubleclick.net/ddm/trackclk/N1405923.3848558MATTERKIND1/B37006472.458527099;dc_trk_aid=653312917;dc_trk_cid=265866736;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;tfua=;ltd=;dc_tdv=1";
+    // BEKIJK HOE JE JE VOORBEREIDT: Adform click if the tag passed one.
+    window.ctaUrl = clickTag || window.landingPageUrl;
+
+    // Called by the game's CTA (End.clickOut, which also sends CTAClick).
+    window.openLanding = function (url) {
+      if (!url) return;
+      if (typeof mraid !== "undefined" && mraid.open) {
+        mraid.open(url);
+        return;
+      }
+      var w = null;
+      try { w = window.open(url, "_blank"); } catch (e) { }
+      if (!w) {
+        // Popup blocked: navigate instead, so the click is never lost.
+        try { window.top.location.href = url; } catch (e) { window.location.href = url; }
+      }
+    };
+  </script>
+</body>
+
+</html>
