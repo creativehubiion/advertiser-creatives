@@ -2,40 +2,40 @@
 <html lang="nl">
 
 <head><!--Adform Global Clicktag START-->
-<script type="text/javascript">
+  <script type="text/javascript">
     function adfOpenGlobalClickTAG() {
-        var adfClickTAGName = 'clickTAG',
-            adfClickTAGUrl = 'https://ad.doubleclick.net/ddm/trackclk/N1405923.3848558MATTERKIND1/B37006472.458527099;dc_trk_aid=653312917;dc_trk_cid=265866736;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;tfua=;ltd=;dc_tdv=1';
+      var adfClickTAGName = 'clickTAG',
+        adfClickTAGUrl = 'https://ad.doubleclick.net/ddm/trackclk/N1405923.3848558MATTERKIND1/B37006472.458527099;dc_trk_aid=653312917;dc_trk_cid=265866736;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;tfua=;ltd=;dc_tdv=1';
 
-        window.open(dhtml.getVar(adfClickTAGName, adfClickTAGUrl), dhtml.getVar('landingPageTarget', '_blank'));
+      window.open(dhtml.getVar(adfClickTAGName, adfClickTAGUrl), dhtml.getVar('landingPageTarget', '_blank'));
     }
-    if(window.document.addEventListener) {
-        window.document.addEventListener('click', function(e) {
-            if(e.button !== 0) return;
-            e.stopPropagation();
-            e.preventDefault();
-            adfOpenGlobalClickTAG();
-        }, true);
+    if (window.document.addEventListener) {
+      window.document.addEventListener('click', function (e) {
+        if (e.button !== 0) return;
+        e.stopPropagation();
+        e.preventDefault();
+        adfOpenGlobalClickTAG();
+      }, true);
     } else {
-        document.attachEvent('onclick', function() {
-            adfOpenGlobalClickTAG();
-        });
+      document.attachEvent('onclick', function () {
+        adfOpenGlobalClickTAG();
+      });
     }
-</script>
-<style>
+  </script>
+  <style>
     html {
-        cursor: pointer;
+      cursor: pointer;
     }
-</style>
-<!--Adform Global Clicktag END-->
+  </style>
+  <!--Adform Global Clicktag END-->
 
-<!-- Adform API Script -->
-<script type="text/javascript">
-    document.write('<script src="'+ (window.API_URL || 'https://s1.adform.net/banners/scripts/rmb/Adform.DHTML.js?bv='+ Math.random()) +'"><\/script>');
-</script>
+  <!-- Adform API Script -->
+  <script type="text/javascript">
+    document.write('<script src="' + (window.API_URL || 'https://s1.adform.net/banners/scripts/rmb/Adform.DHTML.js?bv=' + Math.random()) + '"><\/script>');
+  </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-  
+
   <title>Denk vooruit | Ben jij voorbereid?</title>
   <meta name="description" content="5 situaties. 5 vragen. Denk vooruit." />
   <meta name="theme-color" content="#42145F" />
@@ -126,7 +126,7 @@
     // project's index.html or that script, then rebuild.
     // Tag: script.txt -> loadertagA.js -> this page in a 320x480 iframe.
     // ============================================================
-    window.trackingPath = "https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/2026/Oct/DJI/assets/";
+    window.trackingPath = "https://creativehubiion.github.io/advertiser-creatives/finalbuildfiles/2026/Oct/dji_adform/assets/";
     // DMP tracker; the game appends the event name (src/utils/track.js).
     window.trackingType = "https://staging-dmp-producer.iion.io/tracker/impressions?platform=Adform&campaign_id=112881&publisher_id=iion&event_name=";
     window.setTracker = "";
